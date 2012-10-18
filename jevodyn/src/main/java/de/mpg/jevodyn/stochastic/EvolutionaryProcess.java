@@ -8,5 +8,6 @@ public interface EvolutionaryProcess {
 	public SimplePopulation getPopulation();
 	public PayoffCalculator getPayoffCalculator();
 	public void reset(SimplePopulation startingPopulation);
+	public double getPopulationPayoff();
 	
 }

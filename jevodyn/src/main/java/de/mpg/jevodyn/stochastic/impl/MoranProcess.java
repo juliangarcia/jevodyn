@@ -2,7 +2,6 @@ package de.mpg.jevodyn.stochastic.impl;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.StatUtils;
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 import de.mpg.jevodyn.stochastic.EvolutionaryProcess;
 import de.mpg.jevodyn.stochastic.PayoffCalculator;
@@ -15,7 +14,7 @@ public class MoranProcess implements EvolutionaryProcess {
 
 	private int timeStep;
 	private SimplePopulation population;
-	private SummaryStatistics averagePayoff;
+	private double populationPayoff;
 	private PayoffCalculator payoffCalculator;
 	private PayoffToFitnessMapping mapping;
 	private double intensityOfSelection;
@@ -26,7 +25,7 @@ public class MoranProcess implements EvolutionaryProcess {
 	protected void step(boolean mutationStep) {
 		double[] currentFrequencies = this.population.getAsTypeFrequencies();
 		double[] payoffVector = this.payoffCalculator.getPayoff(this.population);
-		this.averagePayoff.addValue(StatUtils.sum(payoffVector));
+		this.populationPayoff = StatUtils.sum(payoffVector);
 		double[] fitness = new double[population.getNumberOfTypes()];
 		//Map fitness
 		switch (mapping) {
@@ -61,6 +60,11 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.step(false);
 	}
 	
+	public double getPopulationPayoff() {
+		return this.populationPayoff;
+	}
+
+	
 	
 
 	public MoranProcess(SimplePopulation population, PayoffCalculator payoffCalculator, PayoffToFitnessMapping mapping, RealMatrix mutationKernel, double intensityOfSelection) {
@@ -72,7 +76,7 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.intensityOfSelection = intensityOfSelection;
 		this.mutationKernel = mutationKernel;
 		this.mutationProbability = -1.0;
-		this.averagePayoff = new SummaryStatistics();
+		this.populationPayoff = -1.0;
 	}
 	
 	
@@ -85,7 +89,7 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.intensityOfSelection = intensityOfSelection;
 		this.mutationProbability = mutationProbability;
 		this.mutationKernel = ArrayUtils.uniformMutationKernel(this.mutationProbability, this.getPopulation().getNumberOfTypes());
-		this.averagePayoff = new SummaryStatistics();
+		this.populationPayoff = -1.0;
 	}
 	
 	 
@@ -101,7 +105,7 @@ public class MoranProcess implements EvolutionaryProcess {
 	public void reset(SimplePopulation startingPopulation) {
 		this.population = startingPopulation;
 		this.timeStep=0;
-		this.averagePayoff.clear();
+		this.populationPayoff=-1.0;
 	}
 
 	public int getTimeStep() {
@@ -116,6 +120,8 @@ public class MoranProcess implements EvolutionaryProcess {
 		return intensityOfSelection;
 	}
 
+
+	
 	
 
 }
