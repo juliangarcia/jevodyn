@@ -14,5 +14,6 @@ public interface SimplePopulation {
 	public int getNumberOfCopies(int type);
 	public int getSize();
 	public int getNumberOfTypes();
+	public int getFixatedType();
 	
 }

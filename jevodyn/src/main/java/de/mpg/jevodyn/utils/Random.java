@@ -33,10 +33,6 @@ public class Random {
 	generator = new MersenneTwister();
     }
 
-    public static int nextInt() {
-	return generator.nextInt();
-    }
-
     public static int nextInt (int maximumExclusive) throws IllegalArgumentException{
 	if (maximumExclusive <=0) {
 	    throw new IllegalArgumentException("limit for random integer must be positive");
@@ -44,38 +40,30 @@ public class Random {
 	return generator.nextInt(maximumExclusive);
     }
     
-    public static int nextIntBetweenOneAndInclusive (int maximumInclusive) throws IllegalArgumentException{
-	if (maximumInclusive <=0) {
-	    throw new IllegalArgumentException("limit for random integer must be positive");
-	}
-	return generator.nextInt(maximumInclusive)+1;
-    }
-
     public static double nextDouble() {
-	return generator.nextDouble();
+	return generator.nextDouble(); 
     }
 
     public static boolean nextBoolean() {
 	return generator.nextBoolean();
     }
 
-    public static MersenneTwister getRandom() {
-        return generator;
-    } 
-
-    public static Long getSeed() {
-        return seed;
-    }
-    
+        
 	public static int simulateDiscreteDistribution(double[] distribution) {
 		double subtotal = 0.0;
 		double r = Random.nextDouble();
 		int j = 0;
-		while (subtotal <= r) {
-			subtotal = subtotal + distribution[j];
-			j++;
+		try {
+			while (subtotal <= r) {
+				subtotal = subtotal + distribution[j];
+				j++;
+			}
+			return j - 1;
+		} catch (IndexOutOfBoundsException e) {
+			//it can go over the index in case the comparisons are really small, this usually means
+			//that the last element should be returned
+			return distribution.length -1;
 		}
-		return j - 1;
 	}
 
 }

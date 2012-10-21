@@ -28,5 +28,23 @@ public class ArrayUtils {
 		}
 		return new Array2DRowRealMatrix(raw);
 	}
+	
+	
+	public static int[] randomArray(int numberOfTypes, int maximumNumberOfCopiesPerType){
+		int [] ans = new int[numberOfTypes];
+		for (int i = 0; i < ans.length; i++) {
+			ans[i] = Random.nextInt(maximumNumberOfCopiesPerType+1);
+		}
+		return ans;
+	}
+
+	public static double dot(double[] payoffVector, int[] asArrayOfTypes) {
+		if (payoffVector.length != asArrayOfTypes.length) throw new IllegalArgumentException("Arrays should have the same size");
+		double ans = 0.0; 
+		for (int i = 0; i < asArrayOfTypes.length; i++) {
+			ans = ans + asArrayOfTypes[i]*payoffVector[i];
+		}
+		return ans;
+	}
 
 }
