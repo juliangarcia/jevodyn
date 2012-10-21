@@ -4,7 +4,7 @@ import org.apache.commons.math3.random.MersenneTwister;
 
 public class Random {
 	
-    private static Long seed = null;
+    protected static Long seed = null;
     private static MersenneTwister generator = null;
 
     /**
@@ -60,8 +60,8 @@ public class Random {
 			}
 			return j - 1;
 		} catch (IndexOutOfBoundsException e) {
-			//it can go over the index in case the comparisons are really small, this usually means
-			//that the last element should be returned
+			//it can go over the index in case2 the comparisons are really small, when r is close to 1.0. 
+			//This usually means that the last element should be returned.
 			return distribution.length -1;
 		}
 	}
