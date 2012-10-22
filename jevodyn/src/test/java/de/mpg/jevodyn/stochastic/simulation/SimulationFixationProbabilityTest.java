@@ -24,5 +24,17 @@ public class SimulationFixationProbabilityTest extends TestCase {
 		double estimate = simulationFixationProbability.estimate(0, 1, 2, popSize, 1000000, seed);
 		assertEquals(1.0/popSize, estimate, DELTA);	
 	}
+	
+	@Test
+	public void testNonTrivialFixation() {
+		int[] array = {5,5};
+		int popSize =10;
+		Long seed = System.currentTimeMillis();
+		MoranProcess mp = new MoranProcess(new SimplePopulationImpl(array), new GamePayoffCalculator(Games.prionersDilemma()), 0.1, 1.0);
+		SimulationFixationProbability simulationFixationProbability = new SimulationFixationProbability(mp);
+		double estimate = simulationFixationProbability.estimate(1, 0, 2, popSize, 1000000, seed);
+		System.out.println(estimate);
+		assertEquals(0.7364040545619178, estimate, DELTA);	
+	}
 
 }
