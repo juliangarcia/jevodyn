@@ -68,6 +68,7 @@ public class MoranProcess implements EvolutionaryProcess {
 	}
 
 	public double getTotalPopulationPayoff() {
+		if(!MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF) throw new IllegalStateException("Total payoff is being requested, but not kept track of. Please set MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF to true ");
 		return this.totalPopulationPayoff;
 	}
 
@@ -145,6 +146,10 @@ public class MoranProcess implements EvolutionaryProcess {
 
 	public int getTimeStep() {
 		return timeStep;
+	}
+
+	public void setKeepTrackTotalPayoff(boolean keepTrack) {
+		MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF = keepTrack;
 	}
 
 	
