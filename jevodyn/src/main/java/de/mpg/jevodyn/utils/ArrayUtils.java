@@ -14,6 +14,33 @@ public class ArrayUtils {
 		}
 		return ans;
 	}
+	
+	
+	public static double[] normalize(int[] fitness) {
+		double[] ans = new double[fitness.length];
+		double sum = 0;
+		for (int i = 0; i < fitness.length; i++) {
+			sum = sum + fitness[i];
+		}
+		for (int i = 0; i < ans.length; i++) {
+			ans[i] = ((double)fitness[i])/sum;
+		}
+		return ans;
+	}
+	
+	
+	public static double[] normalize(long[] fitness) {
+		double[] ans = new double[fitness.length];
+		double sum = 0;
+		for (int i = 0; i < fitness.length; i++) {
+			sum = sum + fitness[i];
+		}
+		for (int i = 0; i < ans.length; i++) {
+			ans[i] = ((double)fitness[i])/sum;
+		}
+		return ans;
+	}
+	
 
 	public static RealMatrix uniformMutationKernel(double mutationProbability, int numberOfTypes) {
 		double[][] raw = new double[numberOfTypes][numberOfTypes];
@@ -44,6 +71,20 @@ public class ArrayUtils {
 		for (int i = 0; i < asArrayOfTypes.length; i++) {
 			ans = ans + asArrayOfTypes[i]*payoffVector[i];
 		}
+		return ans;
+	}
+
+
+	public static int[] randomEdge(int numberOfTypes, int populationSize) {
+		int[] ans = new int[numberOfTypes];
+		int edgeOne = 0;
+		int edgeTwo = 0;
+		while(edgeOne == edgeTwo){
+			edgeOne = Random.nextInt(numberOfTypes);
+			edgeOne = Random.nextInt(numberOfTypes);
+		}
+		ans[edgeOne] = Random.nextInt(populationSize);
+		ans[edgeTwo] = populationSize-ans[edgeOne];
 		return ans;
 	}
 

@@ -8,6 +8,9 @@ import de.mpg.jevodyn.stochastic.impl.GamePayoffCalculatorTest;
 import de.mpg.jevodyn.stochastic.impl.MoranProcessTest;
 import de.mpg.jevodyn.stochastic.impl.SimplePopulationImplTest;
 import de.mpg.jevodyn.stochastic.simulation.SimulationFixationProbabilityTest;
+import de.mpg.jevodyn.stochastic.simulation.SimulationStationaryDistributionTest;
+import de.mpg.jevodyn.stochastic.simulation.SimulationTimeSeriesTest;
+import de.mpg.jevodyn.stochastic.simulation.SimulationTotalPayoffTest;
 import de.mpg.jevodyn.utils.RandomTest;
 
 @RunWith(Suite.class)
@@ -15,7 +18,10 @@ import de.mpg.jevodyn.utils.RandomTest;
 			   SimplePopulationImplTest.class,
 			   MoranProcessTest.class,
 			   SimulationFixationProbabilityTest.class,
-			   RandomTest.class})
+			   RandomTest.class, 
+			   SimulationStationaryDistributionTest.class,
+			   SimulationTimeSeriesTest.class,
+			   SimulationTotalPayoffTest.class})
 
 public class AllTests {
 
