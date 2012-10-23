@@ -7,7 +7,7 @@ import java.util.Set;
 import de.mpg.jevodyn.agentbased.Agent;
 import de.mpg.jevodyn.agentbased.AgentBasedFixedSizePopulation;
 
-public class AgentBasedSimplePopulationImpl implements
+public class AgentBasedPopulationImpl implements
 		AgentBasedFixedSizePopulation {
 	
 	private Agent[] agentArray;
@@ -15,7 +15,7 @@ public class AgentBasedSimplePopulationImpl implements
 	private int size;
 	
 
-	public AgentBasedSimplePopulationImpl(Agent[] agentArray) {
+	public AgentBasedPopulationImpl(Agent[] agentArray) {
 		super();
 		this.size = agentArray.length;
 		this.agentArray = agentArray;
@@ -50,6 +50,10 @@ public class AgentBasedSimplePopulationImpl implements
 
 	public double getPayoffOfAgent(int index) {
 		return payoffsArray[index];
+	}
+
+	public void setPayoffOfAgent(int index, double payoff) {
+		this.payoffsArray[index] = payoff;
 	}
 
 

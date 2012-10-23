@@ -47,6 +47,10 @@ public class Random {
     public static boolean nextBoolean() {
 	return generator.nextBoolean();
     }
+    
+    public static boolean bernoulliTrial(double successProbability){
+    	return (Random.nextDouble() <= successProbability) ? true : false;
+    }
 
         
 	public static int simulateDiscreteDistribution(double[] distribution) {

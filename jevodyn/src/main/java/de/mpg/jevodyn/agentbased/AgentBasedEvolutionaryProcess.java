@@ -9,6 +9,5 @@ public interface AgentBasedEvolutionaryProcess {
 	public void reset(AgentBasedFixedSizePopulation startingPopulation);
 	public double getTotalPopulationPayoff();
 	public int getTimeStep();
-	public void setKeepTrackTotalPayoff(boolean keepTrack);
-
+	
 }

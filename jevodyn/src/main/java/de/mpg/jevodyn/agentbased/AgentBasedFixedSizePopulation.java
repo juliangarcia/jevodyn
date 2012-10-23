@@ -10,6 +10,7 @@ public interface AgentBasedFixedSizePopulation {
 	public Set<Agent> getSetOfAgents();
 	public Agent getAgent(int index);
 	public double getPayoffOfAgent(int index);
+	public void setPayoffOfAgent(int index, double payoff);
 	
 	
 }
