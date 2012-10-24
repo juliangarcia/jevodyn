@@ -2,6 +2,12 @@ package de.mpg.jevodyn.utils;
 
 import org.apache.commons.math3.random.MersenneTwister;
 
+/**
+ * This class uses the Mersene Twister to generate pseudo random numbers. It is a wrapper for the Mersene twister implementation of Commons math.
+ *  It ensures that the generator is shared in a program, by making the seed and function static.
+ * @author garcia
+ *
+ */
 public class Random {
 	
     protected static Long seed = null;
@@ -18,12 +24,14 @@ public class Random {
 	    Random.seed = new Long(seed);
 	    generator = new MersenneTwister(seed);
 	} else {
-	    Random.seed = null;
-	    generator = new MersenneTwister();
+	    Random.seed = System.currentTimeMillis();
+	    generator = new MersenneTwister(Random.seed);
 	}
     }
 	
-	
+	/**
+	 * Seed the generator with a default seed value.
+	 */
     public static void seed() {
     	Random.seed(null);
     }
