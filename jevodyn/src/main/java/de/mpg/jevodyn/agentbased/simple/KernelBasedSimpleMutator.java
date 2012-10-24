@@ -10,10 +10,20 @@ public class KernelBasedSimpleMutator implements Mutator {
 	
 	private RealMatrix mutationKernel;
 
+	
+	
 	public Agent mutate(Agent agent) {
 		int oldStrategy = ((SimpleAgent)agent).getStrategy();
 		int newStrategy = Random.simulateDiscreteDistribution(mutationKernel.getRow(oldStrategy));
-		return new SimpleAgent(newStrategy);
+		if (oldStrategy!=newStrategy) return new SimpleAgent(newStrategy);
+		return agent;
+	}
+
+
+
+	public KernelBasedSimpleMutator(RealMatrix mutationKernel) {
+		super();
+		this.mutationKernel = mutationKernel;
 	}
 
 	

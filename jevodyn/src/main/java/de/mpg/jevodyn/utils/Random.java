@@ -41,6 +41,7 @@ public class Random {
 	generator = new MersenneTwister();
     }
 
+    
     public static int nextInt (int maximumExclusive) throws IllegalArgumentException{
 	if (maximumExclusive <=0) {
 	    throw new IllegalArgumentException("limit for random integer must be positive");

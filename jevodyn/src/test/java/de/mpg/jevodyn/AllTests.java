@@ -4,6 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImplTest;
+import de.mpg.jevodyn.agentbased.impl.AgentBasedWrightFisherProcessWithAssortmentTest;
 import de.mpg.jevodyn.stochastic.SimulationFixationProbabilityTest;
 import de.mpg.jevodyn.stochastic.SimulationStationaryDistributionTest;
 import de.mpg.jevodyn.stochastic.SimulationTimeSeriesTest;
@@ -21,7 +23,9 @@ import de.mpg.jevodyn.utils.RandomTest;
 			   RandomTest.class, 
 			   SimulationStationaryDistributionTest.class,
 			   SimulationTimeSeriesTest.class,
-			   SimulationTotalPayoffTest.class})
+			   SimulationTotalPayoffTest.class,
+			   AgentBasedPopulationImplTest.class,
+			   AgentBasedWrightFisherProcessWithAssortmentTest.class})
 
 public class AllTests {
 

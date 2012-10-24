@@ -18,7 +18,7 @@ public class AgentBasedPopulationImpl implements
 	public AgentBasedPopulationImpl(Agent[] agentArray) {
 		super();
 		this.size = agentArray.length;
-		this.agentArray = agentArray;
+		this.agentArray = agentArray.clone();
 		payoffsArray = new double[this.size];
 	}
 
