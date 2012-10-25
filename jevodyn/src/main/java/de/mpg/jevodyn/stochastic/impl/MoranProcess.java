@@ -11,7 +11,11 @@ import de.mpg.jevodyn.utils.Random;
 
 public class MoranProcess implements EvolutionaryProcess {
 
-	public static boolean KEEP_TRACK_OF_TOTAL_PAYOFF = true;
+	private boolean keepTrackOfTotalPayoff = true;
+	public boolean isKeepTrackOfTotalPayoff() {
+		return keepTrackOfTotalPayoff;
+	}
+
 	private int timeStep;
 	private SimplePopulation population;
 	private double totalPopulationPayoff;
@@ -25,7 +29,7 @@ public class MoranProcess implements EvolutionaryProcess {
 		double[] currentFrequencies = this.population.getAsTypeFrequencies();
 		double[] payoffVector = this.payoffCalculator
 				.getPayoff(this.population);
-		if (KEEP_TRACK_OF_TOTAL_PAYOFF) {
+		if (keepTrackOfTotalPayoff) {
 			this.totalPopulationPayoff = ArrayUtils.dot(payoffVector,
 					this.population.getAsArrayOfTypes());
 		}
@@ -68,7 +72,7 @@ public class MoranProcess implements EvolutionaryProcess {
 	}
 
 	public double getTotalPopulationPayoff() {
-		if(!MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF) throw new IllegalStateException("Total payoff is being requested, but not kept track of. Please set MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF to true ");
+		if(!this.keepTrackOfTotalPayoff) throw new IllegalStateException("Total payoff is being requested, but not kept track of. Please set MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF to true ");
 		return this.totalPopulationPayoff;
 	}
 
@@ -149,7 +153,7 @@ public class MoranProcess implements EvolutionaryProcess {
 	}
 
 	public void setKeepTrackTotalPayoff(boolean keepTrack) {
-		MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF = keepTrack;
+		this.keepTrackOfTotalPayoff = keepTrack;
 	}
 
 	

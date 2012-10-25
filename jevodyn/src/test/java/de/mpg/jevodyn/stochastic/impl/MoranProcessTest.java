@@ -27,13 +27,13 @@ public class MoranProcessTest {
 	@Test
 	public void testStepIsInvariableInPopulationSize() {
 		Random.seed();
-		MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF = false;
 		for (int j = 0; j < 5; j++) {
 			int numberOfTypes = 2;
 			int maximumNumberOfCopiesPerType = 10;
 			SimplePopulationImpl population = new SimplePopulationImpl(ArrayUtils.randomArray(numberOfTypes, maximumNumberOfCopiesPerType));
 			int populationSize = population.getSize();
 			MoranProcess mp = new MoranProcess(population, new EveryBodyGetsOnePayoffCalculator(), Random.nextDouble(), Random.nextDouble());
+			mp.setKeepTrackTotalPayoff(false);
 			for (int i = 0; i < 1000; i++) {
 				mp.step();
 				assertEquals(mp.getPopulation().getSize(), populationSize);
@@ -46,13 +46,13 @@ public class MoranProcessTest {
 	@Test
 	public void testTotalPayoff() {
 		Random.seed();
-		MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF = true;
 		for (int j = 0; j < 5; j++) {
 			int numberOfTypes = 3;
 			int maximumNumberOfCopiesPerType = 10;
 			SimplePopulationImpl population = new SimplePopulationImpl(ArrayUtils.randomArray(numberOfTypes, maximumNumberOfCopiesPerType));
 			int populationSize = population.getSize();
 			MoranProcess mp = new MoranProcess(population, new EveryBodyGetsOnePayoffCalculator(), PayoffToFitnessMapping.LINEAR,Random.nextDouble(), Random.nextDouble());
+			mp.setKeepTrackTotalPayoff(true);
 			for (int i = 0; i < 1000; i++) {
 				mp.step();
 				assertEquals((double)populationSize, mp.getTotalPopulationPayoff());
@@ -64,7 +64,6 @@ public class MoranProcessTest {
 	@Test
 	public void testIfATypeIsNotThereItNeverShowsUp() {
 		Random.seed();
-		MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF = false;
 		for (int j = 0; j < 10; j++) {
 			int numberOfTypes = 5;
 			int maximumNumberOfCopiesPerType = 10;
@@ -73,6 +72,7 @@ public class MoranProcessTest {
 			array[zeroType] = 0;
 			SimplePopulationImpl population = new SimplePopulationImpl(array);
 			MoranProcess mp = new MoranProcess(population, new EveryBodyGetsOnePayoffCalculator(), PayoffToFitnessMapping.LINEAR,Random.nextDouble(), Random.nextDouble());
+			mp.setKeepTrackTotalPayoff(false);
 			for (int i = 0; i < 100000; i++) {
 				mp.stepWithoutMutation();
 				assertEquals(0, mp.getPopulation().getNumberOfCopies(zeroType));
