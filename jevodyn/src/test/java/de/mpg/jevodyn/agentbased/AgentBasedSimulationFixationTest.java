@@ -17,7 +17,7 @@ import de.mpg.jevodyn.utils.Random;
 
 public class AgentBasedSimulationFixationTest {
 	
-	private static final double DELTA = 0.001;
+	private static final double DELTA = 0.01;
 
 	@Test
 	public void testEstimateFixationProbabilityNeutral() {
@@ -37,7 +37,7 @@ public class AgentBasedSimulationFixationTest {
 		AgentBasedEvolutionaryProcess wf = new AgentBasedWrightFisherProcessWithAssortment(population, payoffCalculator, 
 				PayoffToFitnessMapping.EXPONENTIAL, intensityOfSelection, mutator, r);
 		AgentBasedSimulation simulation = new AgentBasedSimulation(wf);
-		int numberOfSamples = 100000;
+		int numberOfSamples = 500000;
 		double fixation = simulation.estimateFixationProbability(new SimpleAgent(1), new SimpleAgent(0), numberOfSamples, seed);
 		Assert.assertEquals(1.0/populationSize, fixation, DELTA);
 	}

@@ -12,7 +12,7 @@ import de.mpg.jevodyn.utils.Games;
 
 public class SimulationTotalPayoffTest {
 
-	private static final double DELTA = 0.5;
+	private static final double DELTA = 1.0;
 
 	@Test
 	public void testSimulateStationaryDistribution() {

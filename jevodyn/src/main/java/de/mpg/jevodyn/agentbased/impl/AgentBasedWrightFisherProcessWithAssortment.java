@@ -73,7 +73,7 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 					population.addOneIndividual(fitAgent, i);
 				} else {
 					// from parent of the neightbor with probability r
-					Agent brother = copyOfCurrentState[i - 1];
+					Agent brother = population.getAgent(i - 1);
 					population.addOneIndividual(brother, i);
 				}
 			}
