@@ -11,6 +11,7 @@ public interface AgentBasedFixedSizePopulation {
 	public Agent getAgent(int index);
 	public double getPayoffOfAgent(int index);
 	public void setPayoffOfAgent(int index, double payoff);
+	public String toString();
 	
 	
 }
