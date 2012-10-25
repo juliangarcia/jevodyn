@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.mpg.jevodyn.agentbased.Agent;
-import de.mpg.jevodyn.agentbased.AgentBasedFixedSizePopulation;
+import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
 import de.mpg.jevodyn.agentbased.AgentBasedPayoffCalculator;
 import de.mpg.jevodyn.agentbased.Mutator;
 import de.mpg.jevodyn.agentbased.simple.KernelBasedSimpleMutator;
@@ -19,7 +19,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 
 	private class EveryBodyGetsOnePayoffCalculator implements
 			AgentBasedPayoffCalculator {
-		public void calculatePayoffs(AgentBasedFixedSizePopulation population) {
+		public void calculatePayoffs(AgentBasedPopulation population) {
 			for (int i = 0; i < population.getSize(); i++) {
 				population.setPayoffOfAgent(i, 1.0);
 			}
@@ -168,7 +168,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 		private double fitnessOther = 0.0;
 		private SimpleAgent advantageous;
 
-		public void calculatePayoffs(AgentBasedFixedSizePopulation population) {
+		public void calculatePayoffs(AgentBasedPopulation population) {
 			for (int i = 0; i < population.getSize(); i++) {
 				if (population.getAgent(i).equals(advantageous)) {
 					population.setPayoffOfAgent(i, fitnessAdv);

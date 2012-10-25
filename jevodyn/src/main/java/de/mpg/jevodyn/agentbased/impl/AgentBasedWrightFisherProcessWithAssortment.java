@@ -2,7 +2,7 @@ package de.mpg.jevodyn.agentbased.impl;
 
 import de.mpg.jevodyn.agentbased.Agent;
 import de.mpg.jevodyn.agentbased.AgentBasedEvolutionaryProcess;
-import de.mpg.jevodyn.agentbased.AgentBasedFixedSizePopulation;
+import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
 import de.mpg.jevodyn.agentbased.AgentBasedPayoffCalculator;
 import de.mpg.jevodyn.agentbased.Mutator;
 import de.mpg.jevodyn.utils.ArrayUtils;
@@ -14,7 +14,7 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 
 	public static boolean KEEP_TRACK_OF_TOTAL_PAYOFF = true;
 	private int timeStep;
-	private AgentBasedFixedSizePopulation population;
+	private AgentBasedPopulation population;
 	private double totalPopulationPayoff;
 	private AgentBasedPayoffCalculator payoffCalculator;
 	private PayoffToFitnessMapping mapping;
@@ -112,11 +112,11 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 		return fitness;
 	}
 
-	public AgentBasedFixedSizePopulation getPopulation() {
+	public AgentBasedPopulation getPopulation() {
 		return this.population;
 	}
 
-	public void reset(AgentBasedFixedSizePopulation startingPopulation) {
+	public void reset(AgentBasedPopulation startingPopulation) {
 		this.timeStep = 0;
 		this.population = startingPopulation;
 	}
@@ -130,7 +130,7 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 	}
 
 	public AgentBasedWrightFisherProcessWithAssortment(
-			AgentBasedFixedSizePopulation population,
+			AgentBasedPopulation population,
 			AgentBasedPayoffCalculator payoffCalculator,
 			PayoffToFitnessMapping mapping, double intensityOfSelection,
 			Mutator mutator, double r) {

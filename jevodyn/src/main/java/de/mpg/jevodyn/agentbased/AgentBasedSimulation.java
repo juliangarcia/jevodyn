@@ -21,8 +21,16 @@ import com.google.common.collect.Multisets;
 import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImpl;
 import de.mpg.jevodyn.utils.Random;
 
+/**
+ * Provides methods for simulating a given AgentBased process. 
+ * @author garcia
+ *
+ */
 public class AgentBasedSimulation {
 
+	/**
+	 * Process to be simulated
+	 */
 	private AgentBasedEvolutionaryProcess process;
 
 	public AgentBasedSimulation(AgentBasedEvolutionaryProcess process) {
@@ -30,6 +38,14 @@ public class AgentBasedSimulation {
 		this.process = process;
 	}
 
+	/***
+	 * Estimate the fixation probability of mutant in a population of incumbent.
+	 * @param mutant Agent 
+	 * @param incumbent Agent
+	 * @param numberOfSamples 
+	 * @param seed
+	 * @return
+	 */
 	public double estimateFixationProbability(Agent mutant, Agent incumbent,
 			int numberOfSamples, Long seed) {
 		Random.seed(seed);
@@ -41,16 +57,25 @@ public class AgentBasedSimulation {
 			this.process.reset(new AgentBasedPopulationImpl(
 					startingPopulationArray));
 			boolean fixated = false;
+			//step until fixation is reached
 			while (!fixated) {
 				this.process.stepWithoutMutation();
 				fixated = this.process.getPopulation().getSetOfAgents().size() == 1;
 			}
+			//increase positives if it fixated to the mutant type 
 			if (this.process.getPopulation().getAgent(0).equals(mutant))
 				positives++;
 		}
 		return ((double) positives) / numberOfSamples;
 	}
 
+	/**
+	 * Help method, to initialize fixation calculations
+	 * @param mutant
+	 * @param incumbent
+	 * @param populationSize
+	 * @return
+	 */
 	private Agent[] getStartingArray(Agent mutant, Agent incumbent,
 			int populationSize) {
 		Agent[] ans = new Agent[populationSize];
@@ -61,6 +86,16 @@ public class AgentBasedSimulation {
 		return ans;
 	}
 
+	/**
+	 * Estimate stationary distribution
+	 * @param burningTimePerEstimate for every estimate the chain is left running without taking samples
+	 * @param samplesPerEstimate once burningTime is over, we start taking this number of samples
+	 * @param numberOfEstimates the process is repeatedas many times as number of estimate requires
+	 * @param seed for reproduciblity. 
+	 * @param maximumResultSize if the result needs to have at most a certain number of agents
+	 * @param factory a class that generates a new starting population for every estimate. 
+	 * @return
+	 */
 	public Map<Agent, Double> estimateStationaryDistribution(
 			int burningTimePerEstimate, int samplesPerEstimate,
 			int numberOfEstimates, Long seed, int maximumResultSize,
@@ -96,6 +131,14 @@ public class AgentBasedSimulation {
 		return ans;
 	}
 
+	/**
+	 * Simulates evolution writing the ouput to a file. 
+	 * @param numberOfTimeSteps
+	 * @param reportEveryTimeSteps
+	 * @param seed
+	 * @param fileName
+	 * @throws IOException
+	 */
 	public void simulateTimeSeries(int numberOfTimeSteps,
 			int reportEveryTimeSteps, Long seed,
 			String fileName) throws IOException {
@@ -127,6 +170,10 @@ public class AgentBasedSimulation {
 
 	}
 
+	/**
+	 * Helper method to write the csv file
+	 * @return
+	 */
 	private CellProcessor[] getProcessors() {
 
 		CellProcessor timeStepProcessor = new NotNull();
@@ -137,12 +184,21 @@ public class AgentBasedSimulation {
 		return processors;
 	}
 
+	/**
+	 * Helper method to write the csv file
+	 * @return
+	 */
 	private String[] buildHeader() {
 		// build the header
 		final String[] header = { "timeStep", "totalPayoff", "population" };
 		return header;
 	}
 
+	/**
+	 * Turns the current population into a list to be written in the csv file
+	 * @param process
+	 * @return
+	 */
 	private List<Object> currentStateRow(AgentBasedEvolutionaryProcess process) {
 		ArrayList<Object> ans = new ArrayList<Object>();
 		ans.add(process.getTimeStep());
@@ -151,6 +207,17 @@ public class AgentBasedSimulation {
 		return ans;
 	}
 
+	/**
+	 * Estimate the total payoff, paramters are similar to those of estimate distribution. Instead of counting the agents, all we care
+	 * about here is the population payoff
+	 * @param burningTimePerEstimate
+	 * @param samplesPerEstimate
+	 * @param numberOfEstimates
+	 * @param reportEveryTimeSteps
+	 * @param seed
+	 * @param factory
+	 * @return
+	 */
 	public double estimateTotalPayoff(int burningTimePerEstimate,
 			int samplesPerEstimate, int numberOfEstimates,
 			int reportEveryTimeSteps, Long seed,

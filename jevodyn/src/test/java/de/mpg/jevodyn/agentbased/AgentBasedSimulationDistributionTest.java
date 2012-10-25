@@ -36,7 +36,7 @@ public class AgentBasedSimulationDistributionTest {
 		AgentBasedPayoffCalculator payoffCalculator = new MatrixBasedSimpleAgentPayoffCalculator(gameMatrix);
 		AgentBasedPopulationFactory factory = new SimplePopulationFactory(numberOfTypes, populationSize);
 		Agent[] agentArray = ((AgentBasedPopulationImpl)factory.createPopulation()).getAsArrayOfAgents();
-		AgentBasedFixedSizePopulation population = new  AgentBasedPopulationImpl(agentArray);
+		AgentBasedPopulation population = new  AgentBasedPopulationImpl(agentArray);
 		AgentBasedEvolutionaryProcess wf = new AgentBasedWrightFisherProcessWithAssortment(population, payoffCalculator, 
 				PayoffToFitnessMapping.EXPONENTIAL, intensityOfSelection, mutator, r);
 		AgentBasedSimulation simulation = new AgentBasedSimulation(wf);

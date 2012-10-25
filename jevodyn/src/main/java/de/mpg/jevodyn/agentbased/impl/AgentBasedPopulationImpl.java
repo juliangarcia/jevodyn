@@ -13,9 +13,9 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 
 import de.mpg.jevodyn.agentbased.Agent;
-import de.mpg.jevodyn.agentbased.AgentBasedFixedSizePopulation;
+import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
 
-public class AgentBasedPopulationImpl implements AgentBasedFixedSizePopulation {
+public class AgentBasedPopulationImpl implements AgentBasedPopulation {
 
 	public static final boolean EXTENSIVE_TO_STRING = false;
 	private Agent[] agentArray;
