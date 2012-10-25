@@ -4,7 +4,7 @@ import de.mpg.jevodyn.stochastic.SimplePopulation;
 
 public class SimplePopulationImpl implements SimplePopulation {
 	
-		protected int[]	populationArray;
+	protected int[]	populationArray;
 	protected int size;
 
 	public int[] getAsArrayOfTypes() {

@@ -80,16 +80,14 @@ public class Simulation {
 	}
 
 	public void simulateTimeSeries(int numberOfTimeSteps,
-			int reportEveryTimeSteps, SimplePopulation startingPopulation,
-			Long seed, boolean includeTotalPayoff, String fileName)
+			int reportEveryTimeSteps, Long seed, boolean includeTotalPayoff, String fileName)
 			throws IOException {
 		Random.seed(seed);
 		process.setKeepTrackTotalPayoff(includeTotalPayoff);
-		process.reset(startingPopulation);
 		ICsvListWriter listWriter = null;
-		String[] header = this.buildHeader(startingPopulation,
+		String[] header = this.buildHeader(process.getPopulation(),
 				includeTotalPayoff);
-		CellProcessor[] processors = this.getProcessors(startingPopulation,
+		CellProcessor[] processors = this.getProcessors(process.getPopulation(),
 				includeTotalPayoff);
 		try {
 			listWriter = new CsvListWriter(new FileWriter(fileName),

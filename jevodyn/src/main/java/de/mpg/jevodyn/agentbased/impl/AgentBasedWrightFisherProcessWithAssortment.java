@@ -58,23 +58,22 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 	}
 
 	private void createNewGeneration(double[] fitness) {
+		Agent[] copyOfCurrentState = this.population.getAsArrayOfAgents().clone();
 		for (int i = 0; i < population.getSize(); i++) {
 			if (isEven(i)) {
 				// if the position is even, we sample the fitness distribution
 				// to determine how we occupy it
-				Agent fitAgent = this.population.getAgent(Random
-						.simulateDiscreteDistribution(fitness));
+				Agent fitAgent = copyOfCurrentState[Random.simulateDiscreteDistribution(fitness)];
 				population.addOneIndividual(fitAgent, i);
 			} else {
 				// if the position is odd, we sample...
 				// from the distribution with probability 1-r
 				if (Random.bernoulliTrial(1.0 - this.r)) {
-					Agent fitAgent = this.population.getAgent(Random
-							.simulateDiscreteDistribution(fitness));
+					Agent fitAgent = copyOfCurrentState[Random.simulateDiscreteDistribution(fitness)];
 					population.addOneIndividual(fitAgent, i);
 				} else {
 					// from parent of the neightbor with probability r
-					Agent brother = this.population.getAgent(i - 1);
+					Agent brother = copyOfCurrentState[i - 1];
 					population.addOneIndividual(brother, i);
 				}
 			}

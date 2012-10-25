@@ -19,6 +19,7 @@ public class AgentBasedPopulationImpl implements AgentBasedFixedSizePopulation {
 
 	public static final boolean EXTENSIVE_TO_STRING = false;
 	private Agent[] agentArray;
+
 	private double[] payoffsArray;
 	private int size;
 
@@ -27,6 +28,10 @@ public class AgentBasedPopulationImpl implements AgentBasedFixedSizePopulation {
 		this.size = agentArray.length;
 		this.agentArray = agentArray.clone();
 		payoffsArray = new double[this.size];
+	}
+
+	public Agent[] getAsArrayOfAgents() {
+		return agentArray;
 	}
 
 	public void addOneIndividual(Agent agent, int position) {
@@ -68,15 +73,16 @@ public class AgentBasedPopulationImpl implements AgentBasedFixedSizePopulation {
 		Multiset<Agent> multiset = Multisets.copyHighestCountFirst(HashMultiset
 				.create(Arrays.asList(this.agentArray)));
 		List<String> stringView = new ArrayList<String>();
-		for (Iterator<Agent> iterator = multiset.elementSet().iterator(); iterator.hasNext();) {
+		for (Iterator<Agent> iterator = multiset.elementSet().iterator(); iterator
+				.hasNext();) {
 			Agent agent = (Agent) iterator.next();
-			stringView.add("Strategy : " + agent.toString() + ", Count : " + multiset.count(agent));
+			stringView.add("Strategy : " + agent.toString() + ", Count : "
+					+ multiset.count(agent));
 		}
 		Joiner joiner = Joiner.on("; ").skipNulls();
 		return joiner.join(stringView);
 	}
 
-	
 	@Override
 	public String toString() {
 		if (EXTENSIVE_TO_STRING)
