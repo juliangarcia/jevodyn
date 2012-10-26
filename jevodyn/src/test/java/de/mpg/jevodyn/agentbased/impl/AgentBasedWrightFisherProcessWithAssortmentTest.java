@@ -6,10 +6,10 @@ import org.junit.Test;
 import de.mpg.jevodyn.agentbased.Agent;
 import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
 import de.mpg.jevodyn.agentbased.AgentBasedPayoffCalculator;
-import de.mpg.jevodyn.agentbased.Mutator;
-import de.mpg.jevodyn.agentbased.simple.KernelBasedSimpleMutator;
-import de.mpg.jevodyn.agentbased.simple.MatrixBasedSimpleAgentPayoffCalculator;
-import de.mpg.jevodyn.agentbased.simple.SimpleAgent;
+import de.mpg.jevodyn.agentbased.AgentMutator;
+import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
+import de.mpg.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
+import de.mpg.jevodyn.agentbased.simple.AgentSimple;
 import de.mpg.jevodyn.utils.ArrayUtils;
 import de.mpg.jevodyn.utils.Games;
 import de.mpg.jevodyn.utils.PayoffToFitnessMapping;
@@ -44,7 +44,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 				populationSize = Random.nextInt(20);
 			}
 			// everybody is a one.
-			Agent agent1 = new SimpleAgent(1);
+			Agent agent1 = new AgentSimple(1);
 			Agent[] agentArray = new Agent[populationSize];
 			for (int i = 0; i < agentArray.length; i++) {
 				agentArray[i] = agent1;
@@ -54,7 +54,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 			// now fitness calculator
 			AgentBasedPayoffCalculator payoffCalculator = new EveryBodyGetsOnePayoffCalculator();
 			// and mutator
-			Mutator mutator = new KernelBasedSimpleMutator(
+			AgentMutator mutator = new AgentMutatorSimpleKernel(
 					ArrayUtils.uniformMutationKernel(mutationProbablity,
 							numberOfTypes));
 			// the process itself
@@ -88,7 +88,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 				populationSize = Random.nextInt(20);
 			}
 			// everybody is a one.
-			Agent agent1 = new SimpleAgent(1);
+			Agent agent1 = new AgentSimple(1);
 			Agent[] agentArray = new Agent[populationSize];
 			for (int i = 0; i < agentArray.length; i++) {
 				agentArray[i] = agent1;
@@ -98,7 +98,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 			// now fitness calculator
 			AgentBasedPayoffCalculator payoffCalculator = new EveryBodyGetsOnePayoffCalculator();
 			// and mutator
-			Mutator mutator = new KernelBasedSimpleMutator(
+			AgentMutator mutator = new AgentMutatorSimpleKernel(
 					ArrayUtils.uniformMutationKernel(mutationProbablity,
 							numberOfTypes));
 			// the process itself
@@ -137,14 +137,14 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 				int type = Random.nextInt(numberOfTypes);
 				if (type == 0)
 					type = 1;
-				agentArray[i] = new SimpleAgent(type);
+				agentArray[i] = new AgentSimple(type);
 			}
 			AgentBasedPopulationImpl population = new AgentBasedPopulationImpl(
 					agentArray);
 			// now fitness calculator
 			AgentBasedPayoffCalculator payoffCalculator = new EveryBodyGetsOnePayoffCalculator();
 			// and mutator
-			Mutator mutator = new KernelBasedSimpleMutator(
+			AgentMutator mutator = new AgentMutatorSimpleKernel(
 					ArrayUtils.uniformMutationKernel(mutationProbablity,
 							numberOfTypes));
 			// the process itself
@@ -152,7 +152,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 					population, payoffCalculator,
 					PayoffToFitnessMapping.EXPONENTIAL, intensityOfSelection,
 					mutator, r);
-			Agent agent0 = new SimpleAgent(0);
+			Agent agent0 = new AgentSimple(0);
 			for (int i = 0; i < 10000; i++) {
 				wf.stepWithoutMutation();
 				// agent zero never shows up
@@ -166,7 +166,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 	private class SimpleAdvantage implements AgentBasedPayoffCalculator {
 		private double fitnessAdv = 1.0;
 		private double fitnessOther = 0.0;
-		private SimpleAgent advantageous;
+		private AgentSimple advantageous;
 
 		public void calculatePayoffs(AgentBasedPopulation population) {
 			for (int i = 0; i < population.getSize(); i++) {
@@ -180,7 +180,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 
 		public SimpleAdvantage(int advantageousType) {
 			super();
-			advantageous = new SimpleAgent(advantageousType);
+			advantageous = new AgentSimple(advantageousType);
 		}
 	}
 
@@ -204,7 +204,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 			Agent[] agentArray = new Agent[populationSize];
 			for (int i = 0; i < agentArray.length; i++) {
 				int type = Random.nextInt(numberOfTypes);
-				agentArray[i] = new SimpleAgent(type);
+				agentArray[i] = new AgentSimple(type);
 			}
 			AgentBasedPopulationImpl population = new AgentBasedPopulationImpl(
 					agentArray);
@@ -213,7 +213,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 			AgentBasedPayoffCalculator payoffCalculator = new SimpleAdvantage(
 					advantageousType);
 			// and mutator
-			Mutator mutator = new KernelBasedSimpleMutator(
+			AgentMutator mutator = new AgentMutatorSimpleKernel(
 					ArrayUtils.uniformMutationKernel(mutationProbablity,
 							numberOfTypes));
 			// the process itself
@@ -221,7 +221,7 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 					population, payoffCalculator,
 					PayoffToFitnessMapping.EXPONENTIAL, intensityOfSelection,
 					mutator, r);
-			Agent shouldFixateInto = new SimpleAgent(advantageousType);
+			Agent shouldFixateInto = new AgentSimple(advantageousType);
 			// go to fixation
 			boolean stop = false;
 			while (!stop) {
@@ -254,14 +254,14 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 			Agent[] agentArray = new Agent[populationSize];
 			for (int i = 0; i < agentArray.length; i++) {
 				int type = Random.nextInt(numberOfTypes);
-				agentArray[i] = new SimpleAgent(type);
+				agentArray[i] = new AgentSimple(type);
 			}
 			AgentBasedPopulationImpl population = new AgentBasedPopulationImpl(
 					agentArray);
-			AgentBasedPayoffCalculator payoffCalculator = new MatrixBasedSimpleAgentPayoffCalculator(
+			AgentBasedPayoffCalculator payoffCalculator = new AgentMatrixBasedPayoffCalculator(
 					Games.hawkDoveGame());
 			// and mutator
-			Mutator mutator = new KernelBasedSimpleMutator(
+			AgentMutator mutator = new AgentMutatorSimpleKernel(
 					ArrayUtils.uniformMutationKernel(mutationProbablity,
 							numberOfTypes));
 			// the process itself

@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.mpg.jevodyn.agentbased.Agent;
-import de.mpg.jevodyn.agentbased.simple.SimpleAgent;
+import de.mpg.jevodyn.agentbased.simple.AgentSimple;
 
 public class AgentBasedPopulationImplTest {
 
@@ -15,17 +15,17 @@ public class AgentBasedPopulationImplTest {
 													// cooperate
 		Agent[] array = new Agent[5];
 		for (int i = 0; i < array.length; i++) {
-			array[i] = new SimpleAgent(primitiveArray[i]);
+			array[i] = new AgentSimple(primitiveArray[i]);
 		}
 		AgentBasedPopulationImpl population = new AgentBasedPopulationImpl(
 				array);
 		// done
 
 		// changes to the array do not change the population
-		array[0] = new SimpleAgent(1); // we set agent 0 to strategy 1 in the
+		array[0] = new AgentSimple(1); // we set agent 0 to strategy 1 in the
 										// underlying array
 		Assert.assertEquals(0,
-				((SimpleAgent) population.getAgent(0)).getStrategy()); // but
+				((AgentSimple) population.getAgent(0)).getStrategy()); // but
 																		// agent
 																		// 0
 																		// remains
@@ -33,40 +33,40 @@ public class AgentBasedPopulationImplTest {
 																		// the
 																		// population
 		// now we really replace agent 0 it with a new agent with straetety 1
-		population.addOneIndividual(new SimpleAgent(1), 0);
+		population.addOneIndividual(new AgentSimple(1), 0);
 		// new composition [1,1,1,1,0]
 		Assert.assertEquals(1,
-				((SimpleAgent) population.getAgent(0)).getStrategy());
+				((AgentSimple) population.getAgent(0)).getStrategy());
 		Assert.assertEquals(1,
-				((SimpleAgent) population.getAgent(1)).getStrategy());
+				((AgentSimple) population.getAgent(1)).getStrategy());
 		Assert.assertEquals(1,
-				((SimpleAgent) population.getAgent(2)).getStrategy());
+				((AgentSimple) population.getAgent(2)).getStrategy());
 		Assert.assertEquals(1,
-				((SimpleAgent) population.getAgent(3)).getStrategy());
+				((AgentSimple) population.getAgent(3)).getStrategy());
 		Assert.assertEquals(0,
-				((SimpleAgent) population.getAgent(4)).getStrategy());
+				((AgentSimple) population.getAgent(4)).getStrategy());
 		// size must be 5
 		Assert.assertEquals(5, population.getSize());
 		// We get the set corresponding set, it must have 2 elements
 		Assert.assertEquals(2, population.getSetOfAgents().size());
 		// if we truly ad a new type then the set must contain 3 elements
-		population.addOneIndividual(new SimpleAgent(2), 2);
+		population.addOneIndividual(new AgentSimple(2), 2);
 		Assert.assertEquals(3, population.getSetOfAgents().size());
 		// new composition [1,1,2,1,0]
 		Assert.assertEquals(1,
-				((SimpleAgent) population.getAgent(0)).getStrategy());
+				((AgentSimple) population.getAgent(0)).getStrategy());
 		Assert.assertEquals(1,
-				((SimpleAgent) population.getAgent(1)).getStrategy());
+				((AgentSimple) population.getAgent(1)).getStrategy());
 		Assert.assertEquals(2,
-				((SimpleAgent) population.getAgent(2)).getStrategy());
+				((AgentSimple) population.getAgent(2)).getStrategy());
 		Assert.assertEquals(1,
-				((SimpleAgent) population.getAgent(3)).getStrategy());
+				((AgentSimple) population.getAgent(3)).getStrategy());
 		Assert.assertEquals(0,
-				((SimpleAgent) population.getAgent(4)).getStrategy());
+				((AgentSimple) population.getAgent(4)).getStrategy());
 		// check get number of copies
-		Assert.assertEquals(3, population.getNumberOfCopies(new SimpleAgent(1)));
-		Assert.assertEquals(1, population.getNumberOfCopies(new SimpleAgent(2)));
-		Assert.assertEquals(1, population.getNumberOfCopies(new SimpleAgent(0)));
+		Assert.assertEquals(3, population.getNumberOfCopies(new AgentSimple(1)));
+		Assert.assertEquals(1, population.getNumberOfCopies(new AgentSimple(2)));
+		Assert.assertEquals(1, population.getNumberOfCopies(new AgentSimple(0)));
 		// by default all the payoffs must be zero.
 		Assert.assertEquals(0.0, population.getPayoffOfAgent(0));
 		Assert.assertEquals(0.0, population.getPayoffOfAgent(1));
@@ -87,7 +87,7 @@ public class AgentBasedPopulationImplTest {
 													// cooperate
 		Agent[] array = new Agent[5];
 		for (int i = 0; i < array.length; i++) {
-			array[i] = new SimpleAgent(primitiveArray[i]);
+			array[i] = new AgentSimple(primitiveArray[i]);
 		}
 		AgentBasedPopulationImpl population = new AgentBasedPopulationImpl(
 				array);

@@ -4,7 +4,7 @@ import de.mpg.jevodyn.agentbased.Agent;
 import de.mpg.jevodyn.agentbased.AgentBasedEvolutionaryProcess;
 import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
 import de.mpg.jevodyn.agentbased.AgentBasedPayoffCalculator;
-import de.mpg.jevodyn.agentbased.Mutator;
+import de.mpg.jevodyn.agentbased.AgentMutator;
 import de.mpg.jevodyn.utils.ArrayUtils;
 import de.mpg.jevodyn.utils.PayoffToFitnessMapping;
 import de.mpg.jevodyn.utils.Random;
@@ -19,7 +19,7 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 	private AgentBasedPayoffCalculator payoffCalculator;
 	private PayoffToFitnessMapping mapping;
 	private double intensityOfSelection;
-	private Mutator mutator;
+	private AgentMutator mutator;
 	private double r;
 
 	public void step() {
@@ -133,7 +133,7 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 			AgentBasedPopulation population,
 			AgentBasedPayoffCalculator payoffCalculator,
 			PayoffToFitnessMapping mapping, double intensityOfSelection,
-			Mutator mutator, double r) {
+			AgentMutator mutator, double r) {
 		super();
 		this.timeStep = 0;
 		this.totalPopulationPayoff=0.0;

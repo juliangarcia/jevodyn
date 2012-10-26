@@ -6,9 +6,9 @@ import org.junit.Test;
 
 import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImpl;
 import de.mpg.jevodyn.agentbased.impl.AgentBasedWrightFisherProcessWithAssortment;
-import de.mpg.jevodyn.agentbased.simple.KernelBasedSimpleMutator;
-import de.mpg.jevodyn.agentbased.simple.MatrixBasedSimpleAgentPayoffCalculator;
-import de.mpg.jevodyn.agentbased.simple.SimplePopulationFactory;
+import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
+import de.mpg.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
+import de.mpg.jevodyn.agentbased.simple.AgentBasedSimpleRandomPopulationFactory;
 import de.mpg.jevodyn.utils.ArrayUtils;
 import de.mpg.jevodyn.utils.Games;
 import de.mpg.jevodyn.utils.PayoffToFitnessMapping;
@@ -29,9 +29,9 @@ public class AgentBasedSimulationTotalPayoffTest {
 		double r= 0.0;
 		RealMatrix gameMatrix = Games.prionersDilemma();
 		int populationSize = 10;
-		Mutator mutator = new KernelBasedSimpleMutator(ArrayUtils.uniformMutationKernel(mutationProbability, numberOfTypes));
-		AgentBasedPayoffCalculator payoffCalculator = new MatrixBasedSimpleAgentPayoffCalculator(gameMatrix);
-		AgentBasedPopulationFactory factory = new SimplePopulationFactory(numberOfTypes, populationSize);
+		AgentMutator mutator = new AgentMutatorSimpleKernel(ArrayUtils.uniformMutationKernel(mutationProbability, numberOfTypes));
+		AgentBasedPayoffCalculator payoffCalculator = new AgentMatrixBasedPayoffCalculator(gameMatrix);
+		AgentBasedPopulationFactory factory = new AgentBasedSimpleRandomPopulationFactory(numberOfTypes, populationSize);
 		Agent[] agentArray = ((AgentBasedPopulationImpl)factory.createPopulation()).getAsArrayOfAgents();
 		AgentBasedPopulation population = new  AgentBasedPopulationImpl(agentArray);
 		AgentBasedEvolutionaryProcess wf = new AgentBasedWrightFisherProcessWithAssortment(population, payoffCalculator, 

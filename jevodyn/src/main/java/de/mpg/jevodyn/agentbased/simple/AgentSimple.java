@@ -2,7 +2,7 @@ package de.mpg.jevodyn.agentbased.simple;
 
 import de.mpg.jevodyn.agentbased.Agent;
 
-public class SimpleAgent implements Agent {
+public class AgentSimple implements Agent {
 	
 	public int getStrategy() {
 		return strategy;
@@ -14,7 +14,7 @@ public class SimpleAgent implements Agent {
 
 	private int strategy;
 
-	public SimpleAgent(int strategy) {
+	public AgentSimple(int strategy) {
 		super();
 		this.strategy = strategy;
 	}
@@ -40,7 +40,7 @@ public class SimpleAgent implements Agent {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SimpleAgent other = (SimpleAgent) obj;
+		AgentSimple other = (AgentSimple) obj;
 		if (strategy != other.strategy)
 			return false;
 		return true;

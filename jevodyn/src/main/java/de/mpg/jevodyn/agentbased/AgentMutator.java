@@ -5,7 +5,7 @@ package de.mpg.jevodyn.agentbased;
  * @author garcia
  *
  */
-public interface Mutator {
+public interface AgentMutator {
 	
 	//in case of returning an agent different than the one being returned, a new copy must be created!!
 	/**

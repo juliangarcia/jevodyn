@@ -1,5 +1,6 @@
 package de.mpg.jevodyn.agentbased.simple;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,12 +11,12 @@ import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImpl;
 import de.mpg.jevodyn.utils.ArrayUtils;
 import de.mpg.jevodyn.utils.Random;
 
-public class SimplePopulationFactory implements AgentBasedPopulationFactory {
+public class AgentBasedSimpleRandomPopulationFactory implements AgentBasedPopulationFactory {
 	
 	private int numberOfTypes;
 	private int populationSize;
 	private boolean edge = false;
-	private Map<Integer, SimpleAgent> cache = new HashMap<Integer, SimpleAgent>();  
+	private Map<Integer, AgentSimple> cache = new HashMap<Integer, AgentSimple>();  
 	
 
 	public AgentBasedPopulation createPopulation() {
@@ -39,7 +40,7 @@ public class SimplePopulationFactory implements AgentBasedPopulationFactory {
 		if (cache.containsKey(strategy)){
 			return cache.get(strategy);
 		}else{
-			SimpleAgent agent = new SimpleAgent(strategy);
+			AgentSimple agent = new AgentSimple(strategy);
 			cache.put(strategy, agent);
 			return agent;
 		}		
@@ -48,21 +49,24 @@ public class SimplePopulationFactory implements AgentBasedPopulationFactory {
 
 	private AgentBasedPopulation createEdgePopulation() {
 		int[] array = ArrayUtils.randomEdge(numberOfTypes, populationSize);
-		Agent[] arrayAgent = new Agent[array.length];
+		ArrayList<Agent> list = new ArrayList<Agent>();
 		for (int i = 0; i < array.length; i++) {
-			arrayAgent[i] = getAgent(array[i]);
+			for (int j = 0; j < array[i]; j++) {
+				list.add(getAgent(i));
+			}
 		}
+		Agent[] arrayAgent = list.toArray(new AgentSimple[]{});
 		return new AgentBasedPopulationImpl(arrayAgent);
 	}
 
 
-	public SimplePopulationFactory(int numberOfTypes, int populationSize) {
+	public AgentBasedSimpleRandomPopulationFactory(int numberOfTypes, int populationSize) {
 		super();
 		this.numberOfTypes = numberOfTypes;
 		this.populationSize = populationSize;
 	}
 	
-	public SimplePopulationFactory(int numberOfTypes, int populationSize, boolean edge) {
+	public AgentBasedSimpleRandomPopulationFactory(int numberOfTypes, int populationSize, boolean edge) {
 		super();
 		this.numberOfTypes = numberOfTypes;
 		this.populationSize = populationSize;
