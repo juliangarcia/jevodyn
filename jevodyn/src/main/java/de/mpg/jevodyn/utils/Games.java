@@ -16,7 +16,7 @@ public class Games {
 	 * @param sucker
 	 * @param temptation
 	 * @param punishment
-	 * @return
+	 * @return RealMatrix
 	 */
 
 	public static RealMatrix prionersDilemma(double reward, double sucker, double temptation, double punishment){
@@ -27,7 +27,7 @@ public class Games {
 	
 	/***
 	 * Standard prisoners dilemma reward 3, sucker 0, temptation 4, punishment 1.
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix prionersDilemma(){
 		return prionersDilemma(3.0, 0.0, 4.0, 1.0);
@@ -37,7 +37,7 @@ public class Games {
 	 * PD with equal gains from switching
 	 * @param benefit
 	 * @param cost
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix prionersDilemmaEqualGainsFromSwitching(double benefit, double cost){
 		return prionersDilemma(benefit-cost,-cost,benefit,0.0);
@@ -46,7 +46,7 @@ public class Games {
 	
 	/**
 	 * PD with equal gains from switching, b = 2, c=1.
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix prionersDilemmaEqualGainsFromSwitching(){
 		return prionersDilemmaEqualGainsFromSwitching(2.0, 1.0);
@@ -57,7 +57,7 @@ public class Games {
 	 * @param win
 	 * @param lose
 	 * @param tie
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix rockPaperSccisors(double win,double lose,double tie){
 		double[][] game = {{tie,lose, win},{win,tie, lose},{lose,win, tie}}; 
@@ -66,7 +66,7 @@ public class Games {
 	
 	/**
 	 * Standard rock paper scissors game, win 1, lose -1, tie 0.
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix rockPaperSccisors(){
 		return rockPaperSccisors(1.0, -1.0, 0.0);
@@ -77,7 +77,7 @@ public class Games {
 	 * Hawk dove game
 	 * @param resourceValue
 	 * @param costOfFighting
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix hawkDoveGame(double resourceValue, double costOfFighting){
 		double[][] game = {{(resourceValue-costOfFighting)/2.0,resourceValue},{0.0,resourceValue}};
@@ -86,7 +86,7 @@ public class Games {
 	
 	/***
 	 * Standard haw dove, resourse value 2, cost of fighting 1. 
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix hawkDoveGame(){
 		return hawkDoveGame(2.0, 1.0);
@@ -96,7 +96,7 @@ public class Games {
 	 * Stag hunt game
 	 * @param stag
 	 * @param hare
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix stagHunt(double stag, double hare){
 		double[][] game = {{stag,0.0},{hare,hare}};
@@ -105,7 +105,7 @@ public class Games {
 	
 	/**
 	 * Stag hunt game, stag value 2, hare value 1.
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix stagHunt(){
 		return stagHunt(2.0, 1.0);
@@ -119,7 +119,7 @@ public class Games {
 	 * @param temptation
 	 * @param punishment
 	 * @param continuationProbability
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix allcTftAlld(double reward,double sucker,double temptation,double punishment,double continuationProbability){
 		double[][] game = {{reward,reward,sucker},{reward,reward, sucker*(1.0-continuationProbability)+punishment*continuationProbability},{temptation,temptation*(1.0-continuationProbability)+punishment*continuationProbability, punishment}};
@@ -129,7 +129,7 @@ public class Games {
 	
 	/***
 	 * R,T,P,S as in the standard PD, continuation probability = 0.95
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix allcTftAlld(){
 		return allcTftAlld(3.0, 0.0, 4.0, 1.0, 0.95);
@@ -142,7 +142,7 @@ public class Games {
 	 * @param benefit
 	 * @param cost
 	 * @param continuationProbability
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix allcTftAlldEqualGains(double benefit, double cost,double  continuationProbability){
 		double reward=benefit-cost;
@@ -156,7 +156,7 @@ public class Games {
 	
 	/***
 	 * Repeated game with standard stage game with default values for equal gains form switching, continuation probability = 0.95
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix allcTftAlldEqualGains(){
 		return allcTftAlldEqualGains(2.0, 1.0, 0.95);
@@ -167,7 +167,7 @@ public class Games {
 	/**
 	 * A two player symmetric game where everybody gets 1.0. 
 	 * @param numberOfStrategies
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix neutralGame(int numberOfStrategies){
 		double[][] rawMatrix = new double[numberOfStrategies][numberOfStrategies];
@@ -185,7 +185,7 @@ public class Games {
 	 * @param b
 	 * @param c
 	 * @param d
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix two_times_two(double a,double b,double c,double d){
 		double game[][]= {{a,b},{c,d}};
@@ -197,7 +197,7 @@ public class Games {
 	 * Constant selection game, player one gets payoffA and player 2 gets payoffB.
 	 * @param payoffA
 	 * @param payoffB
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix constantSelection(double payoffA,double payoffB){
 		double game[][] = {{payoffA,payoffA},{payoffB,payoffB}};

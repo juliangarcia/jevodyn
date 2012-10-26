@@ -11,28 +11,38 @@ public interface AgentBasedEvolutionaryProcess {
 	 * one step, changes the population accordingly.
 	 */
 	public void step();
+	
+	
 	/**
 	 * Step without innovation, the same agents remain only changing the frequencies. 
 	 */
 	public void stepWithoutMutation();
+	
+	
 	/**
 	 * Returns the population on which this process operates. 
-	 * @return
+	 * @return AgentBasedPopulation
 	 */
 	public AgentBasedPopulation getPopulation();
+	
+	
 	/**
 	 * Restart the population of the process, and set the timeStep to 0. 
 	 * @param startingPopulation
 	 */
 	public void reset(AgentBasedPopulation startingPopulation);
+	
+	
 	/**
 	 * Total population payoff.
-	 * @return
+	 * @return the sum of individual payoffs in the population
 	 */
 	public double getTotalPopulationPayoff();
+	
+	
 	/**
 	 * Get the current timestep. every step increaseas this number.
-	 * @return
+	 * @return the current timestep
 	 */
 	public int getTimeStep();
 	

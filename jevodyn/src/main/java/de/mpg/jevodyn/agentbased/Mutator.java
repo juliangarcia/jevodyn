@@ -11,7 +11,7 @@ public interface Mutator {
 	/**
 	 * All agents are mutated, so if there is randomness they have to be handled by the implementation. 
 	 * @param agent
-	 * @return
+	 * @return Agent
 	 */
 	public Agent mutate(Agent agent);
 }

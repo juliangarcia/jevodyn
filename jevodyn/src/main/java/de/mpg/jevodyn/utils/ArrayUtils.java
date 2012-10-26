@@ -91,9 +91,9 @@ public class ArrayUtils {
 	/**
 	 * Creates an array of integers, where every position has been sampled from a uniform distribution 
 	 * on (0, maximumNumberOfCopiesPerType). The array has numberOfTypes positions
-	 * @param numberOfTypes, integer
-	 * @param maximumNumberOfCopiesPerType, integer
-	 * @return
+	 * @param numberOfTypes 
+	 * @param maximumNumberOfCopiesPerType 
+	 * @return array of int
 	 */
 	public static int[] randomArray(int numberOfTypes, int maximumNumberOfCopiesPerType){
 		int [] ans = new int[numberOfTypes];
@@ -107,7 +107,7 @@ public class ArrayUtils {
 	 * Computes the dot product, or the linear combination between two vectors, expressed as arrays.
 	 * @param payoffVector array of doubles
 	 * @param asArrayOfTypes array of integers.
-	 * @return
+	 * @return double
 	 */
 	public static double dot(double[] payoffVector, int[] asArrayOfTypes) {
 		if (payoffVector.length != asArrayOfTypes.length) throw new IllegalArgumentException("Arrays should have the same size");
@@ -123,7 +123,7 @@ public class ArrayUtils {
 	 * Returns an array of numberOfTypes integers with exactly at most two non-zero positions, such that the sum equals populationSize.
 	 * @param numberOfTypes size of the returned array
 	 * @param populationSize sum of elements goes up to this number.
-	 * @return
+	 * @return double
 	 */
 	public static int[] randomEdge(int numberOfTypes, int populationSize) {
 		int[] ans = new int[numberOfTypes];
@@ -142,7 +142,7 @@ public class ArrayUtils {
 	 * Returns a matrix that considers relatedness.
 	 * @param r
 	 * @param game
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix forceStructureOnGame(double r, RealMatrix game){
 		double[][] raw = new double[game.getRowDimension()][game.getColumnDimension()];

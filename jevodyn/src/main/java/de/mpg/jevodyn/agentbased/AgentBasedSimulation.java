@@ -33,6 +33,10 @@ public class AgentBasedSimulation {
 	 */
 	private AgentBasedEvolutionaryProcess process;
 
+	/***
+	 * Default constructor takes a process.
+	 * @param process
+	 */
 	public AgentBasedSimulation(AgentBasedEvolutionaryProcess process) {
 		super();
 		this.process = process;
@@ -44,7 +48,7 @@ public class AgentBasedSimulation {
 	 * @param incumbent Agent
 	 * @param numberOfSamples 
 	 * @param seed
-	 * @return
+	 * @return double
 	 */
 	public double estimateFixationProbability(Agent mutant, Agent incumbent,
 			int numberOfSamples, Long seed) {
@@ -74,7 +78,7 @@ public class AgentBasedSimulation {
 	 * @param mutant
 	 * @param incumbent
 	 * @param populationSize
-	 * @return
+	 * @return an array of Agent.
 	 */
 	private Agent[] getStartingArray(Agent mutant, Agent incumbent,
 			int populationSize) {
@@ -94,7 +98,7 @@ public class AgentBasedSimulation {
 	 * @param seed for reproduciblity. 
 	 * @param maximumResultSize if the result needs to have at most a certain number of agents
 	 * @param factory a class that generates a new starting population for every estimate. 
-	 * @return
+	 * @return A Map of Agent to a double frequency.
 	 */
 	public Map<Agent, Double> estimateStationaryDistribution(
 			int burningTimePerEstimate, int samplesPerEstimate,
@@ -216,7 +220,7 @@ public class AgentBasedSimulation {
 	 * @param reportEveryTimeSteps
 	 * @param seed
 	 * @param factory
-	 * @return
+	 * @return double
 	 */
 	public double estimateTotalPayoff(int burningTimePerEstimate,
 			int samplesPerEstimate, int numberOfEstimates,

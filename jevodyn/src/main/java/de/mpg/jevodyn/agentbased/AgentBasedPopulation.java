@@ -17,48 +17,64 @@ public interface AgentBasedPopulation {
 	 */
 	public void addOneIndividual(Agent agent, int position);
 	
+	
+	
 	/**
 	 * How many copies of a given agent. Couting relies on the equals() method of the agent implementation.
 	 * @param agent
-	 * @return
+	 * @return int
 	 */
 	public int getNumberOfCopies(Agent agent);
+	
+	
 	/**
 	 * Population size
-	 * @return
+	 * @return int
 	 */
 	public int getSize();
+	
+	
 	/**
 	 * A set containing Agents, no repetitions.  If the set size is one the population has fixated.
-	 * @return
+	 * @return A Set of Agent.
 	 */
 	public Set<Agent> getSetOfAgents();
+	
+	
 	/**
-	 * Get th agent in a given position.
+	 * Get the agent in a given position.
 	 * @param index
-	 * @return
+	 * @return Agent
 	 */
 	public Agent getAgent(int index);
+	
+	
 	/**
 	 * Get the payoff of a certain agent.
 	 * @param index
-	 * @return
+	 * @return double
 	 */
 	public double getPayoffOfAgent(int index);
+	
+	
 	/**
 	 * Set the payoff of an agent in a certain position. 
 	 * @param index
 	 * @param payoff
 	 */
 	public void setPayoffOfAgent(int index, double payoff);
+	
+	
 	/**
 	 * Gives a String representation of the population
-	 * @return
+	 * @return String
 	 */
 	public String toString();
+	
+	
 	/**
 	 * Returns the array of agents composing the population
-	 * @return
+	 * @return an array of Agent
 	 */
 	public Agent[] getAsArrayOfAgents();
 	
