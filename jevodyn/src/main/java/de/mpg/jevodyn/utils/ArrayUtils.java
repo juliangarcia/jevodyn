@@ -72,7 +72,7 @@ public class ArrayUtils {
 	 * The shape of the result is n times n. 
 	 * @param mutationProbability double
 	 * @param numberOfTypes int
-	 * @return
+	 * @return RealMatrix
 	 */
 	public static RealMatrix uniformMutationKernel(double mutationProbability, int numberOfTypes) {
 		double[][] raw = new double[numberOfTypes][numberOfTypes];
