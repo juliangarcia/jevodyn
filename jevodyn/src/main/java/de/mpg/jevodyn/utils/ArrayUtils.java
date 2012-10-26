@@ -137,5 +137,21 @@ public class ArrayUtils {
 		ans[edgeTwo] = populationSize-ans[edgeOne];
 		return ans;
 	}
+	
+	/***
+	 * Returns a matrix that considers relatedness.
+	 * @param r
+	 * @param game
+	 * @return
+	 */
+	public static RealMatrix forceStructureOnGame(double r, RealMatrix game){
+		double[][] raw = new double[game.getRowDimension()][game.getColumnDimension()];
+		for (int i = 0; i < game.getRowDimension(); i++) {
+			for (int j = 0; j < game.getColumnDimension(); j++) {
+				raw[i][j] =  (1.0-r)*game.getEntry(i, j) + r*game.getEntry(i, i);
+			}
+		}
+		return new Array2DRowRealMatrix(raw);
+	}
 
 }
