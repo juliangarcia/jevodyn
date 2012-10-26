@@ -10,6 +10,8 @@ import de.mpg.jevodyn.agentbased.AgentBasedSimulationTimeSeriesTest;
 import de.mpg.jevodyn.agentbased.AgentBasedSimulationTotalPayoffTest;
 import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImplTest;
 import de.mpg.jevodyn.agentbased.impl.AgentBasedWrightFisherProcessWithAssortmentTest;
+import de.mpg.jevodyn.agentbased.simple.AgentBasedSimplePopulationFactoryTest;
+import de.mpg.jevodyn.agentbased.simple.AgentBasedSimpleRandomPopulationFactoryTest;
 import de.mpg.jevodyn.stochastic.SimulationFixationProbabilityTest;
 import de.mpg.jevodyn.stochastic.SimulationStationaryDistributionTest;
 import de.mpg.jevodyn.stochastic.SimulationTimeSeriesTest;
@@ -33,7 +35,9 @@ import de.mpg.jevodyn.utils.RandomTest;
 			   AgentBasedSimulationTimeSeriesTest.class,
 			   AgentBasedSimulationFixationTest.class,
 			   AgentBasedSimulationDistributionTest.class,
-			   AgentBasedSimulationTotalPayoffTest.class})
+			   AgentBasedSimulationTotalPayoffTest.class,
+			   AgentBasedSimplePopulationFactoryTest.class,
+			   AgentBasedSimpleRandomPopulationFactoryTest.class})
 
 public class AllTests {
 
