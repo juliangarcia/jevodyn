@@ -90,6 +90,23 @@ public class AgentBasedSimulation {
 		return ans;
 	}
 
+	private Multiset<Agent> buildMultiset(int numberOfEstimates, int burningTimePerEstimate, int samplesPerEstimate, AgentBasedPopulationFactory factory ){
+		Multiset<Agent> multiset = HashMultiset.create();
+		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
+			process.reset(factory.createPopulation());
+			for (int burningStep = 0; burningStep < burningTimePerEstimate; burningStep++) {
+				process.step();
+			}
+			for (int sample = 0; sample < samplesPerEstimate; sample++) {
+				process.step();
+				for (int i = 0; i < this.process.getPopulation().getSize(); i++) {
+					multiset.add(this.process.getPopulation().getAgent(i));
+				}
+			}
+		}
+		return multiset;
+	}
+	
 	/**
 	 * Estimate stationary distribution
 	 * @param burningTimePerEstimate for every estimate the chain is left running without taking samples
@@ -105,19 +122,7 @@ public class AgentBasedSimulation {
 			int numberOfEstimates, Long seed, int maximumResultSize,
 			AgentBasedPopulationFactory factory) {
 		Random.seed(seed);
-		Multiset<Agent> multiset = HashMultiset.create();
-		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
-			process.reset(factory.createPopulation());
-			for (int burningStep = 0; burningStep < burningTimePerEstimate; burningStep++) {
-				process.step();
-			}
-			for (int sample = 0; sample < samplesPerEstimate; sample++) {
-				process.step();
-				for (int i = 0; i < this.process.getPopulation().getSize(); i++) {
-					multiset.add(this.process.getPopulation().getAgent(i));
-				}
-			}
-		}
+		Multiset<Agent> multiset = buildMultiset(numberOfEstimates, burningTimePerEstimate, samplesPerEstimate, factory);
 		// build the answer
 		double size = (double) multiset.size();
 		Map<Agent, Double> ans = new HashMap<Agent, Double>();
@@ -134,6 +139,38 @@ public class AgentBasedSimulation {
 		}
 		return ans;
 	}
+	
+	
+	/**
+	 * Estimate stationary distribution
+	 * @param burningTimePerEstimate for every estimate the chain is left running without taking samples
+	 * @param samplesPerEstimate once burningTime is over, we start taking this number of samples
+	 * @param numberOfEstimates the process is repeatedas many times as number of estimate requires
+	 * @param seed for reproduciblity. 
+	 * @param factory a class that generates a new starting population for every estimate. 
+	 * @return A Map of Agent to a double frequency.
+	 */
+	public Map<Agent, Double> estimateStationaryDistribution(
+			int burningTimePerEstimate, int samplesPerEstimate,
+			int numberOfEstimates, Long seed,
+			AgentBasedPopulationFactory factory) {
+		Random.seed(seed);
+		Multiset<Agent> multiset = buildMultiset(numberOfEstimates, burningTimePerEstimate, samplesPerEstimate, factory);
+		// build the answer
+		double size = (double) multiset.size();
+		Map<Agent, Double> ans = new HashMap<Agent, Double>();
+		// create a view ordered by count
+		Multiset<Agent> ordererdView = Multisets
+				.copyHighestCountFirst(multiset);
+		for (Iterator<Agent> iterator = ordererdView.iterator(); iterator
+				.hasNext();) {
+			Agent agent = (Agent) iterator.next();
+			ans.put(agent, ordererdView.count(agent) / size);
+		}
+		return ans;
+	}
+	
+	
 
 	/**
 	 * Simulates evolution writing the ouput to a file. 
