@@ -146,6 +146,7 @@ public class AgentBasedSimulation {
 	public void simulateTimeSeries(int numberOfTimeSteps,
 			int reportEveryTimeSteps, Long seed,
 			String fileName) throws IOException {
+		Random.seed(seed);
 		ICsvListWriter listWriter = null;
 		String[] header = this.buildHeader();
 		CellProcessor[] processors = this.getProcessors();
