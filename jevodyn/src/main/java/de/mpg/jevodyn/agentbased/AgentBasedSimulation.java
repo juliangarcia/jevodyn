@@ -100,7 +100,11 @@ public class AgentBasedSimulation {
 			for (int sample = 0; sample < samplesPerEstimate; sample++) {
 				process.step();
 				for (int i = 0; i < this.process.getPopulation().getSize(); i++) {
-					multiset.add(this.process.getPopulation().getAgent(i));
+					if(multiset.size()== Integer.MAX_VALUE){
+						System.out.println("Multiset has exceeded capacity, returning what I have!");
+						return multiset;
+					}
+					multiset.add(this.process.getPopulation().getAgent(i));	
 				}
 			}
 		}
@@ -124,7 +128,7 @@ public class AgentBasedSimulation {
 		Random.seed(seed);
 		Multiset<Agent> multiset = buildMultiset(numberOfEstimates, burningTimePerEstimate, samplesPerEstimate, factory);
 		// build the answer
-		double size = (double) multiset.size();
+		long size = (long) multiset.size();
 		Map<Agent, Double> ans = new HashMap<Agent, Double>();
 		// create a view ordered by count
 		Multiset<Agent> ordererdView = Multisets
@@ -133,7 +137,7 @@ public class AgentBasedSimulation {
 		for (Iterator<Agent> iterator = ordererdView.iterator(); iterator
 				.hasNext();) {
 			Agent agent = (Agent) iterator.next();
-			ans.put(agent, ordererdView.count(agent) / size);
+			ans.put(agent, ((double)ordererdView.count(agent) / size));
 			if (i >= maximumResultSize)
 				break;
 		}
