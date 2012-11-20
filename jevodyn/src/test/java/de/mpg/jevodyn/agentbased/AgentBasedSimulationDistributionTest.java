@@ -9,10 +9,10 @@ import org.junit.Test;
 
 import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImpl;
 import de.mpg.jevodyn.agentbased.impl.AgentBasedWrightFisherProcessWithAssortment;
-import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
-import de.mpg.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
-import de.mpg.jevodyn.agentbased.simple.AgentSimple;
 import de.mpg.jevodyn.agentbased.simple.AgentBasedSimpleRandomPopulationFactory;
+import de.mpg.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
+import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
+import de.mpg.jevodyn.agentbased.simple.AgentSimple;
 import de.mpg.jevodyn.utils.ArrayUtils;
 import de.mpg.jevodyn.utils.Games;
 import de.mpg.jevodyn.utils.PayoffToFitnessMapping;
@@ -44,8 +44,8 @@ public class AgentBasedSimulationDistributionTest {
 		int burningTimePerEstimate = 100;
 		int samplesPerEstimate = 500000;
 		int numberOfEstimates = 10;
-		int maximumResultSize = 10;
-		Map<Agent, Double> map = simulation.estimateStationaryDistribution(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates, seed, maximumResultSize, factory);
+		int reportEveryTimeSteps = 2;
+		Map<Agent, Double> map = simulation.estimateStationaryDistribution(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates, reportEveryTimeSteps ,seed, factory);
 		Assert.assertEquals(2, map.size());
 		//System.out.println(map);
 		Assert.assertEquals(0.5, map.get(new AgentSimple(0)), DELTA);
@@ -74,8 +74,8 @@ public class AgentBasedSimulationDistributionTest {
 		int burningTimePerEstimate = 100;
 		int samplesPerEstimate = 500000;
 		int numberOfEstimates = 10;
-		int maximumResultSize = 10;
-		Map<Agent, Double> map = simulation.estimateStationaryDistribution(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates, seed, maximumResultSize, factory);
+		int reportEveryTimeSteps = 2;
+		Map<Agent, Double> map = simulation.estimateStationaryDistribution(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates, reportEveryTimeSteps, seed, factory);
 		Assert.assertEquals(3, map.size());
 		//System.out.println(map);
 		Assert.assertEquals(1.0/3.0, map.get(new AgentSimple(0)), DELTA);
@@ -106,8 +106,8 @@ public class AgentBasedSimulationDistributionTest {
 		int burningTimePerEstimate = 100;
 		int samplesPerEstimate = 500000;
 		int numberOfEstimates = 10;
-		int maximumResultSize = 10;
-		Map<Agent, Double> map = simulation.estimateStationaryDistribution(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates, seed, maximumResultSize, factory);
+		int reportEveryTimeSteps = 2;
+		Map<Agent, Double> map = simulation.estimateStationaryDistribution(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates,  reportEveryTimeSteps, seed, factory);
 		Assert.assertEquals(8, map.size());
 		System.out.println(map);
 		Assert.assertEquals(1.0/8.0, map.get(new AgentSimple(0)), DELTA);

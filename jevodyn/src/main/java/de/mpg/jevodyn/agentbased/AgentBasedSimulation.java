@@ -3,10 +3,14 @@ package de.mpg.jevodyn.agentbased;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -14,17 +18,16 @@ import org.supercsv.io.CsvListWriter;
 import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Multisets;
+import com.google.common.util.concurrent.AtomicLongMap;
 
 import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImpl;
 import de.mpg.jevodyn.utils.Random;
 
 /**
- * Provides methods for simulating a given AgentBased process. 
+ * Provides methods for simulating a given AgentBased process.
+ * 
  * @author garcia
- *
+ * 
  */
 public class AgentBasedSimulation {
 
@@ -35,6 +38,7 @@ public class AgentBasedSimulation {
 
 	/***
 	 * Default constructor takes a process.
+	 * 
 	 * @param process
 	 */
 	public AgentBasedSimulation(AgentBasedEvolutionaryProcess process) {
@@ -44,9 +48,12 @@ public class AgentBasedSimulation {
 
 	/***
 	 * Estimate the fixation probability of mutant in a population of incumbent.
-	 * @param mutant Agent 
-	 * @param incumbent Agent
-	 * @param numberOfSamples 
+	 * 
+	 * @param mutant
+	 *            Agent
+	 * @param incumbent
+	 *            Agent
+	 * @param numberOfSamples
 	 * @param seed
 	 * @return double
 	 */
@@ -61,12 +68,12 @@ public class AgentBasedSimulation {
 			this.process.reset(new AgentBasedPopulationImpl(
 					startingPopulationArray));
 			boolean fixated = false;
-			//step until fixation is reached
+			// step until fixation is reached
 			while (!fixated) {
 				this.process.stepWithoutMutation();
 				fixated = this.process.getPopulation().getSetOfAgents().size() == 1;
 			}
-			//increase positives if it fixated to the mutant type 
+			// increase positives if it fixated to the mutant type
 			if (this.process.getPopulation().getAgent(0).equals(mutant))
 				positives++;
 		}
@@ -75,6 +82,7 @@ public class AgentBasedSimulation {
 
 	/**
 	 * Help method, to initialize fixation calculations
+	 * 
 	 * @param mutant
 	 * @param incumbent
 	 * @param populationSize
@@ -90,8 +98,8 @@ public class AgentBasedSimulation {
 		return ans;
 	}
 
-	private Multiset<Agent> buildMultiset(int numberOfEstimates, int burningTimePerEstimate, int samplesPerEstimate, AgentBasedPopulationFactory factory ){
-		Multiset<Agent> multiset = HashMultiset.create();
+	private AtomicLongMap<Agent> buildMultiset(int reportEveryTimeSteps, int numberOfEstimates, int burningTimePerEstimate, int samplesPerEstimate, AgentBasedPopulationFactory factory) {
+		AtomicLongMap<Agent> map = AtomicLongMap.create();
 		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
 			process.reset(factory.createPopulation());
 			for (int burningStep = 0; burningStep < burningTimePerEstimate; burningStep++) {
@@ -99,86 +107,70 @@ public class AgentBasedSimulation {
 			}
 			for (int sample = 0; sample < samplesPerEstimate; sample++) {
 				process.step();
-				for (int i = 0; i < this.process.getPopulation().getSize(); i++) {
-					if(multiset.size()== Integer.MAX_VALUE){
-						System.out.println("Multiset has exceeded capacity, returning what I have!");
-						System.out.println(multiset);
-						return multiset;
+				if (sample % reportEveryTimeSteps == 0) {
+					for (int i = 0; i < this.process.getPopulation().getSize(); i++) {
+						map.incrementAndGet(this.process.getPopulation().getAgent(i));
 					}
-					multiset.add(this.process.getPopulation().getAgent(i));	
 				}
 			}
 		}
-		return multiset;
+		return map;
 	}
-	
-	/**
-	 * Estimate stationary distribution
-	 * @param burningTimePerEstimate for every estimate the chain is left running without taking samples
-	 * @param samplesPerEstimate once burningTime is over, we start taking this number of samples
-	 * @param numberOfEstimates the process is repeatedas many times as number of estimate requires
-	 * @param seed for reproduciblity. 
-	 * @param maximumResultSize if the result needs to have at most a certain number of agents
-	 * @param factory a class that generates a new starting population for every estimate. 
-	 * @return A Map of Agent to a double frequency.
-	 */
-	public Map<Agent, Double> estimateStationaryDistribution(
-			int burningTimePerEstimate, int samplesPerEstimate,
-			int numberOfEstimates, Long seed, int maximumResultSize,
-			AgentBasedPopulationFactory factory) {
-		Random.seed(seed);
-		Multiset<Agent> multiset = buildMultiset(numberOfEstimates, burningTimePerEstimate, samplesPerEstimate, factory);
-		// build the answer
-		long size = (long) multiset.size();
-		Map<Agent, Double> ans = new HashMap<Agent, Double>();
-		// create a view ordered by count
-		Multiset<Agent> ordererdView = Multisets
-				.copyHighestCountFirst(multiset);
-		int i = 0;
-		for (Iterator<Agent> iterator = ordererdView.iterator(); iterator
-				.hasNext();) {
-			Agent agent = (Agent) iterator.next();
-			ans.put(agent, ((double)ordererdView.count(agent) / size));
-			if (i >= maximumResultSize)
-				break;
-		}
-		return ans;
-	}
-	
-	
-	/**
-	 * Estimate stationary distribution
-	 * @param burningTimePerEstimate for every estimate the chain is left running without taking samples
-	 * @param samplesPerEstimate once burningTime is over, we start taking this number of samples
-	 * @param numberOfEstimates the process is repeatedas many times as number of estimate requires
-	 * @param seed for reproduciblity. 
-	 * @param factory a class that generates a new starting population for every estimate. 
-	 * @return A Map of Agent to a double frequency.
-	 */
-	public Map<Agent, Double> estimateStationaryDistribution(
-			int burningTimePerEstimate, int samplesPerEstimate,
-			int numberOfEstimates, Long seed,
-			AgentBasedPopulationFactory factory) {
-		Random.seed(seed);
-		Multiset<Agent> multiset = buildMultiset(numberOfEstimates, burningTimePerEstimate, samplesPerEstimate, factory);
-		// build the answer
-		double size = (double) multiset.size();
-		Map<Agent, Double> ans = new HashMap<Agent, Double>();
-		// create a view ordered by count
-		Multiset<Agent> ordererdView = Multisets
-				.copyHighestCountFirst(multiset);
-		for (Iterator<Agent> iterator = ordererdView.iterator(); iterator
-				.hasNext();) {
-			Agent agent = (Agent) iterator.next();
-			ans.put(agent, ordererdView.count(agent) / size);
-		}
-		return ans;
-	}
-	
-	
 
 	/**
-	 * Simulates evolution writing the ouput to a file. 
+	 * Estimate stationary distribution
+	 * 
+	 * @param burningTimePerEstimate
+	 *            for every estimate the chain is left running without taking
+	 *            samples
+	 * @param timeStepsPerEstimate
+	 *            once burningTime is over, we start taking this number of
+	 *            samples
+	 * @param numberOfEstimates
+	 *            the process is repeatedas many times as number of estimate
+	 *            requires
+	 *@param reportEveryTimeSteps
+	 *     takes one sample every this number of steps.           
+	 *            
+	 * @param seed 
+	 *            for reproduciblity.
+	 * @param factory
+	 *            a class that generates a new starting population for every
+	 *            estimate.
+	 * @return A Map of Agent to a double frequency.
+	 */
+	public Map<Agent, Double> estimateStationaryDistribution(
+			int burningTimePerEstimate, 
+			int timeStepsPerEstimate,
+			int numberOfEstimates,
+			int reportEveryTimeSteps, 
+			Long seed,
+			AgentBasedPopulationFactory factory) {
+		Random.seed(seed);
+		AtomicLongMap<Agent> multiset = buildMultiset(reportEveryTimeSteps, numberOfEstimates, burningTimePerEstimate, timeStepsPerEstimate, factory);
+		// build the answer
+		long size = multiset.sum();
+		// create a view ordered by count
+		SortedSet<Map.Entry<Agent, Long>> sortedset = new TreeSet<Map.Entry<Agent, Long>>(
+	            new Comparator<Map.Entry<Agent, Long>>() {
+	                @Override
+	                public int compare(Map.Entry<Agent, Long> e1,
+	                        Map.Entry<Agent, Long> e2) {
+	                    return -1*(e1.getValue().compareTo(e2.getValue()));
+	                }
+	            });
+		sortedset.addAll(multiset.asMap().entrySet());
+		Map<Agent, Double> ans = new HashMap<Agent, Double>();
+		for (Iterator<Entry<Agent, Long>> iterator = sortedset.iterator(); iterator.hasNext();) {
+			Entry<Agent, Long> entry = (Entry<Agent, Long>) iterator.next();
+			ans.put(entry.getKey(),  ((double)entry.getValue()/(double)size));
+		}
+		return ans;
+	}
+
+	/**
+	 * Simulates evolution writing the ouput to a file.
+	 * 
 	 * @param numberOfTimeSteps
 	 * @param reportEveryTimeSteps
 	 * @param seed
@@ -186,8 +178,8 @@ public class AgentBasedSimulation {
 	 * @throws IOException
 	 */
 	public void simulateTimeSeries(int numberOfTimeSteps,
-			int reportEveryTimeSteps, Long seed,
-			String fileName) throws IOException {
+			int reportEveryTimeSteps, Long seed, String fileName)
+			throws IOException {
 		Random.seed(seed);
 		ICsvListWriter listWriter = null;
 		String[] header = this.buildHeader();
@@ -219,6 +211,7 @@ public class AgentBasedSimulation {
 
 	/**
 	 * Helper method to write the csv file
+	 * 
 	 * @return
 	 */
 	private CellProcessor[] getProcessors() {
@@ -233,6 +226,7 @@ public class AgentBasedSimulation {
 
 	/**
 	 * Helper method to write the csv file
+	 * 
 	 * @return
 	 */
 	private String[] buildHeader() {
@@ -243,6 +237,7 @@ public class AgentBasedSimulation {
 
 	/**
 	 * Turns the current population into a list to be written in the csv file
+	 * 
 	 * @param process
 	 * @return
 	 */
@@ -255,10 +250,12 @@ public class AgentBasedSimulation {
 	}
 
 	/**
-	 * Estimate the total payoff, paramters are similar to those of estimate distribution. Instead of counting the agents, all we care
-	 * about here is the population payoff
+	 * Estimate the total payoff, paramters are similar to those of estimate
+	 * distribution. Instead of counting the agents, all we care about here is
+	 * the population payoff
+	 * 
 	 * @param burningTimePerEstimate
-	 * @param samplesPerEstimate
+	 * @param timeStepsPerEstimate
 	 * @param numberOfEstimates
 	 * @param reportEveryTimeSteps
 	 * @param seed
@@ -266,7 +263,7 @@ public class AgentBasedSimulation {
 	 * @return double
 	 */
 	public double estimateTotalPayoff(int burningTimePerEstimate,
-			int samplesPerEstimate, int numberOfEstimates,
+			int timeStepsPerEstimate, int numberOfEstimates,
 			int reportEveryTimeSteps, Long seed,
 			AgentBasedPopulationFactory factory) {
 		Random.seed(seed);
@@ -277,7 +274,7 @@ public class AgentBasedSimulation {
 			for (int burningStep = 0; burningStep < burningTimePerEstimate; burningStep++) {
 				process.step();
 			}
-			for (int sample = 0; sample < samplesPerEstimate; sample++) {
+			for (int sample = 0; sample < timeStepsPerEstimate; sample++) {
 				// sample every time?
 				process.step();
 				if (sample % reportEveryTimeSteps == 0) {
