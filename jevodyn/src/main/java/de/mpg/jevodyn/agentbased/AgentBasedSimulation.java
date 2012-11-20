@@ -102,6 +102,7 @@ public class AgentBasedSimulation {
 				for (int i = 0; i < this.process.getPopulation().getSize(); i++) {
 					if(multiset.size()== Integer.MAX_VALUE){
 						System.out.println("Multiset has exceeded capacity, returning what I have!");
+						System.out.println(multiset);
 						return multiset;
 					}
 					multiset.add(this.process.getPopulation().getAgent(i));	
