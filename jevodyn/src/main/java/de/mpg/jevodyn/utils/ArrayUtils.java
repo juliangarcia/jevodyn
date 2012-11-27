@@ -88,6 +88,31 @@ public class ArrayUtils {
 		return new Array2DRowRealMatrix(raw);
 	}
 	
+	
+	
+	/***
+	 * Computes a standard mutation kernel, where all strategies (including the departing strategy) have the same probability to be chosen.
+	 * Kernels are defined as in García and Traulsen (2012), PLoS ONE. The function returns a RealMatrix. Entries on 
+	 * non-diagonal positions will have the quantiy u/(n-1), where u is the mutation probability and n is the number of strategies.
+	 * The shape of the result is n times n. 
+	 * @param mutationProbability double
+	 * @param numberOfTypes int
+	 * @return RealMatrix
+	 */
+	public static RealMatrix uniformMutationKernelWithSelfMutation(double mutationProbability, int numberOfTypes) {
+		double[][] raw = new double[numberOfTypes][numberOfTypes];
+		for (int i = 0; i < raw.length; i++) {
+			for (int j = 0; j < raw.length; j++) {
+				if (i!=j) {
+					raw[i][j] = mutationProbability/(numberOfTypes);
+				}else{
+					raw[i][j] = 1.0-mutationProbability+(mutationProbability/(numberOfTypes));
+				}
+			}
+		}
+		return new Array2DRowRealMatrix(raw);
+	}
+	
 	/**
 	 * Creates an array of integers, where every position has been sampled from a uniform distribution 
 	 * on (0, maximumNumberOfCopiesPerType). The array has numberOfTypes positions
