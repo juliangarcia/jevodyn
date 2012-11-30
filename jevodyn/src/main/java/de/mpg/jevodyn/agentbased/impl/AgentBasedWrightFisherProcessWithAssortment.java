@@ -91,10 +91,9 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 		case LINEAR:
 			for (int i = 0; i < fitness.length; i++) {
 				double payoffAgent = population.getPayoffOfAgent(i);
-				fitness[i] = 1.0 - intensityOfSelection + intensityOfSelection
-						* payoffAgent;
-				this.totalPopulationPayoff = this.totalPopulationPayoff
-						+ payoffAgent;
+				fitness[i] = 1.0 - intensityOfSelection + intensityOfSelection* payoffAgent;
+				if (fitness[i] < 0.0) throw new IllegalArgumentException("Negative fitness!");
+				this.totalPopulationPayoff = this.totalPopulationPayoff + payoffAgent;
 			}
 			break;
 		case EXPONENTIAL:

@@ -4,11 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.mpg.jevodyn.agentbased.Agent;
-import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
 import de.mpg.jevodyn.agentbased.AgentBasedPayoffCalculator;
+import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
 import de.mpg.jevodyn.agentbased.AgentMutator;
-import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
+import de.mpg.jevodyn.agentbased.simple.AgentBasedSimpleRandomPopulationFactory;
 import de.mpg.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
+import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
 import de.mpg.jevodyn.agentbased.simple.AgentSimple;
 import de.mpg.jevodyn.utils.ArrayUtils;
 import de.mpg.jevodyn.utils.Games;
@@ -25,6 +26,10 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 			}
 		}
 	}
+
+
+
+	private static final double DELTA = 0.05;
 
 	@Test
 	public void testStepIsInvariableInPopulationSize() {
@@ -278,5 +283,52 @@ public class AgentBasedWrightFisherProcessWithAssortmentTest {
 
 		}
 	}
+	
+	
+	@Test
+	public void testAsortment() {
+
+		// neighbours should be the same strategy
+		Random.seed(null);
+		double intensityOfSelection = 1.0;
+		double mutationProbablity = 0.1;
+		double r = 0.2;
+		int numberOfTypes = 2;
+
+		// we repeat it 5 times with random numberOftypes and popSize
+		for (int repetitions = 0; repetitions < 1; repetitions++) {
+			int populationSize = 100000;
+			// everybody is a random type
+			AgentBasedPopulation population = new AgentBasedSimpleRandomPopulationFactory(2, populationSize).createPopulation();
+			AgentBasedPayoffCalculator payoffCalculator = new AgentMatrixBasedPayoffCalculator(Games.prionersDilemma(2.0, 0.0, 3.0, 1.0));
+			// and mutator
+			AgentMutator mutator = new AgentMutatorSimpleKernel(ArrayUtils.uniformMutationKernelWithSelfMutation(mutationProbablity,numberOfTypes));
+			// the process itself
+			AgentBasedWrightFisherProcessWithAssortment wf = new AgentBasedWrightFisherProcessWithAssortment(population, payoffCalculator,PayoffToFitnessMapping.LINEAR, intensityOfSelection,mutator, r);
+			wf.stepWithoutMutation();
+				int aaPairings = 0;
+				int abPairings = 0;
+				int bbPairings = 0;
+				for (int j = 0; j < wf.getPopulation().getSize() - 1; j = j + 2) {
+					if(wf.getPopulation().getAgent(j).equals(new AgentSimple(0)) && wf.getPopulation().getAgent(j + 1).equals(new AgentSimple(0))){
+						aaPairings = aaPairings+1;	
+					}
+					if(wf.getPopulation().getAgent(j).equals(new AgentSimple(0)) && wf.getPopulation().getAgent(j + 1).equals(new AgentSimple(1))){
+						abPairings = abPairings+1;	
+					}
+					if(wf.getPopulation().getAgent(j).equals(new AgentSimple(1)) && wf.getPopulation().getAgent(j + 1).equals(new AgentSimple(0))){
+						abPairings = abPairings+1;	
+					}
+					if(wf.getPopulation().getAgent(j).equals(new AgentSimple(1)) && wf.getPopulation().getAgent(j + 1).equals(new AgentSimple(1))){
+						bbPairings = bbPairings+1;	
+					}
+				}
+				double conditionalProbability1 = (2.0*aaPairings)/(2.0*aaPairings + (double)abPairings);
+				double conditionalProbability2 = ((double)abPairings)/(2.0*bbPairings + (double)abPairings);
+				Assert.assertEquals(r, conditionalProbability1-conditionalProbability2, DELTA);
+
+		}
+	}
+	
 
 }
