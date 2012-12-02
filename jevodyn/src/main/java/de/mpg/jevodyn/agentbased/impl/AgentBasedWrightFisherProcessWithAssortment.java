@@ -30,9 +30,9 @@ public class AgentBasedWrightFisherProcessWithAssortment implements
 		// turn fitness into a probability distribution
 		fitness = ArrayUtils.normalize(fitness);
 		// create new generation
+		applyMutation();
 		createNewGeneration(fitness);
 		// apply mutation
-		applyMutation();
 		timeStep = timeStep + 1;
 	}
 
