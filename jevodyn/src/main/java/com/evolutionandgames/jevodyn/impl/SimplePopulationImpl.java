@@ -1,6 +1,6 @@
-package com.evolutionandgames.jevodyn.stochastic.impl;
+package com.evolutionandgames.jevodyn.impl;
 
-import com.evolutionandgames.jevodyn.stochastic.SimplePopulation;
+import com.evolutionandgames.jevodyn.SimplePopulation;
 
 public class SimplePopulationImpl implements SimplePopulation {
 	

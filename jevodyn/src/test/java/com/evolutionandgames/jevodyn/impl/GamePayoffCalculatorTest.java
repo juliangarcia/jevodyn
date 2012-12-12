@@ -1,13 +1,13 @@
-package com.evolutionandgames.jevodyn.stochastic.impl;
+package com.evolutionandgames.jevodyn.impl;
 
 import junit.framework.TestCase;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
 
-import com.evolutionandgames.jevodyn.stochastic.SimplePopulation;
-import com.evolutionandgames.jevodyn.stochastic.impl.GamePayoffCalculator;
-import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.SimplePopulation;
+import com.evolutionandgames.jevodyn.impl.GamePayoffCalculator;
+import com.evolutionandgames.jevodyn.impl.SimplePopulationImpl;
 import com.evolutionandgames.jevodyn.utils.Games;
 
 

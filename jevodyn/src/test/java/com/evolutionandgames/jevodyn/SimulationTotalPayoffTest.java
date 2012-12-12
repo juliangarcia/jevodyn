@@ -1,13 +1,13 @@
-package com.evolutionandgames.jevodyn.stochastic;
+package com.evolutionandgames.jevodyn;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.evolutionandgames.jevodyn.stochastic.Simulation;
-import com.evolutionandgames.jevodyn.stochastic.impl.GamePayoffCalculator;
-import com.evolutionandgames.jevodyn.stochastic.impl.MoranProcess;
-import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.Simulation;
+import com.evolutionandgames.jevodyn.impl.GamePayoffCalculator;
+import com.evolutionandgames.jevodyn.impl.MoranProcess;
+import com.evolutionandgames.jevodyn.impl.SimplePopulationImpl;
 import com.evolutionandgames.jevodyn.utils.Games;
 
 

@@ -1,4 +1,4 @@
-package com.evolutionandgames.jevodyn.stochastic;
+package com.evolutionandgames.jevodyn;
 
 import junit.framework.TestCase;
 

@@ -1,10 +1,10 @@
-package com.evolutionandgames.jevodyn.stochastic.impl;
+package com.evolutionandgames.jevodyn.impl;
 
 import org.apache.commons.math3.linear.RealMatrix;
 
-import com.evolutionandgames.jevodyn.stochastic.EvolutionaryProcess;
-import com.evolutionandgames.jevodyn.stochastic.PayoffCalculator;
-import com.evolutionandgames.jevodyn.stochastic.SimplePopulation;
+import com.evolutionandgames.jevodyn.EvolutionaryProcess;
+import com.evolutionandgames.jevodyn.PayoffCalculator;
+import com.evolutionandgames.jevodyn.SimplePopulation;
 import com.evolutionandgames.jevodyn.utils.ArrayUtils;
 import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
 import com.evolutionandgames.jevodyn.utils.Random;

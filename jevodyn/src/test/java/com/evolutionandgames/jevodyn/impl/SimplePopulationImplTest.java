@@ -1,6 +1,6 @@
-package com.evolutionandgames.jevodyn.stochastic.impl;
+package com.evolutionandgames.jevodyn.impl;
 
-import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.impl.SimplePopulationImpl;
 import com.evolutionandgames.jevodyn.utils.Random;
 
 import junit.framework.TestCase;
