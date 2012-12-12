@@ -153,7 +153,7 @@ public class AgentBasedSimulation {
 		// create a view ordered by count
 		SortedSet<Map.Entry<Agent, Long>> sortedset = new TreeSet<Map.Entry<Agent, Long>>(
 	            new Comparator<Map.Entry<Agent, Long>>() {
-	                @Override
+	                //@Override
 	                public int compare(Map.Entry<Agent, Long> e1,
 	                        Map.Entry<Agent, Long> e2) {
 	                    return -1*(e1.getValue().compareTo(e2.getValue()));

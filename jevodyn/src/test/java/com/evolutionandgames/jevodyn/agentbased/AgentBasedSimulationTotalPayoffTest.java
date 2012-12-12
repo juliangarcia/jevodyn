@@ -1,4 +1,4 @@
-package de.mpg.jevodyn.agentbased;
+package com.evolutionandgames.jevodyn.agentbased;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Assert;
@@ -16,19 +16,19 @@ import com.evolutionandgames.jevodyn.agentbased.impl.AgentBasedWrightFisherProce
 import com.evolutionandgames.jevodyn.agentbased.simple.AgentBasedSimpleRandomPopulationFactory;
 import com.evolutionandgames.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
 import com.evolutionandgames.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
-import com.evolutionandgames.jevodyn.agentbased.simple.AgentSimple;
 import com.evolutionandgames.jevodyn.utils.ArrayUtils;
 import com.evolutionandgames.jevodyn.utils.Games;
 import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
 import com.evolutionandgames.jevodyn.utils.Random;
 
 
-public class AgentBasedSimulationFixationTest {
+public class AgentBasedSimulationTotalPayoffTest {
 	
-	private static final double DELTA = 0.01;
+	private static final double DELTA = 1.0;
 
 	@Test
 	public void testEstimateFixationProbabilityNeutral() {
+		//for neutral selection should spend half time in each state
 		Long seed = System.currentTimeMillis();
 		Random.seed();
 		double intensityOfSelection = 0.0;
@@ -45,9 +45,15 @@ public class AgentBasedSimulationFixationTest {
 		AgentBasedEvolutionaryProcess wf = new AgentBasedWrightFisherProcessWithAssortment(population, payoffCalculator, 
 				PayoffToFitnessMapping.EXPONENTIAL, intensityOfSelection, mutator, r);
 		AgentBasedSimulation simulation = new AgentBasedSimulation(wf);
-		int numberOfSamples = 500000;
-		double fixation = simulation.estimateFixationProbability(new AgentSimple(1), new AgentSimple(0), numberOfSamples, seed);
-		Assert.assertEquals(1.0/populationSize, fixation, DELTA);
+		int burningTimePerEstimate = 100;
+		int samplesPerEstimate = 500000;
+		int numberOfEstimates = 10;
+		int reportEveryTimeSteps = 5;
+		double totalPayoff = simulation.estimateTotalPayoff(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates, reportEveryTimeSteps, seed, factory); 
+		double expectedPayoff = (gameMatrix.getEntry(0, 0)*0.5 + gameMatrix.getEntry(1, 1)*0.5)*populationSize; 
+		//System.out.println(totalPayoff);
+		//System.out.println(expectedPayoff);
+		Assert.assertEquals(expectedPayoff, totalPayoff, DELTA);
 	}
 
 }

@@ -1,4 +1,4 @@
-package de.mpg.jevodyn.stochastic.impl;
+package com.evolutionandgames.jevodyn.stochastic.impl;
 
 import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
 import com.evolutionandgames.jevodyn.utils.Random;

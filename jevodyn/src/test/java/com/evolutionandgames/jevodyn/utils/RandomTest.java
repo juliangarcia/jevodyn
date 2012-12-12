@@ -1,10 +1,9 @@
-package de.mpg.jevodyn.utils;
+package com.evolutionandgames.jevodyn.utils;
 
 import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.evolutionandgames.jevodyn.utils.ArrayUtils;
 import com.evolutionandgames.jevodyn.utils.Random;
 
 public class RandomTest extends TestCase {

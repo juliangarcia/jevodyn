@@ -1,4 +1,4 @@
-package de.mpg.jevodyn.agentbased;
+package com.evolutionandgames.jevodyn.agentbased;
 
 import java.util.Map;
 

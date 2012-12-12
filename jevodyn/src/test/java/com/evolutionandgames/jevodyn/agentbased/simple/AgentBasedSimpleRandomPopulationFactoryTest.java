@@ -1,4 +1,4 @@
-package de.mpg.jevodyn.agentbased.simple;
+package com.evolutionandgames.jevodyn.agentbased.simple;
 
 import org.junit.Assert;
 import org.junit.Test;

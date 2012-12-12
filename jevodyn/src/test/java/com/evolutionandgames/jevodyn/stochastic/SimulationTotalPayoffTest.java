@@ -1,4 +1,4 @@
-package de.mpg.jevodyn.stochastic;
+package com.evolutionandgames.jevodyn.stochastic;
 
 import static org.junit.Assert.assertEquals;
 
