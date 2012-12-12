@@ -8,7 +8,7 @@ public interface EvolutionaryProcess {
 	public SimplePopulation getPopulation();
 	public void reset(SimplePopulation startingPopulation);
 	public double getTotalPopulationPayoff();
-	public int getTimeStep();
+	public int getTimeStep(); 
 	public void setKeepTrackTotalPayoff(boolean keepTrack);
 	
 }
