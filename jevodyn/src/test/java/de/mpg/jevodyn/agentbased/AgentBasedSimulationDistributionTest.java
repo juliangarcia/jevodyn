@@ -7,16 +7,24 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.mpg.jevodyn.agentbased.impl.AgentBasedPopulationImpl;
-import de.mpg.jevodyn.agentbased.impl.AgentBasedWrightFisherProcessWithAssortment;
-import de.mpg.jevodyn.agentbased.simple.AgentBasedSimpleRandomPopulationFactory;
-import de.mpg.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
-import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
-import de.mpg.jevodyn.agentbased.simple.AgentSimple;
-import de.mpg.jevodyn.utils.ArrayUtils;
-import de.mpg.jevodyn.utils.Games;
-import de.mpg.jevodyn.utils.PayoffToFitnessMapping;
-import de.mpg.jevodyn.utils.Random;
+import com.evolutionandgames.jevodyn.agentbased.Agent;
+import com.evolutionandgames.jevodyn.agentbased.AgentBasedEvolutionaryProcess;
+import com.evolutionandgames.jevodyn.agentbased.AgentBasedPayoffCalculator;
+import com.evolutionandgames.jevodyn.agentbased.AgentBasedPopulation;
+import com.evolutionandgames.jevodyn.agentbased.AgentBasedPopulationFactory;
+import com.evolutionandgames.jevodyn.agentbased.AgentBasedSimulation;
+import com.evolutionandgames.jevodyn.agentbased.AgentMutator;
+import com.evolutionandgames.jevodyn.agentbased.impl.AgentBasedPopulationImpl;
+import com.evolutionandgames.jevodyn.agentbased.impl.AgentBasedWrightFisherProcessWithAssortment;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentBasedSimpleRandomPopulationFactory;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentMatrixBasedPayoffCalculator;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentSimple;
+import com.evolutionandgames.jevodyn.utils.ArrayUtils;
+import com.evolutionandgames.jevodyn.utils.Games;
+import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
+import com.evolutionandgames.jevodyn.utils.Random;
+
 
 public class AgentBasedSimulationDistributionTest {
 	

@@ -4,14 +4,14 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.evolutionandgames.jevodyn.agentbased.Agent;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentSimple;
+import com.evolutionandgames.jevodyn.utils.ArrayUtils;
+import com.evolutionandgames.jevodyn.utils.Random;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-import de.mpg.jevodyn.agentbased.Agent;
-import de.mpg.jevodyn.agentbased.simple.AgentMutatorSimpleKernel;
-import de.mpg.jevodyn.agentbased.simple.AgentSimple;
-import de.mpg.jevodyn.utils.ArrayUtils;
-import de.mpg.jevodyn.utils.Random;
 
 public class AgentMutatorSimpleKernelTest {
 

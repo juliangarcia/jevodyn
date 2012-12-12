@@ -4,6 +4,9 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import com.evolutionandgames.jevodyn.utils.ArrayUtils;
+import com.evolutionandgames.jevodyn.utils.Random;
+
 public class RandomTest extends TestCase {
 
 	private static final double DELTA = 0.001;

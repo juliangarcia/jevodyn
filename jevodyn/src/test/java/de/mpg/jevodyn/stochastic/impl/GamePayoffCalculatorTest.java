@@ -5,8 +5,11 @@ import junit.framework.TestCase;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Test;
 
-import de.mpg.jevodyn.stochastic.SimplePopulation;
-import de.mpg.jevodyn.utils.Games;
+import com.evolutionandgames.jevodyn.stochastic.SimplePopulation;
+import com.evolutionandgames.jevodyn.stochastic.impl.GamePayoffCalculator;
+import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.utils.Games;
+
 
 public class GamePayoffCalculatorTest extends TestCase {
 

@@ -4,11 +4,14 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import de.mpg.jevodyn.stochastic.PayoffCalculator;
-import de.mpg.jevodyn.stochastic.SimplePopulation;
-import de.mpg.jevodyn.utils.ArrayUtils;
-import de.mpg.jevodyn.utils.PayoffToFitnessMapping;
-import de.mpg.jevodyn.utils.Random;
+import com.evolutionandgames.jevodyn.stochastic.PayoffCalculator;
+import com.evolutionandgames.jevodyn.stochastic.SimplePopulation;
+import com.evolutionandgames.jevodyn.stochastic.impl.MoranProcess;
+import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.utils.ArrayUtils;
+import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
+import com.evolutionandgames.jevodyn.utils.Random;
+
 
 public class MoranProcessTest {
 

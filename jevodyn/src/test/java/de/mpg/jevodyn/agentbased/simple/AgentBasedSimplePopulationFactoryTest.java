@@ -3,8 +3,11 @@ package de.mpg.jevodyn.agentbased.simple;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.mpg.jevodyn.agentbased.AgentBasedPopulation;
-import de.mpg.jevodyn.utils.Random;
+import com.evolutionandgames.jevodyn.agentbased.AgentBasedPopulation;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentBasedSimplePopulationFactory;
+import com.evolutionandgames.jevodyn.agentbased.simple.AgentSimple;
+import com.evolutionandgames.jevodyn.utils.Random;
+
 
 public class AgentBasedSimplePopulationFactoryTest {
 

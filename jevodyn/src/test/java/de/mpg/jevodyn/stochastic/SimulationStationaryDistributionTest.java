@@ -4,11 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import de.mpg.jevodyn.stochastic.Simulation;
-import de.mpg.jevodyn.stochastic.impl.GamePayoffCalculator;
-import de.mpg.jevodyn.stochastic.impl.MoranProcess;
-import de.mpg.jevodyn.stochastic.impl.SimplePopulationImpl;
-import de.mpg.jevodyn.utils.Games;
+import com.evolutionandgames.jevodyn.stochastic.Simulation;
+import com.evolutionandgames.jevodyn.stochastic.impl.GamePayoffCalculator;
+import com.evolutionandgames.jevodyn.stochastic.impl.MoranProcess;
+import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.utils.Games;
+
 
 public class SimulationStationaryDistributionTest {
 

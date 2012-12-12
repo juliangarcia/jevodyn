@@ -1,6 +1,8 @@
 package de.mpg.jevodyn.stochastic.impl;
 
-import de.mpg.jevodyn.utils.Random;
+import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.utils.Random;
+
 import junit.framework.TestCase;
 
 public class SimplePopulationImplTest extends TestCase {
