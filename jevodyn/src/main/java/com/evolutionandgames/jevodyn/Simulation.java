@@ -1,4 +1,4 @@
-package com.evolutionandgames.jevodyn.stochastic;
+package com.evolutionandgames.jevodyn;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import org.supercsv.io.CsvListWriter;
 import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import com.evolutionandgames.jevodyn.stochastic.impl.SimplePopulationImpl;
+import com.evolutionandgames.jevodyn.impl.SimplePopulationImpl;
 import com.evolutionandgames.jevodyn.utils.ArrayUtils;
 import com.evolutionandgames.jevodyn.utils.Random;
 

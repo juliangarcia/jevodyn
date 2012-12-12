@@ -1,4 +1,4 @@
-package com.evolutionandgames.jevodyn.stochastic;
+package com.evolutionandgames.jevodyn;
 
 public interface PayoffCalculator {
 	
