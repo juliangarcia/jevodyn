@@ -1,5 +1,6 @@
 package com.evolutionandgames.jevodyn.utils;
 
+import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 
 /**
@@ -78,5 +79,17 @@ public class Random {
 			return distribution.length -1;
 		}
 	}
+	
+	/***
+	 * Simulates a poisson distributed random variable
+	 * @param mean
+	 * @return
+	 */
+	public static int simulatePoissonDistribution(double mean){
+		double epsilon = 0.0001;
+		int maxIterations = 10000;
+		return new PoissonDistribution(Random.generator, mean, epsilon, maxIterations).sample();
+	}
+	
 
 }
