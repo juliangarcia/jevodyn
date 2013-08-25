@@ -1,19 +1,20 @@
 package com.evolutionandgames.jevodyn.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.evolutionandgames.jevodyn.PayoffCalculator;
 import com.evolutionandgames.jevodyn.SimplePopulation;
-import com.evolutionandgames.jevodyn.impl.MoranProcess;
-import com.evolutionandgames.jevodyn.impl.SimplePopulationImpl;
 import com.evolutionandgames.jevodyn.utils.ArrayUtils;
 import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
 import com.evolutionandgames.jevodyn.utils.Random;
 
 
 public class MoranProcessTest {
+	
+	private static final double DELTA = 0.000001;
 
 	private class EveryBodyGetsOnePayoffCalculator implements PayoffCalculator {
 
@@ -58,7 +59,7 @@ public class MoranProcessTest {
 			mp.setKeepTrackTotalPayoff(true);
 			for (int i = 0; i < 1000; i++) {
 				mp.step();
-				assertEquals((double)populationSize, mp.getTotalPopulationPayoff());
+				Assert.assertEquals((double)populationSize, mp.getTotalPopulationPayoff(), DELTA);
 			}
 		}
 	}

@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 public class SimplePopulationImplTest extends TestCase {
 
-	private static final double DELTA = 0.000001;
+	private static final double DELTA = 0.00001;
 
 
 	public void testGetAsArrayOfTypes() {
