@@ -163,6 +163,27 @@ public class ArrayUtils {
 		return ans;
 	}
 	
+	
+	/***
+	 * Returns an array of numberOfTypes integers such that the sum equals populationSize, with elements (minus reminder) equally distributed -- the remainder being allocated to a random position.
+	 * @param numberOfTypes size of the returned array
+	 * @param populationSize sum of elements goes up to this number.
+	 * @return int[] 
+	 */
+	public static int[] centroid(int numberOfTypes, int populationSize) {
+		int[] ans = new int[numberOfTypes];
+		int start = populationSize/numberOfTypes;
+		int remainder = populationSize%numberOfTypes;
+		for (int i = 0; i < ans.length; i++) {
+			ans[i] = start;
+		}
+		int remainderLocation = Random.nextInt(numberOfTypes);
+		ans[remainderLocation]= ans[remainderLocation] + remainder;
+		return ans;
+	}
+	
+	
+	
 	/***
 	 * Returns a matrix that considers relatedness.
 	 * @param r

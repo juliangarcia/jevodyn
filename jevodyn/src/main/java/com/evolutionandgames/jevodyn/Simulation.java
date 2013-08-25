@@ -64,8 +64,7 @@ public class Simulation {
 		process.setKeepTrackTotalPayoff(false);
 		long[] countPerStrategy = new long[numberOfTypes];
 		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
-			process.reset(new SimplePopulationImpl(ArrayUtils.randomEdge(
-					numberOfTypes, populationSize)));
+			process.reset(new SimplePopulationImpl(ArrayUtils.centroid(numberOfTypes, populationSize)));
 			for (int burningStep = 0; burningStep < burningTimePerEstimate; burningStep++) {
 				process.step();
 			}
@@ -179,8 +178,7 @@ public class Simulation {
 		double payoffSum = 0.0;
 		int totalNumberOfSamples = 0;
 		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
-			process.reset(new SimplePopulationImpl(ArrayUtils.randomEdge(
-					numberOfTypes, populationSize)));
+			process.reset(new SimplePopulationImpl(ArrayUtils.centroid(numberOfTypes, populationSize)));
 			for (int burningStep = 0; burningStep < burningTimePerEstimate; burningStep++) {
 				process.step();
 			}
