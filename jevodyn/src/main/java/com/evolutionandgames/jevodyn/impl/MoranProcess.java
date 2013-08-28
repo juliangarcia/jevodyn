@@ -9,10 +9,10 @@ import com.evolutionandgames.jevodyn.utils.ArrayUtils;
 import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
 import com.evolutionandgames.jevodyn.utils.Random;
 
-
 public class MoranProcess implements EvolutionaryProcess {
 
 	private boolean keepTrackOfTotalPayoff = true;
+
 	public boolean isKeepTrackOfTotalPayoff() {
 		return keepTrackOfTotalPayoff;
 	}
@@ -39,18 +39,21 @@ public class MoranProcess implements EvolutionaryProcess {
 		switch (mapping) {
 		case LINEAR:
 			for (int i = 0; i < fitness.length; i++) {
-				fitness[i] = (currentFrequencies[i])*(1.0 - intensityOfSelection + intensityOfSelection
-						* payoffVector[i]);
+				fitness[i] = (currentFrequencies[i])
+						* (1.0 - intensityOfSelection + intensityOfSelection
+								* payoffVector[i]);
 			}
 			break;
 		case EXPONENTIAL:
 			for (int i = 0; i < fitness.length; i++) {
-				fitness[i] = (currentFrequencies[i])*(Math.exp(intensityOfSelection * payoffVector[i]));
+				fitness[i] = (currentFrequencies[i])
+						* (Math.exp(intensityOfSelection * payoffVector[i]));
 			}
 			break;
 		default:
-			throw new IllegalArgumentException("Fitness mapping" + mapping.toString() + "is not implemented ");
-			
+			throw new IllegalArgumentException("Fitness mapping"
+					+ mapping.toString() + "is not implemented ");
+
 		}
 		fitness = ArrayUtils.normalize(fitness);
 		int chosenOne = Random.simulateDiscreteDistribution(fitness);
@@ -66,14 +69,16 @@ public class MoranProcess implements EvolutionaryProcess {
 
 	public void step() {
 		this.step(true);
-	} 
+	}
 
 	public void stepWithoutMutation() {
 		this.step(false);
 	}
 
 	public double getTotalPopulationPayoff() {
-		if(!this.keepTrackOfTotalPayoff) throw new IllegalStateException("Total payoff is being requested, but not kept track of. Please set MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF to true ");
+		if (!this.keepTrackOfTotalPayoff)
+			throw new IllegalStateException(
+					"Total payoff is being requested, but not kept track of. Please set MoranProcess.KEEP_TRACK_OF_TOTAL_PAYOFF to true ");
 		return this.totalPopulationPayoff;
 	}
 
@@ -141,8 +146,6 @@ public class MoranProcess implements EvolutionaryProcess {
 		return population;
 	}
 
-	
-
 	public void reset(SimplePopulation startingPopulation) {
 		this.population = startingPopulation;
 		this.timeStep = 0;
@@ -157,6 +160,99 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.keepTrackOfTotalPayoff = keepTrack;
 	}
 
-	
+	public double[] estimateStationaryDistributionSmallMutation(
+			int burningTimePerEstimate, int samplesPerEstimate,
+			int numberOfEstimates, Long seed) {
+		Random.seed(seed);
+		int numberOfTypes = this.getPopulation().getNumberOfTypes();
+		int populationSize = this.getPopulation().getSize();
+		this.setKeepTrackTotalPayoff(false);
+		long[] countPerStrategy = new long[numberOfTypes];
+		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
+			this.reset(new SimplePopulationImpl(ArrayUtils.centroid(
+					numberOfTypes, populationSize)));
+			int fixated = -1;
+			int burningStep = 0;
+			// run to burning time or fixation
+			while (burningStep < burningTimePerEstimate || fixated == -1) {
+				this.step();
+				burningStep++;
+				fixated = this.population.getFixatedType();
+			}
+			// if it fixated but burning time is not over
+			while (burningStep < burningTimePerEstimate) {
+				double leavingHomogeneousStateInOneMutationProbability = 1.0 - this.mutationKernel
+						.getEntry(fixated, fixated);
+				int timeTillLeaving = Random
+						.simulateGeometricDistribution(leavingHomogeneousStateInOneMutationProbability);
+				burningStep = burningStep + timeTillLeaving;
+				
+				// introduce mutant and do steps until homogeneous
+				int chosenOne = Random
+						.simulateDiscreteDistribution(transformToConditional(
+								mutationKernel.getRow(fixated), fixated));
+				this.population.addOneIndividual(chosenOne);
+				this.population.removeOneIndividual(fixated);
+				// now is not homogeneous any more so we run until fixation (no
+				// mutations)
+				
+				fixated = -1;
+				while (fixated == -1) {
+					this.stepWithoutMutation();
+					burningStep++;
+					fixated = this.population.getFixatedType();
+				}
+				// fixation, so I start again
+			}
+			// DONE WITH BURNING and it is FIXATED so sample!
+			int sample = 0;
+			while (sample< samplesPerEstimate) {
+				double leavingHomogeneousStateInOneMutationProbability = 1.0 - this.mutationKernel
+						.getEntry(fixated, fixated);
+				int timeTillLeaving = Random
+						.simulateGeometricDistribution(leavingHomogeneousStateInOneMutationProbability);
+				sample = sample + timeTillLeaving;
+				//count
+				countPerStrategy[fixated] = countPerStrategy[fixated] + populationSize*timeTillLeaving;
+				// introduce mutant and do steps until homogeneous
+				int chosenOne = Random
+						.simulateDiscreteDistribution(transformToConditional(
+								mutationKernel.getRow(fixated), fixated));
+				this.population.addOneIndividual(chosenOne);
+				this.population.removeOneIndividual(fixated);
+				// now is not homogeneous any more so we run until fixation (no
+				// mutations)
+				int previousResident = fixated;
+				fixated = -1;
+				while (fixated == -1) {
+					this.stepWithoutMutation();
+					sample++;
+					fixated = this.population.getFixatedType();
+					//count (only two present!)
+					countPerStrategy[chosenOne] = countPerStrategy[chosenOne]
+							+ this.getPopulation().getAsArrayOfTypes()[chosenOne];
+					countPerStrategy[previousResident] = countPerStrategy[previousResident]
+							+ this.getPopulation().getAsArrayOfTypes()[previousResident];
+					if (sample>=samplesPerEstimate) break;
+				}
+				// fixation, so I start again
+				//unless I am done
+				if (sample>=samplesPerEstimate) break;
+			}
+		}
+		return ArrayUtils.normalize(countPerStrategy);
+	}
+
+	private double[] transformToConditional(double[] row, int focalIndex) {
+		double weight = 1.0 - row[focalIndex];
+		double ans[] = new double[row.length];
+		ans[focalIndex] = 0.0;
+		for (int i = 0; i < ans.length; i++) {
+			if (i != focalIndex) {
+				ans[i] = row[i] / weight;
+			}
+		}
+		return ans;
+	}
 
 }

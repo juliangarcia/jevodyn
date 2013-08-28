@@ -4,7 +4,8 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import com.evolutionandgames.jevodyn.utils.Random;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 public class RandomTest extends TestCase {
 
@@ -40,6 +41,23 @@ public class RandomTest extends TestCase {
 		assertEquals(distribution[0], samples0/(double)numberOfSamples, DELTA);
 		assertEquals(distribution[1], samples1/(double)numberOfSamples, DELTA);
 		assertEquals(distribution[2], samples2/(double)numberOfSamples, DELTA);
+	}
+	
+	
+	@Test
+	public void testSimulateGeometricDistribution() {
+		Random.seed(null);
+		double p = 0.1;
+		int numberOfSamples = 10000000;
+		Multiset<Integer> multiset = HashMultiset.create();
+		for (int i = 0; i < numberOfSamples; i++) {
+			int result = Random.simulateGeometricDistribution(p);
+			multiset.add(result);
+		}
+		for (int k = 0; k < 10; k++) {
+			assertEquals(Math.pow(1.0-p, k)*p, multiset.count(k)/(double)(numberOfSamples), DELTA);
+		}
+		
 	}
 
 }

@@ -100,5 +100,23 @@ public class Random {
 		return new NormalDistribution(Random.generator, mean, standardDeviation, NormalDistribution.DEFAULT_INVERSE_ABSOLUTE_ACCURACY).sample();
 	}
 	
+	/***
+	 * Simulates a Geometric distributed random variable
+	 * @param successProbability
+	 * @return
+	 */
+	public static int  simulateGeometricDistribution(double succesProbability){
+		double u = Random.nextDouble();
+		if (succesProbability >= 1.0)
+            return 0;
+        if (u <= succesProbability)
+            return 0;
+        if (u >= 1.0 || succesProbability <= 0.0)
+            return Integer.MAX_VALUE;
+        return (int)Math.floor (Math.log1p(-u)/Math.log1p (-succesProbability));		
+		
+	}
+	
+	
 
 }
