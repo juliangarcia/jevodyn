@@ -173,14 +173,7 @@ public class MoranProcess implements EvolutionaryProcess {
 			int fixated = this.population.getFixatedType();
 			int burningStep = 0;
 			int sample = 0;
-			
-			// run to burning time or fixation
-			while (burningStep < burningTimePerEstimate && fixated == -1) {
-				this.step();
-				burningStep++;
-				fixated = this.population.getFixatedType();
-			}
-			// if it fixated but burning time is not over
+			// fixated but burning time is not over
 			while (burningStep < burningTimePerEstimate) {
 				double leavingHomogeneousStateInOneMutationProbability = 1.0 - this.mutationKernel
 						.getEntry(fixated, fixated);
@@ -189,15 +182,12 @@ public class MoranProcess implements EvolutionaryProcess {
 				burningStep = burningStep + timeTillLeaving;
 				
 				// introduce mutant and do steps until homogeneous
-				int chosenOne = Random
-						.simulateDiscreteDistribution(transformToConditional(
-								mutationKernel.getRow(fixated), fixated));
+				double[] distibutionGivenThatIJumpedOut = transformToConditional(mutationKernel.getRow(fixated), fixated);
+				int chosenOne = Random.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
 				this.population.addOneIndividual(chosenOne);
 				this.population.removeOneIndividual(fixated);
-				// now is not homogeneous any more so we run until fixation (no
-				// mutations)
+				// now is not homogeneous any more so we run until fixation (no  mutations)
 				fixated = -1;
-				
 				if (burningStep >= burningTimePerEstimate){
 					break;
 				}
@@ -209,10 +199,11 @@ public class MoranProcess implements EvolutionaryProcess {
 				// fixation, so I start again
 			}
 			
-			// done with burning but not fixated then run to fixation
+			// done with burning but maybe not fixated 
+			//then run to fixation without mutation
 			fixated = this.population.getFixatedType();
 			while (fixated == -1) {
-				this.step();
+				this.stepWithoutMutation();
 				sample++;
 				fixated = this.population.getFixatedType();
 				for (int i = 0; i < numberOfTypes; i++) {
@@ -231,9 +222,8 @@ public class MoranProcess implements EvolutionaryProcess {
 				//count
 				countPerStrategy[fixated] = countPerStrategy[fixated] + populationSize*timeTillLeaving;
 				// introduce mutant and do steps until homogeneous
-				int chosenOne = Random
-						.simulateDiscreteDistribution(transformToConditional(
-								mutationKernel.getRow(fixated), fixated));
+				double[] distibutionGivenThatIJumpedOut = transformToConditional(mutationKernel.getRow(fixated), fixated);
+				int chosenOne = Random.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
 				this.population.addOneIndividual(chosenOne);
 				this.population.removeOneIndividual(fixated);
 				// now is not homogeneous any more so we run until fixation (no
