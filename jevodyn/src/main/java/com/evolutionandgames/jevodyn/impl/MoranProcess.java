@@ -173,6 +173,8 @@ public class MoranProcess implements EvolutionaryProcess {
 					numberOfTypes, populationSize)));
 			int fixated = -1;
 			int burningStep = 0;
+			int sample = 0;
+			
 			// run to burning time or fixation
 			while (burningStep < burningTimePerEstimate && fixated == -1) {
 				this.stepWithoutMutation();
@@ -195,17 +197,31 @@ public class MoranProcess implements EvolutionaryProcess {
 				this.population.removeOneIndividual(fixated);
 				// now is not homogeneous any more so we run until fixation (no
 				// mutations)
-				
 				fixated = -1;
-				while (fixated == -1) {
+				
+				if (burningStep >= burningTimePerEstimate){
+					break;
+				}
+				while (fixated == -1 && burningStep < burningTimePerEstimate) {
 					this.stepWithoutMutation();
 					burningStep++;
 					fixated = this.population.getFixatedType();
 				}
 				// fixation, so I start again
 			}
+			
+			// done with burning but not fixated then run to fixation
+			fixated = this.population.getFixatedType();
+			while (fixated == -1) {
+				this.stepWithoutMutation();
+				sample++;
+				fixated = this.population.getFixatedType();
+				for (int i = 0; i < numberOfTypes; i++) {
+					countPerStrategy[i] = countPerStrategy[i]
+							+ this.getPopulation().getAsArrayOfTypes()[i];
+				}
+			}
 			// DONE WITH BURNING and it is FIXATED so sample!
-			int sample = 0;
 			while (sample< samplesPerEstimate) {
 				double leavingHomogeneousStateInOneMutationProbability = 1.0 - this.mutationKernel
 						.getEntry(fixated, fixated);
