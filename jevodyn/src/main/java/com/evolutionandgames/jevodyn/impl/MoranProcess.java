@@ -177,7 +177,7 @@ public class MoranProcess implements EvolutionaryProcess {
 			
 			// run to burning time or fixation
 			while (burningStep < burningTimePerEstimate && fixated == -1) {
-				this.stepWithoutMutation();
+				this.step();
 				burningStep++;
 				fixated = this.population.getFixatedType();
 			}
@@ -213,7 +213,7 @@ public class MoranProcess implements EvolutionaryProcess {
 			// done with burning but not fixated then run to fixation
 			fixated = this.population.getFixatedType();
 			while (fixated == -1) {
-				this.stepWithoutMutation();
+				this.step();
 				sample++;
 				fixated = this.population.getFixatedType();
 				for (int i = 0; i < numberOfTypes; i++) {
