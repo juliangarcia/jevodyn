@@ -220,6 +220,7 @@ public class MoranProcess implements EvolutionaryProcess {
 					countPerStrategy[i] = countPerStrategy[i]
 							+ this.getPopulation().getAsArrayOfTypes()[i];
 				}
+				if (sample>=samplesPerEstimate) break;
 			}
 			// DONE WITH BURNING and it is FIXATED so sample!
 			while (sample< samplesPerEstimate) {
