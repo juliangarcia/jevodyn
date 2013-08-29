@@ -169,9 +169,8 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.setKeepTrackTotalPayoff(false);
 		long[] countPerStrategy = new long[numberOfTypes];
 		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
-			this.reset(new SimplePopulationImpl(ArrayUtils.centroid(
-					numberOfTypes, populationSize)));
-			int fixated = -1;
+			this.reset(new SimplePopulationImpl(ArrayUtils.randomMonomorphous(numberOfTypes, populationSize)));
+			int fixated = this.population.getFixatedType();
 			int burningStep = 0;
 			int sample = 0;
 			

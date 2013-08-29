@@ -183,6 +183,20 @@ public class ArrayUtils {
 	}
 	
 	
+
+	/***
+	 * Returns an array of numberOfTypes integers such that the one element has populationSize, and the rest are zero
+	 * @param numberOfTypes size of the returned array
+	 * @param populationSize sum of elements goes up to this number.
+	 * @return int[] 
+	 */
+	public static int[] randomMonomorphous(int numberOfTypes, int populationSize) {
+		int[] ans = new int[numberOfTypes];
+		ans[Random.nextInt(numberOfTypes)]= populationSize;
+		return ans;
+	}
+	
+	
 	
 	/***
 	 * Returns a matrix that considers relatedness.
