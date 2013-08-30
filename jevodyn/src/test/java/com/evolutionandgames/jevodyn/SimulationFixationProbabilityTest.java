@@ -34,7 +34,6 @@ public class SimulationFixationProbabilityTest extends TestCase {
 		MoranProcess mp = new MoranProcess(new SimplePopulationImpl(array), new GamePayoffCalculator(Games.prionersDilemma()), 0.1, 1.0);
 		Simulation simulationFixationProbability = new Simulation(mp);
 		double estimate = simulationFixationProbability.estimateFixationProbability(1, 0, 1000000, seed);
-		System.out.println(estimate);
 		assertEquals(0.7364040545619178, estimate, DELTA);	
 	}
 
