@@ -190,9 +190,9 @@ public class ArrayUtils {
 	 * @param populationSize sum of elements goes up to this number.
 	 * @return int[] 
 	 */
-	public static int[] randomMonomorphous(int numberOfTypes, int populationSize) {
+	public static int[] monomorphous(int numberOfTypes, int supportType, int populationSize) {
 		int[] ans = new int[numberOfTypes];
-		ans[Random.nextInt(numberOfTypes)]= populationSize;
+		ans[supportType]= populationSize;
 		return ans;
 	}
 	

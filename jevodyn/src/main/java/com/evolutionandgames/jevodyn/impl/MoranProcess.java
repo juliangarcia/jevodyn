@@ -163,16 +163,19 @@ public class MoranProcess implements EvolutionaryProcess {
 	public double[] estimateStationaryDistributionSmallMutation(
 			int burningTimePerEstimate, int samplesPerEstimate,
 			int numberOfEstimates, Long seed) {
+		//seed the RNG
 		Random.seed(seed);
 		int numberOfTypes = this.getPopulation().getNumberOfTypes();
 		int populationSize = this.getPopulation().getSize();
 		this.setKeepTrackTotalPayoff(false);
+		//this will hold the counters per strategy
 		long[] countPerStrategy = new long[numberOfTypes];
+		
 		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
-			this.reset(new SimplePopulationImpl(ArrayUtils.randomMonomorphous(numberOfTypes, populationSize)));
-			int fixated = this.population.getFixatedType();
+			int supportType = Random.nextInt(numberOfTypes);
+			this.reset(new SimplePopulationImpl(ArrayUtils.monomorphous(numberOfTypes, supportType, populationSize)));
+			int fixated = supportType;
 			int burningStep = 0;
-			int sample = 0;
 			// fixated but burning time is not over
 			while (burningStep < burningTimePerEstimate) {
 				double leavingHomogeneousStateInOneMutationProbability = 1.0 - this.mutationKernel
@@ -188,9 +191,6 @@ public class MoranProcess implements EvolutionaryProcess {
 				this.population.removeOneIndividual(fixated);
 				// now is not homogeneous any more so we run until fixation (no  mutations)
 				fixated = -1;
-				if (burningStep >= burningTimePerEstimate){
-					break;
-				}
 				while (fixated == -1 && burningStep < burningTimePerEstimate) {
 					this.stepWithoutMutation();
 					burningStep++;
@@ -198,10 +198,10 @@ public class MoranProcess implements EvolutionaryProcess {
 				}
 				// fixation, so I start again
 			}
-			
 			// done with burning but maybe not fixated 
 			//then run to fixation without mutation
 			fixated = this.population.getFixatedType();
+			int sample = 0;
 			while (fixated == -1) {
 				this.stepWithoutMutation();
 				sample++;
@@ -226,8 +226,7 @@ public class MoranProcess implements EvolutionaryProcess {
 				int chosenOne = Random.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
 				this.population.addOneIndividual(chosenOne);
 				this.population.removeOneIndividual(fixated);
-				// now is not homogeneous any more so we run until fixation (no
-				// mutations)
+				// now is not homogeneous any more so we run until fixation
 				int previousResident = fixated;
 				fixated = -1;
 				while (fixated == -1) {
