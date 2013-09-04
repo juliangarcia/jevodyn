@@ -12,7 +12,7 @@ import com.evolutionandgames.jevodyn.utils.Games;
 
 public class StationaryDistributionMoranProcessSmallMutationTest {
 
-	private static final double DELTA = 0.05;
+	private static final double DELTA = 0.005;
 
 	@Test
 	public void testSimulateStationaryDistributionNeutral() {
