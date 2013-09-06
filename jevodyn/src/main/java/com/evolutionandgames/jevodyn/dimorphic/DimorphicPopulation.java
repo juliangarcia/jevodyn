@@ -79,6 +79,10 @@ public class DimorphicPopulation {
 		return numberOfTypes;
 	}
 
+	public int getSize() {
+		return populationSize;
+	}
+
 	
 
 }
