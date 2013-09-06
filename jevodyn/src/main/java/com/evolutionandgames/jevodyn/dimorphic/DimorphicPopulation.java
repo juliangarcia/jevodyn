@@ -21,6 +21,18 @@ public class DimorphicPopulation {
 	public int getNumberOfMutants() {
 		return numberOfMutants;
 	}
+	
+	public double getMutantFrequency() {
+		return (double)numberOfMutants/this.populationSize;
+	}
+	
+	public int getNumberOfResidents(){
+		return this.populationSize - this.numberOfMutants;
+	}
+	
+	public double getResidentFrequency() {
+		return (double)numberOfMutants/this.populationSize;
+	}
 
 	public void incrementNumberOfMutants(){
 		numberOfMutants++;
@@ -61,6 +73,10 @@ public class DimorphicPopulation {
 	
 	public int getTypeOfResident() {
 		return typeOfResident;
+	}
+
+	public int getNumberOfTypes() {
+		return numberOfTypes;
 	}
 
 	
