@@ -131,6 +131,21 @@ public class DimorphicPopulation {
 		return true;
 	}
 
+	private DimorphicPopulation(int numberOfMutants, int typeOfMutant,
+			int typeOfResident, int populationSize, int numberOfTypes) {
+		super();
+		this.numberOfMutants = numberOfMutants;
+		this.typeOfMutant = typeOfMutant;
+		this.typeOfResident = typeOfResident;
+		this.populationSize = populationSize;
+		this.numberOfTypes = numberOfTypes;
+	}
+	
+	public DimorphicPopulation copy(){
+		return new DimorphicPopulation(this.numberOfMutants, this.typeOfMutant,
+				this.typeOfResident, this.populationSize, this.numberOfTypes);
+	}
+
 	
 
 }
