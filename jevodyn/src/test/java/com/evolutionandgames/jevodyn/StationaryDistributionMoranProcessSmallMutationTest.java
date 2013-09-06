@@ -37,7 +37,7 @@ public class StationaryDistributionMoranProcessSmallMutationTest {
 		DimorphicMoranProcess mp  = new DimorphicMoranProcess(population, PayoffToFitnessMapping.EXPONENTIAL, 1.0, 0.001, new GamePayoffCalculator(Games.allcTftAlld()));
 		int burningTimePerEstimate = 1000;
 		int samplesPerEstimate = 5000000;
-		int numberOfEstimates = 10;
+		int numberOfEstimates = 100;
 		double[] ans = mp.estimateStationaryDistributionSmallMutation(burningTimePerEstimate, samplesPerEstimate, numberOfEstimates, seed);
 		assertEquals(0.0799139, ans[0], DELTA);
 		assertEquals(0.66839172, ans[1], DELTA);
