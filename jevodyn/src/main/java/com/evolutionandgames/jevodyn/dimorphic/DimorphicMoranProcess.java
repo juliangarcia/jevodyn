@@ -49,12 +49,12 @@ public class DimorphicMoranProcess {
 		throw new IllegalArgumentException("Inexistent payoff mapping");
 	}
 
-	public DimorphicMoranProcess(int timeStep, DimorphicPopulation population,
+	public DimorphicMoranProcess(DimorphicPopulation population,
 			PayoffToFitnessMapping mapping, double intensityOfSelection,
 			double mutationProbability,
 			DimorphicPayoffCalculator payoffCalculator) {
 		super();
-		this.timeStep = timeStep;
+		this.timeStep = 0;
 		this.population = population;
 		this.mapping = mapping;
 		this.intensityOfSelection = intensityOfSelection;
@@ -65,12 +65,12 @@ public class DimorphicMoranProcess {
 
 	}
 
-	public DimorphicMoranProcess(int timeStep, DimorphicPopulation population,
+	public DimorphicMoranProcess(DimorphicPopulation population,
 			PayoffToFitnessMapping mapping, double intensityOfSelection,
 			RealMatrix mutationKernel,
 			DimorphicPayoffCalculator payoffCalculator) {
 		super();
-		this.timeStep = timeStep;
+		this.timeStep = 0;
 		this.population = population;
 		this.mapping = mapping;
 		this.intensityOfSelection = intensityOfSelection;
@@ -97,13 +97,13 @@ public class DimorphicMoranProcess {
 			// run to fixation and count
 			while (samples < samplesPerEstimate) {
 				while (!this.population.isFixated()) {
-					this.step();
-					countPerStrategy[this.population.getTypeOfMutant()] = countPerStrategy[this.population
-							.getTypeOfMutant()]
-							+ this.population.getNumberOfMutants();
 					countPerStrategy[this.population.getTypeOfResident()] = countPerStrategy[this.population
 							.getTypeOfResident()]
 							+ this.population.getNumberOfResidents();
+					countPerStrategy[this.population.getTypeOfMutant()] = countPerStrategy[this.population
+							.getTypeOfMutant()]
+							+ this.population.getNumberOfMutants();
+					this.step();
 					samples++;
 				}
 				if (samples > samplesPerEstimate)

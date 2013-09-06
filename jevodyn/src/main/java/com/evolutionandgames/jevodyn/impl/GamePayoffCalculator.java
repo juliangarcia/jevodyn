@@ -4,9 +4,11 @@ import org.apache.commons.math3.linear.RealMatrix;
 
 import com.evolutionandgames.jevodyn.PayoffCalculator;
 import com.evolutionandgames.jevodyn.SimplePopulation;
+import com.evolutionandgames.jevodyn.dimorphic.DimorphicPayoffCalculator;
+import com.evolutionandgames.jevodyn.dimorphic.DimorphicPopulation;
 
 
-public class GamePayoffCalculator implements PayoffCalculator {
+public class GamePayoffCalculator implements PayoffCalculator, DimorphicPayoffCalculator {
 
 	RealMatrix gameMatrix;
 	
@@ -34,6 +36,20 @@ public class GamePayoffCalculator implements PayoffCalculator {
 			answer[i]=iStrategyPayoff*factorNumberOfInteractions;
 		}
 		return answer;
+	}
+
+	public double[] payoff(DimorphicPopulation population) {
+		//fitness of the resident
+		int residentType = population.getTypeOfResident();
+		int mutantType = population.getTypeOfMutant();
+		int numberOfResidents = population.getNumberOfResidents();
+		int numberOfMutants = population.getNumberOfMutants();
+		double payoffResident = (numberOfResidents-1.0)*gameMatrix.getEntry(residentType, residentType)  + numberOfMutants*gameMatrix.getEntry(residentType, mutantType);
+		double payoffMutant = (numberOfResidents)*gameMatrix.getEntry(mutantType, residentType)  + (numberOfMutants-1.0)*gameMatrix.getEntry(mutantType, mutantType);
+		payoffResident = (1.0/(population.getSize()-1))* payoffResident;
+		payoffMutant = (1.0/(population.getSize()-1))* payoffMutant;
+		double[] ans = {payoffResident, payoffMutant};
+		return ans;
 	}
 
 }

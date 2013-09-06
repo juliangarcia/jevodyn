@@ -15,6 +15,7 @@ public class DimorphicPopulation {
 		this.populationSize = populationSize;
 		this.typeOfResident = typeOfResident;
 		this.numberOfTypes = numberOfTypes;
+		this.typeOfMutant = -1;
 		this.numberOfMutants = 0;
 	}
 
@@ -53,13 +54,16 @@ public class DimorphicPopulation {
 		if (!isFixated() || type > this.numberOfTypes){
 			throw new IllegalStateException("A new mutant has to be introduced when the population is monomorphous, new type has to be smaller than number of types");
 		}
-		this.incrementNumberOfMutants();
 		this.typeOfMutant = type;
+		this.incrementNumberOfMutants();
 	}
 	
 	
 	public void decrementNumberOfMutants(){
 		numberOfMutants--;
+		if(numberOfMutants == 0){
+			this.typeOfMutant = -1;
+		}
 		if(numberOfMutants < 0){
 			throw new IllegalStateException("This is not possible");
 		}		
@@ -81,6 +85,47 @@ public class DimorphicPopulation {
 
 	public int getSize() {
 		return populationSize;
+	}
+
+	@Override
+	public String toString() {
+		return "DimorphicPopulation [mutants=" + numberOfMutants + "," + "residents =" + getNumberOfResidents()
+				+ ", typeOfMutant=" + typeOfMutant + ", typeOfResident="
+				+ typeOfResident + ", types=" + numberOfTypes + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + numberOfMutants;
+		result = prime * result + numberOfTypes;
+		result = prime * result + populationSize;
+		result = prime * result + typeOfMutant;
+		result = prime * result + typeOfResident;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DimorphicPopulation other = (DimorphicPopulation) obj;
+		if (numberOfMutants != other.numberOfMutants)
+			return false;
+		if (numberOfTypes != other.numberOfTypes)
+			return false;
+		if (populationSize != other.populationSize)
+			return false;
+		if (typeOfMutant != other.typeOfMutant)
+			return false;
+		if (typeOfResident != other.typeOfResident)
+			return false;
+		return true;
 	}
 
 	

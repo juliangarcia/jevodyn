@@ -4,10 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.evolutionandgames.jevodyn.dimorphic.DimorphicMoranProcess;
+import com.evolutionandgames.jevodyn.dimorphic.DimorphicPopulation;
 import com.evolutionandgames.jevodyn.impl.GamePayoffCalculator;
-import com.evolutionandgames.jevodyn.impl.MoranProcess;
-import com.evolutionandgames.jevodyn.impl.SimplePopulationImpl;
 import com.evolutionandgames.jevodyn.utils.Games;
+import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
 
 
 public class StationaryDistributionMoranProcessSmallMutationTest {
@@ -16,12 +17,9 @@ public class StationaryDistributionMoranProcessSmallMutationTest {
 
 	@Test
 	public void testSimulateStationaryDistributionNeutral() {
-		int[] array = { 2, 2, 6 };
 		Long seed = System.currentTimeMillis();
-		// System.out.println(seed);
-		SimplePopulationImpl population = new SimplePopulationImpl(array);
-		MoranProcess mp = new MoranProcess(population,
-				new GamePayoffCalculator(Games.allcTftAlld()), 0.01, 0.0);
+		DimorphicPopulation population = new DimorphicPopulation(10,0,3);
+		DimorphicMoranProcess mp  = new DimorphicMoranProcess(population, PayoffToFitnessMapping.EXPONENTIAL, 0.0, 0.01, new GamePayoffCalculator(Games.allcTftAlld()));
 		int burningTimePerEstimate = 100;
 		int samplesPerEstimate = 5000000;
 		int numberOfEstimates = 5;
@@ -34,11 +32,9 @@ public class StationaryDistributionMoranProcessSmallMutationTest {
 	
 	@Test
 	public void testSimulateStationaryDistribution() {
-		int[] array = { 2, 2, 6 };
 		Long seed = System.currentTimeMillis();
-		SimplePopulationImpl population = new SimplePopulationImpl(array);
-		MoranProcess mp = new MoranProcess(population,
-				new GamePayoffCalculator(Games.allcTftAlld()), 0.001, 1.0);
+		DimorphicPopulation population = new DimorphicPopulation(10,0,3);
+		DimorphicMoranProcess mp  = new DimorphicMoranProcess(population, PayoffToFitnessMapping.EXPONENTIAL, 1.0, 0.001, new GamePayoffCalculator(Games.allcTftAlld()));
 		int burningTimePerEstimate = 100;
 		int samplesPerEstimate = 5000000;
 		int numberOfEstimates = 5;

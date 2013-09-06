@@ -121,7 +121,7 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.intensityOfSelection = intensityOfSelection;
 		this.mutationProbability = mutationProbability;
 		this.mutationKernel = ArrayUtils.uniformMutationKernel(
-				this.mutationProbability, this.getPopulation()
+				this.mutationProbability, this.population
 						.getNumberOfTypes());
 		this.totalPopulationPayoff = -1.0;
 	}
@@ -137,7 +137,7 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.intensityOfSelection = intensityOfSelection;
 		this.mutationProbability = mutationProbability;
 		this.mutationKernel = ArrayUtils.uniformMutationKernel(
-				this.mutationProbability, this.getPopulation()
+				this.mutationProbability, this.population
 						.getNumberOfTypes());
 		this.totalPopulationPayoff = -1.0;
 	}
@@ -160,104 +160,5 @@ public class MoranProcess implements EvolutionaryProcess {
 		this.keepTrackOfTotalPayoff = keepTrack;
 	}
 
-	public double[] estimateStationaryDistributionSmallMutation(
-			int burningTimePerEstimate, int samplesPerEstimate,
-			int numberOfEstimates, Long seed) {
-		//seed the RNG
-		Random.seed(seed);
-		int numberOfTypes = this.getPopulation().getNumberOfTypes();
-		int populationSize = this.getPopulation().getSize();
-		this.setKeepTrackTotalPayoff(false);
-		//this will hold the counters per strategy
-		long[] countPerStrategy = new long[numberOfTypes];
-		
-		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
-			int supportType = Random.nextInt(numberOfTypes);
-			this.reset(new SimplePopulationImpl(ArrayUtils.monomorphous(numberOfTypes, supportType, populationSize)));
-			int fixated = supportType;
-			int burningStep = 0;
-			// fixated but burning time is not over
-			while (burningStep < burningTimePerEstimate) {
-				double leavingHomogeneousStateInOneMutationProbability = 1.0 - this.mutationKernel
-						.getEntry(fixated, fixated);
-				int timeTillLeaving = Random
-						.simulateGeometricDistribution(leavingHomogeneousStateInOneMutationProbability);
-				burningStep = burningStep + timeTillLeaving;
-				
-				// introduce mutant and do steps until homogeneous
-				double[] distibutionGivenThatIJumpedOut = transformToConditional(mutationKernel.getRow(fixated), fixated);
-				int chosenOne = Random.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
-				this.population.addOneIndividual(chosenOne);
-				this.population.removeOneIndividual(fixated);
-				// now is not homogeneous any more so we run until fixation (no  mutations)
-				fixated = -1;
-				while (fixated == -1 && burningStep < burningTimePerEstimate) {
-					this.stepWithoutMutation();
-					burningStep++;
-					fixated = this.population.getFixatedType();
-				}
-				// fixation, so I start again
-			}
-			// done with burning but maybe not fixated 
-			//then run to fixation without mutation
-			fixated = this.population.getFixatedType();
-			int sample = 0;
-			while (fixated == -1) {
-				this.stepWithoutMutation();
-				sample++;
-				fixated = this.population.getFixatedType();
-				for (int i = 0; i < numberOfTypes; i++) {
-					countPerStrategy[i] = countPerStrategy[i]
-							+ this.getPopulation().getAsArrayOfTypes()[i];
-				}
-				if (sample>=samplesPerEstimate) break;
-			}
-			// DONE WITH BURNING and it is FIXATED so sample!
-			while (sample< samplesPerEstimate) {
-				double leavingHomogeneousStateInOneMutationProbability = 1.0 - this.mutationKernel
-						.getEntry(fixated, fixated);
-				int timeTillLeaving = Random
-						.simulateGeometricDistribution(leavingHomogeneousStateInOneMutationProbability);
-				sample = sample + timeTillLeaving;
-				//count
-				countPerStrategy[fixated] = countPerStrategy[fixated] + populationSize*timeTillLeaving;
-				// introduce mutant and do steps until homogeneous
-				double[] distibutionGivenThatIJumpedOut = transformToConditional(mutationKernel.getRow(fixated), fixated);
-				int chosenOne = Random.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
-				this.population.addOneIndividual(chosenOne);
-				this.population.removeOneIndividual(fixated);
-				// now is not homogeneous any more so we run until fixation
-				int previousResident = fixated;
-				fixated = -1;
-				while (fixated == -1) {
-					this.stepWithoutMutation();
-					sample++;
-					fixated = this.population.getFixatedType();
-					//count (only two present!)
-					countPerStrategy[chosenOne] = countPerStrategy[chosenOne]
-							+ this.getPopulation().getAsArrayOfTypes()[chosenOne];
-					countPerStrategy[previousResident] = countPerStrategy[previousResident]
-							+ this.getPopulation().getAsArrayOfTypes()[previousResident];
-					if (sample>=samplesPerEstimate) break;
-				}
-				// fixation, so I start again
-				//unless I am done
-				if (sample>=samplesPerEstimate) break;
-			}
-		}
-		return ArrayUtils.normalize(countPerStrategy);
-	}
-
-	private double[] transformToConditional(double[] row, int focalIndex) {
-		double weight = 1.0 - row[focalIndex];
-		double ans[] = new double[row.length];
-		ans[focalIndex] = 0.0;
-		for (int i = 0; i < ans.length; i++) {
-			if (i != focalIndex) {
-				ans[i] = row[i] / weight;
-			}
-		}
-		return ans;
-	}
-
+	
 }
