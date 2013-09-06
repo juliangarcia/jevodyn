@@ -36,6 +36,9 @@ public class DimorphicPopulation {
 	}
 
 	public void incrementNumberOfMutants(){
+		if (this.typeOfMutant == -1) {
+			throw new IllegalStateException("There are no mutants in this population");
+		}
 		numberOfMutants++;
 		if (numberOfMutants == populationSize) {
 			this.numberOfMutants = 0;
