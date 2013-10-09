@@ -2,7 +2,7 @@ package com.evolutionandgames.jevodyn.utils;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
-import org.apache.commons.math3.random.Well19937c;
+import org.apache.commons.math3.random.MersenneTwister;
 
 /**
  * This class uses the Mersene Twister to generate pseudo random numbers. It is a wrapper for the Mersene twister implementation of Commons math.
@@ -13,7 +13,7 @@ import org.apache.commons.math3.random.Well19937c;
 public class Random {
 	
     protected static Long seed = null;
-    private static Well19937c generator = null;
+    private static MersenneTwister generator = null;
 
     /**
          * Sets the random generator seed
@@ -24,10 +24,10 @@ public class Random {
 
 	if (seed != null) {
 	    Random.seed = new Long(seed);
-	    generator = new Well19937c(seed);
+	    generator = new MersenneTwister(seed);
 	} else {
 	    Random.seed = System.currentTimeMillis();
-	    generator = new Well19937c(Random.seed);
+	    generator = new MersenneTwister(Random.seed);
 	}
     }
 	
@@ -40,7 +40,7 @@ public class Random {
 
     private Random() {
 	super();
-	generator = new Well19937c();
+	generator = new MersenneTwister();
     }
 
     
