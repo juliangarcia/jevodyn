@@ -101,7 +101,7 @@ public class Random {
 	}
 	
 	/***
-	 * Simulates a Geometric distributed random variable
+	 * Simulates a Geometric distributed random variable. Number of trials until the first success. 
 	 * @param successProbability
 	 * @return
 	 */
