@@ -16,32 +16,25 @@ public class DimorphicMoranProcess {
 	protected RealMatrix mutationKernel;
 	protected DimorphicPayoffCalculator payoffCalculator;
 
-	/**
-	 * Steps until something happens (mutant increases or deacreases). 
-	 * @return Number of steps spent in that state
-	 */
-	public int step() {
+	public void step() {
 		double[] payoffs = this.payoffCalculator.payoff(this.population);
 		double fitnessResident = this.population.getNumberOfResidents()
 				* mapFitness(payoffs[0], this.mapping);
 		double fitnessMutant = this.population.getNumberOfMutants()
 				* mapFitness(payoffs[1], this.mapping);
-		double p = fitnessMutant / (fitnessResident + fitnessMutant);// mutantSelectedProbability
-		double q = this.population.getMutantFrequency();//mutantForDeathProbability
-		
-		double probabilityMutantIncrement = p*(1.0-q);
-		double probabilityMutantDecrement = q*(1.0-p);
-		double probabilitySomethingHappehs = probabilityMutantDecrement + probabilityMutantIncrement;
-		
-		int timeStepsUntilSomethingHappens = Random.simulateGeometricDistribution(probabilitySomethingHappehs);
-		
-		if (Random.bernoulliTrial(probabilityMutantIncrement/probabilitySomethingHappehs)) {
+		boolean mutantBirth = Random.bernoulliTrial(fitnessMutant
+				/ (fitnessResident + fitnessMutant));
+		boolean mutantDeath = Random.bernoulliTrial(this.population
+				.getMutantFrequency());
+		// (true true) and (false false ) cancel out and nothing happens
+		if (mutantBirth && !mutantDeath) {
+			// true false
 			this.population.incrementNumberOfMutants();
-		}else{
+		} else if (!mutantBirth && mutantDeath) {
+			// false true
 			this.population.decrementNumberOfMutants();
 		}
-		this.timeStep= timeStep + timeStepsUntilSomethingHappens +1;
-		return timeStepsUntilSomethingHappens +1;
+		this.timeStep++;
 	}
 
 	private double mapFitness(double payoffValue,
@@ -101,18 +94,17 @@ public class DimorphicMoranProcess {
 			// burning time
 			this.burn(burningTimePerEstimate);
 			int samples = 0;
-			int timeSpent = 1;
 			// run to fixation and count
 			while (samples < samplesPerEstimate) {
 				while (!this.population.isFixated()) {
 					countPerStrategy[this.population.getTypeOfResident()] = countPerStrategy[this.population
 							.getTypeOfResident()]
-							+ timeSpent*this.population.getNumberOfResidents();
+							+ this.population.getNumberOfResidents();
 					countPerStrategy[this.population.getTypeOfMutant()] = countPerStrategy[this.population
 							.getTypeOfMutant()]
-							+ timeSpent*this.population.getNumberOfMutants();
-					timeSpent = this.step();
-					samples+=timeSpent;
+							+ this.population.getNumberOfMutants();
+					this.step();
+					samples++;
 				}
 				if (samples > samplesPerEstimate)
 					break;
@@ -161,8 +153,8 @@ public class DimorphicMoranProcess {
 			// time is over
 			while (!this.population.isFixated()
 					&& burningStep < burningTimePerEstimate) {
-				int steps = this.step();
-				burningStep+=steps;
+				this.step();
+				burningStep++;
 			}
 		}
 	}
