@@ -22,16 +22,16 @@ public class DimorphicMoranProcess {
 				* mapFitness(payoffs[0], this.mapping);
 		double fitnessMutant = this.population.getNumberOfMutants()
 				* mapFitness(payoffs[1], this.mapping);
-		double p = fitnessMutant / (fitnessResident + fitnessMutant);// mutantSelectedProbability
-		double q = this.population.getMutantFrequency();//mutantForDeathProbability
-		
-		double probabilityMutantIncrement = p*(1.0-q);
-		double probabilityMutantDecrement = q*(1.0-p);
-		
-		double random = Random.nextDouble();
-		if (random < probabilityMutantIncrement) {
+		boolean mutantBirth = Random.bernoulliTrial(fitnessMutant
+				/ (fitnessResident + fitnessMutant));
+		boolean mutantDeath = Random.bernoulliTrial(this.population
+				.getMutantFrequency());
+		// (true true) and (false false ) cancel out and nothing happens
+		if (mutantBirth && !mutantDeath) {
+			// true false
 			this.population.incrementNumberOfMutants();
-		}else if (random < probabilityMutantIncrement + probabilityMutantDecrement) {
+		} else if (!mutantBirth && mutantDeath) {
+			// false true
 			this.population.decrementNumberOfMutants();
 		}
 		this.timeStep++;
