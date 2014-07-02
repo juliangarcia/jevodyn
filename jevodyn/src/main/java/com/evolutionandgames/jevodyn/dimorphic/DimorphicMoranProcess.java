@@ -1,6 +1,16 @@
 package com.evolutionandgames.jevodyn.dimorphic;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.math3.linear.RealMatrix;
+import org.supercsv.cellprocessor.constraint.NotNull;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.ICsvListWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import com.evolutionandgames.jevodyn.utils.ArrayUtils;
 import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
@@ -225,6 +235,66 @@ private void burnFastForward(int burningTimePerEstimate) {
             }
         }
     }
+
+
+
+private CellProcessor[] getProcessors() {
+	int headerSize = 5;
+	final CellProcessor[] processors = new CellProcessor[headerSize];
+	processors[0] = new NotNull();
+	processors[1] = new NotNull();
+	processors[2] = new NotNull();
+	processors[3] = new NotNull();
+	processors[4] = new NotNull();
+	return processors;
+}
+
+
+private List<Object> currentStateRow() {
+	ArrayList<Object> ans = new ArrayList<Object>();
+	ans.add(this.timeStep);
+	ans.add(population.getTypeOfMutant());
+	ans.add(population.getNumberOfMutants());
+	ans.add(population.getTypeOfResident());
+	ans.add(population.getNumberOfResidents());
+	return ans;
+}
+
+
+public void simulateTimeSeries(int numberOfTimeSteps, int reportEveryTimeSteps, Long seed, String fileName)
+		throws IOException {
+	
+	Random.seed(seed);
+	//Fast printing
+	ICsvListWriter listWriter = null;
+	String[] header = {"timeStep", "typeOfMutant", "numberOfMutants" , "typeOfResident", "numberOfResidents"};
+	CellProcessor[] processors = this.getProcessors();
+	try {
+		listWriter = new CsvListWriter(new FileWriter(fileName),
+				CsvPreference.STANDARD_PREFERENCE);
+		// write the header
+		listWriter.writeHeader(header);
+		// write the initial zero step content
+		listWriter.write(this.currentStateRow(), processors);
+		// repeat for as many steps as requested
+		for (int i = 0; i < numberOfTimeSteps; i++) {
+			// step
+			this.step();
+			// if time to repor, report
+			if (this.timeStep % reportEveryTimeSteps == 0) {
+				listWriter.write(
+						this.currentStateRow(),processors);
+			}
+		}
+
+	} finally {
+		// close files no matter what
+		if (listWriter != null) {
+			listWriter.close();
+		}
+	}
+
+}
 
 
 public double[] estimateStationaryDistributionSmallMutationFastForward(

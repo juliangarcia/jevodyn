@@ -9,6 +9,7 @@ public class DimorphicPopulation {
 	private final int populationSize;
 	private final int numberOfTypes;
 	
+	
 	public DimorphicPopulation(int populationSize, int typeOfResident,
 			int numberOfTypes) {
 		super();
@@ -93,8 +94,8 @@ public class DimorphicPopulation {
 	@Override
 	public String toString() {
 		return "DimorphicPopulation [mutants=" + numberOfMutants + "," + "residents =" + getNumberOfResidents()
-				+ ", typeOfMutant=" + typeOfMutant + ", typeOfResident="
-				+ typeOfResident + ", types=" + numberOfTypes + "]";
+					+ ", typeOfMutant=" + typeOfMutant + ", typeOfResident="
+					+ typeOfResident + ", types=" + numberOfTypes + "]";	
 	}
 
 	@Override
