@@ -1,5 +1,6 @@
 package com.evolutionandgames.jevodyn.utils;
 
+import org.apache.commons.math3.distribution.HypergeometricDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.apache.commons.math3.random.Well19937c;
@@ -117,6 +118,17 @@ public class Random {
 		
 	}
 	
+	/**
+	 * Simulates a hypergeometric distribution for two types 
+	 * @param populationSize
+	 * @param numberOfSuccesses
+	 * @param sampleSize
+	 * @return
+	 */
+	public static int simulateHypergeometricDistribution(int populationSize, int numberOfSuccesses, int sampleSize)
+	{
+		return new HypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize).sample();
+	}
 	
 
 }
