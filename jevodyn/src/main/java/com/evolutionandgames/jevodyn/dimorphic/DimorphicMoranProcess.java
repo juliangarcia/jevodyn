@@ -281,11 +281,11 @@ public class DimorphicMoranProcess {
 			while (this.timeStep <= numberOfTimeSteps) {
 				// step
 				this.step();
-				boolean fixated = this.population.isFixated();
 				// if time to report or fixated, report
-				if (this.timeStep % reportEveryTimeSteps == 0 || fixated) {
+				if (this.timeStep % reportEveryTimeSteps == 0) {
 					listWriter.write(this.currentStateRow());
 				}
+				boolean fixated = this.population.isFixated();
 				if (fixated) {
 					// once fixated compute time to escape, add it to timeSteps
 					// and introduce new mutant
@@ -294,7 +294,13 @@ public class DimorphicMoranProcess {
 							.getEntry(residentType, residentType);
 					int escapeTime = Random
 							.simulateGeometricDistribution(escapeProbability);
-					timeStep = timeStep + escapeTime;
+					int limit = this.timeStep + escapeTime;
+					while(this.timeStep < limit){
+						this.timeStep++;
+						if (this.timeStep % reportEveryTimeSteps == 0) {
+							listWriter.write(this.currentStateRow());
+						}
+					}
 					double[] distibutionGivenThatIJumpedOut = transformToConditional(
 							mutationKernel.getRow(residentType), residentType);
 					int mutantType = Random
