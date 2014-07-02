@@ -295,7 +295,7 @@ public class DimorphicMoranProcess {
 					int escapeTime = Random
 							.simulateGeometricDistribution(escapeProbability);
 					int limit = this.timeStep + escapeTime;
-					while(this.timeStep < limit){
+					while(this.timeStep < limit && this.timeStep <= numberOfTimeSteps ){
 						this.timeStep++;
 						if (this.timeStep % reportEveryTimeSteps == 0) {
 							listWriter.write(this.currentStateRow());
