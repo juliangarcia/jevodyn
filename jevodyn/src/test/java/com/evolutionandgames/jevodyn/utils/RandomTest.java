@@ -67,8 +67,8 @@ public class RandomTest extends TestCase {
 		Random.seed(null);
 		int populationSize = 10;
 		int numberOfSuccesses = 3;
-		int sampleSize = 5;
-		int numberOfSamples = 10000000;
+		int sampleSize = 7;
+		int numberOfSamples = 5000000;
 		Multiset<Integer> multiset = HashMultiset.create();
 		for (int i = 0; i < numberOfSamples; i++) {
 			int result = Random.simulateHypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize);
