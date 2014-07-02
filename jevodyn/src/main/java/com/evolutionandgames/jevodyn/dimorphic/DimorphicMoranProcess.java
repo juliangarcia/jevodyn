@@ -281,7 +281,7 @@ public void simulateTimeSeries(int numberOfTimeSteps, int reportEveryTimeSteps, 
 		// write the initial zero step content
 		listWriter.write(this.currentStateRow(), processors);
 		// repeat for as many steps as requested
-		for (int i = 0; i < numberOfTimeSteps; i++) {
+		while(this.timeStep <= numberOfTimeSteps){
 			// step
 			this.step();
 			boolean fixated = this.population.isFixated();
@@ -302,10 +302,9 @@ public void simulateTimeSeries(int numberOfTimeSteps, int reportEveryTimeSteps, 
 						.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
 				this.population.introduceNewMutant(mutantType);
 			}
-			
-			
-			
+
 		}
+		
 
 	} finally {
 		// close files no matter what
