@@ -2,6 +2,7 @@ package com.evolutionandgames.jevodyn.utils;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.math3.util.ArithmeticUtils;
 import org.junit.Test;
 
 import com.google.common.collect.HashMultiset;
@@ -56,6 +57,30 @@ public class RandomTest extends TestCase {
 		}
 		for (int k = 0; k < 10; k++) {
 			assertEquals(Math.pow(1.0-p, k)*p, multiset.count(k)/(double)(numberOfSamples), DELTA);
+		}
+		
+	}
+	
+	
+	@Test
+	public void testSimulateHyperGeometricDistribution() {
+		Random.seed(null);
+		int populationSize = 10;
+		int numberOfSuccesses = 3;
+		int sampleSize = 5;
+		int numberOfSamples = 10000000;
+		Multiset<Integer> multiset = HashMultiset.create();
+		for (int i = 0; i < numberOfSamples; i++) {
+			int result = Random.simulateHypergeometricDistribution(populationSize, numberOfSuccesses, sampleSize);
+			multiset.add(result);
+		}
+		for (int k = 0; k < 10; k++) {
+			if (multiset.count(k) >0){
+				double theory = (ArithmeticUtils.binomialCoefficientDouble(numberOfSuccesses, k)*
+						ArithmeticUtils.binomialCoefficientDouble(populationSize-numberOfSuccesses, sampleSize-k))/ArithmeticUtils.binomialCoefficientDouble(populationSize, sampleSize);
+				assertEquals(theory, multiset.count(k)/(double)(numberOfSamples), DELTA);	
+			}
+			
 		}
 		
 	}
