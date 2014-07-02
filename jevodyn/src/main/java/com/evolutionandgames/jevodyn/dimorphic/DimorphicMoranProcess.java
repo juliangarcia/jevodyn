@@ -46,6 +46,10 @@ public class DimorphicMoranProcess {
 		}
 		this.timeStep++;
 	}
+	
+	
+	
+	
 
 	private double mapFitness(double payoffValue,
 			PayoffToFitnessMapping fitnessMapping) {
@@ -280,11 +284,27 @@ public void simulateTimeSeries(int numberOfTimeSteps, int reportEveryTimeSteps, 
 		for (int i = 0; i < numberOfTimeSteps; i++) {
 			// step
 			this.step();
-			// if time to repor, report
-			if (this.timeStep % reportEveryTimeSteps == 0) {
+			boolean fixated = this.population.isFixated();
+			// if time to report or fixated, report
+			if (this.timeStep % reportEveryTimeSteps == 0 || fixated) {
 				listWriter.write(
 						this.currentStateRow(),processors);
 			}
+			if(fixated){
+				//once fixated compute time to escape add it to timeSteps and introduce mutant 
+				int residentType = this.population.getTypeOfResident();
+				double escapeProbability = 1.0 - this.mutationKernel.getEntry(residentType, residentType);
+				int escapeTime = Random.simulateGeometricDistribution(escapeProbability);
+				timeStep = timeStep + escapeTime;
+				double[] distibutionGivenThatIJumpedOut = transformToConditional(
+						mutationKernel.getRow(residentType), residentType);
+				int mutantType = Random
+						.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
+				this.population.introduceNewMutant(mutantType);
+			}
+			
+			
+			
 		}
 
 	} finally {
