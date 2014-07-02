@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.linear.RealMatrix;
-import org.supercsv.cellprocessor.constraint.NotNull;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -46,10 +44,6 @@ public class DimorphicMoranProcess {
 		}
 		this.timeStep++;
 	}
-	
-	
-	
-	
 
 	private double mapFitness(double payoffValue,
 			PayoffToFitnessMapping fitnessMapping) {
@@ -184,189 +178,194 @@ public class DimorphicMoranProcess {
 		}
 		return ans;
 	}
-	
-	
+
 	public int stepFastForward() {
-        double[] payoffs = this.payoffCalculator.payoff(this.population);
-        double fitnessResident = this.population.getNumberOfResidents()
-                * mapFitness(payoffs[0], this.mapping);
-        double fitnessMutant = this.population.getNumberOfMutants()
-                * mapFitness(payoffs[1], this.mapping);
-        double p = fitnessMutant / (fitnessResident + fitnessMutant);// mutantSelectedProbability
-        double q = this.population.getMutantFrequency();//mutantForDeathProbability
-        
-        double probabilityMutantIncrement = p*(1.0-q);
-        double probabilityMutantDecrement = q*(1.0-p);
-        double probabilitySomethingHappehs = probabilityMutantDecrement + probabilityMutantIncrement;
-        
-        int timeStepsUntilSomethingHappens = Random.simulateGeometricDistribution(probabilitySomethingHappehs);
-        
-        if (Random.bernoulliTrial(probabilityMutantIncrement/probabilitySomethingHappehs)) {
-            this.population.incrementNumberOfMutants();
-        }else{
-            this.population.decrementNumberOfMutants();
-        }
-        this.timeStep= timeStep + timeStepsUntilSomethingHappens +1;
-        return timeStepsUntilSomethingHappens +1;
-}
+		double[] payoffs = this.payoffCalculator.payoff(this.population);
+		double fitnessResident = this.population.getNumberOfResidents()
+				* mapFitness(payoffs[0], this.mapping);
+		double fitnessMutant = this.population.getNumberOfMutants()
+				* mapFitness(payoffs[1], this.mapping);
+		double p = fitnessMutant / (fitnessResident + fitnessMutant);// mutantSelectedProbability
+		double q = this.population.getMutantFrequency();// mutantForDeathProbability
 
+		double probabilityMutantIncrement = p * (1.0 - q);
+		double probabilityMutantDecrement = q * (1.0 - p);
+		double probabilitySomethingHappehs = probabilityMutantDecrement
+				+ probabilityMutantIncrement;
 
-private void burnFastForward(int burningTimePerEstimate) {
-        int burningStep = 0;
-        if (!this.population.isFixated())
-            throw new IllegalStateException(
-                    "This method assumes a fixated population");
-        while (burningStep < burningTimePerEstimate) {
-            // compute and add time to escape
-            int residentType = this.population.getTypeOfResident();
-            double escapeProbability = 1.0 - this.mutationKernel.getEntry(
-                    residentType, residentType);
-            int escapeTime = Random
-                    .simulateGeometricDistribution(escapeProbability);
-            burningStep = burningStep + escapeTime;
-            // add the mutant
-            double[] distibutionGivenThatIJumpedOut = transformToConditional(
-                    mutationKernel.getRow(residentType), residentType);
-            int mutantType = Random
-                    .simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
-            this.population.introduceNewMutant(mutantType);
-            // if burning time is not over, run to fixation or until burning
-            // time is over
-            while (!this.population.isFixated()
-                    && burningStep < burningTimePerEstimate) {
-                int steps = this.stepFastForward();
-                burningStep+=steps;
-            }
-        }
-    }
+		int timeStepsUntilSomethingHappens = Random
+				.simulateGeometricDistribution(probabilitySomethingHappehs);
 
+		if (Random.bernoulliTrial(probabilityMutantIncrement
+				/ probabilitySomethingHappehs)) {
+			this.population.incrementNumberOfMutants();
+		} else {
+			this.population.decrementNumberOfMutants();
+		}
+		this.timeStep = timeStep + timeStepsUntilSomethingHappens + 1;
+		return timeStepsUntilSomethingHappens + 1;
+	}
 
-
-private CellProcessor[] getProcessors() {
-	int headerSize = 5;
-	final CellProcessor[] processors = new CellProcessor[headerSize];
-	processors[0] = new NotNull();
-	processors[1] = new NotNull();
-	processors[2] = new NotNull();
-	processors[3] = new NotNull();
-	processors[4] = new NotNull();
-	return processors;
-}
-
-
-private List<Object> currentStateRow() {
-	ArrayList<Object> ans = new ArrayList<Object>();
-	ans.add(this.timeStep);
-	ans.add(population.getTypeOfMutant());
-	ans.add(population.getNumberOfMutants());
-	ans.add(population.getTypeOfResident());
-	ans.add(population.getNumberOfResidents());
-	return ans;
-}
-
-
-public void simulateTimeSeries(int numberOfTimeSteps, int reportEveryTimeSteps, Long seed, String fileName)
-		throws IOException {
-	
-	Random.seed(seed);
-	//Fast printing
-	ICsvListWriter listWriter = null;
-	String[] header = {"timeStep", "typeOfMutant", "numberOfMutants" , "typeOfResident", "numberOfResidents"};
-	CellProcessor[] processors = this.getProcessors();
-	try {
-		listWriter = new CsvListWriter(new FileWriter(fileName),
-				CsvPreference.STANDARD_PREFERENCE);
-		// write the header
-		listWriter.writeHeader(header);
-		// write the initial zero step content
-		listWriter.write(this.currentStateRow(), processors);
-		// repeat for as many steps as requested
-		while(this.timeStep <= numberOfTimeSteps){
-			// step
-			this.step();
-			boolean fixated = this.population.isFixated();
-			// if time to report or fixated, report
-			if (this.timeStep % reportEveryTimeSteps == 0 || fixated) {
-				listWriter.write(
-						this.currentStateRow(),processors);
+	private void burnFastForward(int burningTimePerEstimate) {
+		int burningStep = 0;
+		if (!this.population.isFixated())
+			throw new IllegalStateException(
+					"This method assumes a fixated population");
+		while (burningStep < burningTimePerEstimate) {
+			// compute and add time to escape
+			int residentType = this.population.getTypeOfResident();
+			double escapeProbability = 1.0 - this.mutationKernel.getEntry(
+					residentType, residentType);
+			int escapeTime = Random
+					.simulateGeometricDistribution(escapeProbability);
+			burningStep = burningStep + escapeTime;
+			// add the mutant
+			double[] distibutionGivenThatIJumpedOut = transformToConditional(
+					mutationKernel.getRow(residentType), residentType);
+			int mutantType = Random
+					.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
+			this.population.introduceNewMutant(mutantType);
+			// if burning time is not over, run to fixation or until burning
+			// time is over
+			while (!this.population.isFixated()
+					&& burningStep < burningTimePerEstimate) {
+				int steps = this.stepFastForward();
+				burningStep += steps;
 			}
-			if(fixated){
-				//once fixated compute time to escape, add it to timeSteps and introduce new mutant 
+		}
+	}
+
+	private String[] getHeader() {
+		int headerSize = this.population.getNumberOfTypes() + 1;
+		String[] ans = new String[headerSize];
+		ans[0] = "timeStep";
+		for (int i = 1; i < headerSize; i++) {
+			ans[i] = "s" + i;
+
+		}
+		return ans;
+	}
+
+	private List<Object> currentStateRow() {
+		ArrayList<Object> ans = new ArrayList<Object>();
+		ans.add(this.timeStep);
+		int types = this.population.getNumberOfTypes();
+		for (int i = 0; i < types; i++) {
+			if (this.population.getTypeOfMutant() == i) {
+				ans.add(this.population.getNumberOfMutants());
+			} else if (this.population.getTypeOfResident() == i) {
+				ans.add(this.population.getNumberOfResidents());
+			} else {
+				ans.add(0);
+			}
+		}
+		return ans;
+	}
+
+	public void simulateTimeSeries(int numberOfTimeSteps,
+			int reportEveryTimeSteps, Long seed, String fileName)
+			throws IOException {
+
+		Random.seed(seed);
+		// Fast printing
+		ICsvListWriter listWriter = null;
+		String[] header = this.getHeader();
+		try {
+			listWriter = new CsvListWriter(new FileWriter(fileName),
+					CsvPreference.STANDARD_PREFERENCE);
+			// write the header
+			listWriter.writeHeader(header);
+			// write the initial zero step content
+			listWriter.write(this.currentStateRow());
+			// repeat for as many steps as requested
+			while (this.timeStep <= numberOfTimeSteps) {
+				// step
+				this.step();
+				boolean fixated = this.population.isFixated();
+				// if time to report or fixated, report
+				if (this.timeStep % reportEveryTimeSteps == 0 || fixated) {
+					listWriter.write(this.currentStateRow());
+				}
+				if (fixated) {
+					// once fixated compute time to escape, add it to timeSteps
+					// and introduce new mutant
+					int residentType = this.population.getTypeOfResident();
+					double escapeProbability = 1.0 - this.mutationKernel
+							.getEntry(residentType, residentType);
+					int escapeTime = Random
+							.simulateGeometricDistribution(escapeProbability);
+					timeStep = timeStep + escapeTime;
+					double[] distibutionGivenThatIJumpedOut = transformToConditional(
+							mutationKernel.getRow(residentType), residentType);
+					int mutantType = Random
+							.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
+					this.population.introduceNewMutant(mutantType);
+				}
+
+			}
+
+		} finally {
+			// close files no matter what
+			if (listWriter != null) {
+				listWriter.close();
+			}
+		}
+
+	}
+
+	public double[] estimateStationaryDistributionSmallMutationFastForward(
+			int burningTimePerEstimate, int samplesPerEstimate,
+			int numberOfEstimates, Long seed) {
+		Random.seed(seed);
+		int numberOfTypes = this.population.getNumberOfTypes();
+		int populationSize = this.population.getSize();
+		long[] countPerStrategy = new long[numberOfTypes];
+		for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
+			// for every new esimate start at a random type
+			int typeOfResident = Random.nextInt(numberOfTypes);
+			this.population = new DimorphicPopulation(populationSize,
+					typeOfResident, numberOfTypes);
+			this.timeStep = 0;
+			// burning time
+			this.burnFastForward(burningTimePerEstimate);
+			int samples = 0;
+			int timeSpent = 1;
+			// run to fixation and count
+			while (samples < samplesPerEstimate) {
+				while (!this.population.isFixated()) {
+					countPerStrategy[this.population.getTypeOfResident()] = countPerStrategy[this.population
+							.getTypeOfResident()]
+							+ timeSpent
+							* this.population.getNumberOfResidents();
+					countPerStrategy[this.population.getTypeOfMutant()] = countPerStrategy[this.population
+							.getTypeOfMutant()]
+							+ timeSpent
+							* this.population.getNumberOfMutants();
+					timeSpent = this.stepFastForward();
+					samples += timeSpent;
+				}
+				if (samples > samplesPerEstimate)
+					break;
+				// here we are fixated
 				int residentType = this.population.getTypeOfResident();
-				double escapeProbability = 1.0 - this.mutationKernel.getEntry(residentType, residentType);
-				int escapeTime = Random.simulateGeometricDistribution(escapeProbability);
-				timeStep = timeStep + escapeTime;
+				double escapeProbability = 1.0 - this.mutationKernel.getEntry(
+						residentType, residentType);
+				int escapeTime = Random
+						.simulateGeometricDistribution(escapeProbability);
+				samples = samples + escapeTime;
+				countPerStrategy[this.population.getTypeOfResident()] = countPerStrategy[this.population
+						.getTypeOfResident()]
+						+ escapeTime
+						* this.population.getSize();
+				// add the mutant
 				double[] distibutionGivenThatIJumpedOut = transformToConditional(
 						mutationKernel.getRow(residentType), residentType);
 				int mutantType = Random
 						.simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
 				this.population.introduceNewMutant(mutantType);
 			}
-
 		}
-		
-
-	} finally {
-		// close files no matter what
-		if (listWriter != null) {
-			listWriter.close();
-		}
+		return ArrayUtils.normalize(countPerStrategy);
 	}
-
-}
-
-
-public double[] estimateStationaryDistributionSmallMutationFastForward(
-            int burningTimePerEstimate, int samplesPerEstimate,
-            int numberOfEstimates, Long seed) {
-        Random.seed(seed);
-        int numberOfTypes = this.population.getNumberOfTypes();
-        int populationSize = this.population.getSize();
-        long[] countPerStrategy = new long[numberOfTypes];
-        for (int estimate = 0; estimate < numberOfEstimates; estimate++) {
-            // for every new esimate start at a random type
-            int typeOfResident = Random.nextInt(numberOfTypes);
-            this.population = new DimorphicPopulation(populationSize,
-                    typeOfResident, numberOfTypes);
-            this.timeStep = 0;
-            // burning time
-            this.burnFastForward(burningTimePerEstimate);
-            int samples = 0;
-            int timeSpent = 1;
-            // run to fixation and count
-            while (samples < samplesPerEstimate) {
-                while (!this.population.isFixated()) {
-                    countPerStrategy[this.population.getTypeOfResident()] = countPerStrategy[this.population
-                            .getTypeOfResident()]
-                            + timeSpent*this.population.getNumberOfResidents();
-                    countPerStrategy[this.population.getTypeOfMutant()] = countPerStrategy[this.population
-                            .getTypeOfMutant()]
-                            + timeSpent*this.population.getNumberOfMutants();
-                    timeSpent = this.stepFastForward();
-                    samples+=timeSpent;
-                }
-                if (samples > samplesPerEstimate)
-                    break;
-                // here we are fixated
-                int residentType = this.population.getTypeOfResident();
-                double escapeProbability = 1.0 - this.mutationKernel.getEntry(
-                        residentType, residentType);
-                int escapeTime = Random
-                        .simulateGeometricDistribution(escapeProbability);
-                samples = samples + escapeTime;
-                countPerStrategy[this.population.getTypeOfResident()] = countPerStrategy[this.population
-                        .getTypeOfResident()]
-                        + escapeTime
-                        * this.population.getSize();
-                // add the mutant
-                double[] distibutionGivenThatIJumpedOut = transformToConditional(
-                        mutationKernel.getRow(residentType), residentType);
-                int mutantType = Random
-                        .simulateDiscreteDistribution(distibutionGivenThatIJumpedOut);
-                this.population.introduceNewMutant(mutantType);
-            }
-        }
-        return ArrayUtils.normalize(countPerStrategy);
-    }
 
 }
