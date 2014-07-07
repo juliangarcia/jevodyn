@@ -10,7 +10,7 @@ import com.google.common.collect.Multiset;
 
 public class RandomTest extends TestCase {
 
-	private static final double DELTA = 0.001;
+	private static final double DELTA = 0.005;
 	private static final int MAX = 10;
 
 	@Test
