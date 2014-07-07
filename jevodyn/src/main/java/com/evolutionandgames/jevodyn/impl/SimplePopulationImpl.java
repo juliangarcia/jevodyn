@@ -53,6 +53,9 @@ public class SimplePopulationImpl implements SimplePopulation {
 	public int getFixatedType() {
 		for (int i = 0; i < this.populationArray.length; i++) {
 			if(this.populationArray[i]==this.size) return i;
+			if (this.populationArray[i] > 0 && this.populationArray[i] < this.size) {
+				return -1;
+			}
 		}
 		return -1;
 	}
