@@ -1,6 +1,7 @@
 package com.evolutionandgames.jevodyn.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.evolutionandgames.jevodyn.SimplePopulation;
 
@@ -11,6 +12,31 @@ public class SimplePopulationImpl implements SimplePopulation {
 
 	public int[] getAsArrayOfTypes() {
 		return this.populationArray;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(populationArray);
+		result = prime * result + size;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SimplePopulationImpl other = (SimplePopulationImpl) obj;
+		if (!Arrays.equals(populationArray, other.populationArray))
+			return false;
+		if (size != other.size)
+			return false;
+		return true;
 	}
 
 	public void addOneIndividual(int type) {
