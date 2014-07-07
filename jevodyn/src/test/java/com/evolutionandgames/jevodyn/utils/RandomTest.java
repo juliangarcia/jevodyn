@@ -84,5 +84,37 @@ public class RandomTest extends TestCase {
 		}
 		
 	}
+	
+	
+	@Test
+	public void testMultivarateSimulateHyperGeometricDistribution() {
+		Random.seed(null);
+		int numberOfSamples = 5000000;
+		
+		int[] population = {5, 3, 4};
+		int count = 0;
+		int[] target = {3, 2, 2};
+		
+		for (int i = 0; i < numberOfSamples; i++) {
+			int[] result = Random.simulateMultivariateHypergeometricDistribution(population, target[0]+target[1]+target[2], 
+					population[0]+population[1]+population[2]);
+			if (result[0] == target[0] && result[1] == target[1] && result[2] == target[2]){
+				count++;
+			}
+		}
+		double theory = (ArithmeticUtils.binomialCoefficientDouble(population[0], target[0])*
+						(ArithmeticUtils.binomialCoefficientDouble(population[1], target[1]))*
+						(ArithmeticUtils.binomialCoefficientDouble(population[2], target[2])))/
+						ArithmeticUtils.binomialCoefficientDouble(population[0]+population[1]+population[2], 
+								target[0]+target[1]+target[2]);
+						
+		assertEquals(theory, new Double(count)/new Double(numberOfSamples), DELTA);	
+			}
+			
+		
+		
+	
+	
+	
 
 }
