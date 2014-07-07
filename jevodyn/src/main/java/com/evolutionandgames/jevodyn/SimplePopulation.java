@@ -1,5 +1,7 @@
 package com.evolutionandgames.jevodyn;
 
+import java.util.ArrayList;
+
 public interface SimplePopulation {
 
 	/***
@@ -15,5 +17,6 @@ public interface SimplePopulation {
 	public int getSize();
 	public int getNumberOfTypes();
 	public int getFixatedType();
+	public ArrayList<Integer> getSupport();
 	
 }

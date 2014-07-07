@@ -1,5 +1,7 @@
 package com.evolutionandgames.jevodyn.impl;
 
+import java.util.ArrayList;
+
 import com.evolutionandgames.jevodyn.SimplePopulation;
 
 public class SimplePopulationImpl implements SimplePopulation {
@@ -58,6 +60,14 @@ public class SimplePopulationImpl implements SimplePopulation {
 			}
 		}
 		return -1;
+	}
+
+	public ArrayList<Integer> getSupport() {
+		ArrayList<Integer> support = new ArrayList<Integer>();
+		for (int i = 0; i < this.populationArray.length; i++) {
+			if(this.populationArray[i]> 0) support.add(i);
+		}
+		return support;
 	}
 
 }
