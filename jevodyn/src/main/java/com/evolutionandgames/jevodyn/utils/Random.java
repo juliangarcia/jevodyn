@@ -165,15 +165,18 @@ public class Random {
 		if (n > sum)
 			throw new IllegalArgumentException(
 					"n > sum in multihypergeo function");
-
+		
 		for (i = 0; i < colors - 1; i++) {
 			// generate output by calling hypergeometric colors-1 times
-			y = source[i];
-			// x = Hypergeometric(n, y, sum);
-			x = simulateHypergeometricDistribution(sum, y, n);
-			n -= x;
-			sum -= y;
-			destination[i] = x;
+				if (n==0){
+					//sampling complete
+					return destination;
+				}
+				y = source[i];
+				x = simulateHypergeometricDistribution(sum, y, n);
+				n -= x;
+				sum -= y;
+				destination[i] = x;
 		}
 		// get the last one
 		destination[i] = n;
