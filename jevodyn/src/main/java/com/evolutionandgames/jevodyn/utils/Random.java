@@ -1,9 +1,14 @@
 package com.evolutionandgames.jevodyn.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.apache.commons.math3.distribution.HypergeometricDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.apache.commons.math3.random.Well19937c;
+import org.apache.commons.math3.util.MathArrays;
 
 /**
  * This class uses the Mersene Twister to generate pseudo random numbers. It is
@@ -181,6 +186,20 @@ public class Random {
 		// get the last one
 		destination[i] = n;
 		return destination;
+	}
+	
+	public static ArrayList<Object> shuffle(ArrayList<Object> original){
+		int size = original.size();
+		int[] indexes = new int[size];
+		for (int i = 0; i < indexes.length; i++) {
+			indexes[i] = i;
+		}
+		MathArrays.shuffle(indexes, generator);
+		ArrayList<Object> ans = new ArrayList<Object>();
+		for (int i = 0; i < indexes.length; i++) {
+			ans.add(original.get(indexes[i]));
+		}
+		return ans;
 	}
 
 }
