@@ -1,8 +1,6 @@
 package com.evolutionandgames.jevodyn.utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.commons.math3.distribution.HypergeometricDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -188,14 +186,14 @@ public class Random {
 		return destination;
 	}
 	
-	public static ArrayList<Object> shuffle(ArrayList<Object> original){
+	public static <E> ArrayList<E> shuffle(ArrayList<E> original){
 		int size = original.size();
 		int[] indexes = new int[size];
 		for (int i = 0; i < indexes.length; i++) {
 			indexes[i] = i;
 		}
 		MathArrays.shuffle(indexes, generator);
-		ArrayList<Object> ans = new ArrayList<Object>();
+		ArrayList<E> ans = new ArrayList<E>();
 		for (int i = 0; i < indexes.length; i++) {
 			ans.add(original.get(indexes[i]));
 		}
