@@ -2,7 +2,7 @@ package com.evolutionandgames.jevodyn.utils;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.math3.util.ArithmeticUtils;
+import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.junit.Test;
 
 import com.google.common.collect.HashMultiset;
@@ -76,8 +76,8 @@ public class RandomTest extends TestCase {
 		}
 		for (int k = 0; k < 10; k++) {
 			if (multiset.count(k) >0){
-				double theory = (ArithmeticUtils.binomialCoefficientDouble(numberOfSuccesses, k)*
-						ArithmeticUtils.binomialCoefficientDouble(populationSize-numberOfSuccesses, sampleSize-k))/ArithmeticUtils.binomialCoefficientDouble(populationSize, sampleSize);
+				double theory = (CombinatoricsUtils.binomialCoefficientDouble(numberOfSuccesses, k)*
+						CombinatoricsUtils.binomialCoefficientDouble(populationSize-numberOfSuccesses, sampleSize-k))/CombinatoricsUtils.binomialCoefficientDouble(populationSize, sampleSize);
 				assertEquals(theory, multiset.count(k)/(double)(numberOfSamples), DELTA);	
 			}
 			
@@ -102,10 +102,10 @@ public class RandomTest extends TestCase {
 				count++;
 			}
 		}
-		double theory = (ArithmeticUtils.binomialCoefficientDouble(population[0], target[0])*
-						(ArithmeticUtils.binomialCoefficientDouble(population[1], target[1]))*
-						(ArithmeticUtils.binomialCoefficientDouble(population[2], target[2])))/
-						ArithmeticUtils.binomialCoefficientDouble(population[0]+population[1]+population[2], 
+		double theory = (CombinatoricsUtils.binomialCoefficientDouble(population[0], target[0])*
+						(CombinatoricsUtils.binomialCoefficientDouble(population[1], target[1]))*
+						(CombinatoricsUtils.binomialCoefficientDouble(population[2], target[2])))/
+						CombinatoricsUtils.binomialCoefficientDouble(population[0]+population[1]+population[2], 
 								target[0]+target[1]+target[2]);
 						
 		assertEquals(theory, new Double(count)/new Double(numberOfSamples), DELTA);	
