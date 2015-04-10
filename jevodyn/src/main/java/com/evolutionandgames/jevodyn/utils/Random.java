@@ -2,7 +2,6 @@ package com.evolutionandgames.jevodyn.utils;
 
 import java.util.ArrayList;
 
-import org.apache.commons.math3.distribution.GeometricDistribution;
 import org.apache.commons.math3.distribution.HypergeometricDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
@@ -124,7 +123,15 @@ public class Random {
 	 * @return
 	 */
 	public static int simulateGeometricDistribution(double succesProbability) {
-		return new GeometricDistribution(succesProbability).sample();
+		double u = Random.nextDouble();
+		if (succesProbability >= 1.0)
+			return 0;
+		if (u <= succesProbability)
+			return 0;
+		if (u >= 1.0 || succesProbability <= 0.0)
+			return Integer.MAX_VALUE;
+		return (int) Math
+				.floor(Math.log1p(-u) / Math.log1p(-succesProbability));
 
 	}
 
