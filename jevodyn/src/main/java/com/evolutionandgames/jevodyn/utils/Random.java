@@ -188,16 +188,27 @@ public class Random {
 	
 	public static <E> ArrayList<E> shuffle(ArrayList<E> original){
 		int size = original.size();
-		int[] indexes = new int[size];
-		for (int i = 0; i < indexes.length; i++) {
-			indexes[i] = i;
-		}
-		MathArrays.shuffle(indexes, generator);
+		int[] indexes = randomizeIndices(size);
 		ArrayList<E> ans = new ArrayList<E>();
 		for (int i = 0; i < indexes.length; i++) {
 			ans.add(original.get(indexes[i]));
 		}
 		return ans;
+	}
+	
+	
+	/**
+	 * Returns a randomize array of integers from 0 to size -1. 
+	 * @param size
+	 * @return
+	 */
+	public static int[] randomizeIndices(int size){
+		int[] indexes = new int[size];
+		for (int i = 0; i < indexes.length; i++) {
+			indexes[i] = i;
+		}
+		MathArrays.shuffle(indexes, generator);
+		return indexes;
 	}
 
 }
