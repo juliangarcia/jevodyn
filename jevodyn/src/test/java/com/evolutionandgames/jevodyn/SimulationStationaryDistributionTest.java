@@ -13,7 +13,7 @@ import com.evolutionandgames.jevodyn.utils.Games;
 
 public class SimulationStationaryDistributionTest {
 
-	private static final double DELTA = 0.05;
+	private static final double DELTA = 0.07;
 
 	@Test
 	public void testSimulateStationaryDistributionNeutral() {
