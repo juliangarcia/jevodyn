@@ -3,6 +3,7 @@ package com.evolutionandgames.jevodyn;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.supercsv.cellprocessor.constraint.NotNull;
@@ -69,10 +70,15 @@ public class Simulation {
 				process.step();
 			}
 			for (int sample = 0; sample < samplesPerEstimate; sample++) {
+				
+				int[] previousPopArray = Arrays.copyOf(this.process.getPopulation().getAsArrayOfTypes(), this.process.getPopulation().getAsArrayOfTypes().length);
+				int t_before = process.getTimeStep();
 				process.step();
+				int t_after = process.getTimeStep();
+				int[] arrayOfTypes = process.getPopulation().getAsArrayOfTypes();
 				for (int i = 0; i < numberOfTypes; i++) {
-					countPerStrategy[i] = countPerStrategy[i]
-							+ process.getPopulation().getAsArrayOfTypes()[i];
+					countPerStrategy[i] = countPerStrategy[i] + (t_after - t_before -1 )* previousPopArray[i] + 
+							+ arrayOfTypes[i];
 				}
 			}
 		}

@@ -45,21 +45,20 @@ public class MoranProcessFast extends MoranProcess {
 	 */
 	@Override
 	protected void step(boolean mutationStep) {
-		if (mutationStep && population.getNumberOfTypes() == 1)
+		int fixatedType = population.getFixatedType();
+		if (mutationStep && fixatedType != -1)
 		{
-			int dies = population.getFixatedType();
-			
-			double probability_nothing_happens = mutationKernel.getEntry(dies, dies);
+			double probability_nothing_happens = mutationKernel.getEntry(fixatedType, fixatedType);
 			int time = Random.simulateGeometricDistribution(1.0 - probability_nothing_happens);
 			this.timeStep = this.timeStep + time;
 			// now introduce new mutant
-			double[] distribution_src = mutationKernel.getRow(dies);
+			double[] distribution_src = mutationKernel.getRow(fixatedType);
 			double[] dest = new double[distribution_src.length];
 			System.arraycopy( distribution_src, 0, dest, 0, distribution_src.length );
-			dest[dies] = 0.0;
+			dest[fixatedType] = 0.0;
 			dest = ArrayUtils.normalize(dest);
 			int chosenOne = Random.simulateDiscreteDistribution(dest);
-			this.population.removeOneIndividual(dies);
+			this.population.removeOneIndividual(fixatedType);
 			this.population.addOneIndividual(chosenOne);
 		
 			
