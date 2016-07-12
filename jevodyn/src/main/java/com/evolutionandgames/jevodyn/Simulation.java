@@ -69,10 +69,13 @@ public class Simulation {
 				process.step();
 			}
 			for (int sample = 0; sample < samplesPerEstimate; sample++) {
+				int t_before = process.getTimeStep();
 				process.step();
+				int t_after = process.getTimeStep();
+				int[] arrayOfTypes = process.getPopulation().getAsArrayOfTypes();
 				for (int i = 0; i < numberOfTypes; i++) {
-					countPerStrategy[i] = countPerStrategy[i]
-							+ process.getPopulation().getAsArrayOfTypes()[i];
+					countPerStrategy[i] = countPerStrategy[i] + (t_after - t_before -1 )* countPerStrategy[i] + 
+							+ arrayOfTypes[i];
 				}
 			}
 		}
