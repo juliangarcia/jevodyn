@@ -11,20 +11,20 @@ import com.evolutionandgames.jevodyn.utils.Random;
 
 public class MoranProcess implements EvolutionaryProcess {
 
-	private boolean keepTrackOfTotalPayoff = true;
+	protected boolean keepTrackOfTotalPayoff = true;
 
 	public boolean isKeepTrackOfTotalPayoff() {
 		return keepTrackOfTotalPayoff;
 	}
 
-	private int timeStep;
-	private SimplePopulation population;
-	private double totalPopulationPayoff;
-	private PayoffCalculator payoffCalculator;
-	private PayoffToFitnessMapping mapping;
-	private double intensityOfSelection;
-	private RealMatrix mutationKernel;
-	private double mutationProbability;
+	protected int timeStep;
+	protected SimplePopulation population;
+	protected double totalPopulationPayoff;
+	protected PayoffCalculator payoffCalculator;
+	protected PayoffToFitnessMapping mapping;
+	protected double intensityOfSelection;
+	protected RealMatrix mutationKernel;
+	protected double mutationProbability;
 
 	protected void step(boolean mutationStep) {
 		double[] currentFrequencies = this.population.getAsTypeFrequencies();
