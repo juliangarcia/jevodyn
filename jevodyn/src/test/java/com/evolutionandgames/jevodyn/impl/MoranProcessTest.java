@@ -27,8 +27,29 @@ public class MoranProcessTest {
 		}
 
 	}
+	
+	
+	private class EveryBodyGetsRandomPayoffCalculator implements PayoffCalculator {
 
-	@Test
+		public double[] getPayoff(SimplePopulation population) {
+			double[] ans = new double[population.getNumberOfTypes()];
+			int[] arrayPop = population.getAsArrayOfTypes();
+			for (int i = 0; i < ans.length; i++) {
+				//if(arrayPop[i] >0){
+					ans[i] = Random.nextInt(100);
+				//}
+			}
+			//some guys will get a negative payoff
+			int n = Random.nextInt(population.getNumberOfTypes());
+			for (int i = 0; i < n; i++) {
+				ans[i] = -ans[i];
+			}
+			
+			return ans;
+		}
+
+	}
+
 	public void testStepIsInvariableInPopulationSize() {
 		Random.seed();
 		for (int j = 0; j < 5; j++) {
@@ -47,7 +68,6 @@ public class MoranProcessTest {
 	
 	
 
-	@Test
 	public void testTotalPayoff() {
 		Random.seed();
 		for (int j = 0; j < 5; j++) {
@@ -65,7 +85,6 @@ public class MoranProcessTest {
 	}
 	
 	 
-	@Test
 	public void testIfATypeIsNotThereItNeverShowsUp() {
 		Random.seed();
 		for (int j = 0; j < 10; j++) {
@@ -80,6 +99,36 @@ public class MoranProcessTest {
 			for (int i = 0; i < 100000; i++) {
 				mp.stepWithoutMutation();
 				assertEquals(0, mp.getPopulation().getNumberOfCopies(zeroType));
+			}
+		}
+	}
+	
+	
+	@Test
+	public void testNeverNegative() {
+		Random.seed();
+		Long seed = (long) Random.nextInt(99999);
+		Random.seed(seed);
+		int numberOfTypes = 4;
+		int maximumNumberOfCopiesPerType = 10;
+		for (int j = 0; j < 10; j++) {
+			int[] array = new int[numberOfTypes];
+			for (int i = 0; i < array.length; i++) {
+				while(array[i]== 0){
+					array[i] = Random.nextInt(maximumNumberOfCopiesPerType);
+				}
+				
+			}
+			
+			SimplePopulationImpl population = new SimplePopulationImpl(array);
+			MoranProcess mp = new MoranProcess(population, new EveryBodyGetsRandomPayoffCalculator(), PayoffToFitnessMapping.EXPONENTIAL, Random.nextDouble(), Random.nextDouble());
+			mp.setKeepTrackTotalPayoff(false);
+			for (int i = 0; i < 100000; i++) {
+				mp.step();
+				Assert.assertTrue(mp.getPopulation().getAsArrayOfTypes()[0] >= 0);
+				Assert.assertTrue(mp.getPopulation().getAsArrayOfTypes()[1] >= 0);
+				Assert.assertTrue(mp.getPopulation().getAsArrayOfTypes()[2] >= 0);
+				Assert.assertTrue(mp.getPopulation().getAsArrayOfTypes()[3] >= 0);
 			}
 		}
 	}
