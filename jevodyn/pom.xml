@@ -12,17 +12,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
     	<groupId>org.apache.commons</groupId>
     	<artifactId>commons-math3</artifactId>
@@ -37,6 +31,12 @@
     	<groupId>com.google.guava</groupId>
     	<artifactId>guava</artifactId>
     	<version>13.0.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>junit</groupId>
+    	<artifactId>junit</artifactId>
+    	<version>4.11</version>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
   <build>

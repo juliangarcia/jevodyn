@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.evolutionandgames.jevodyn.Simulation;
 import com.evolutionandgames.jevodyn.impl.GamePayoffCalculator;
 import com.evolutionandgames.jevodyn.impl.MoranProcess;
 import com.evolutionandgames.jevodyn.impl.MoranProcessFast;

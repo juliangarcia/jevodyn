@@ -33,7 +33,6 @@ public class MoranProcessTest {
 
 		public double[] getPayoff(SimplePopulation population) {
 			double[] ans = new double[population.getNumberOfTypes()];
-			int[] arrayPop = population.getAsArrayOfTypes();
 			for (int i = 0; i < ans.length; i++) {
 				//if(arrayPop[i] >0){
 					ans[i] = Random.nextInt(100);
