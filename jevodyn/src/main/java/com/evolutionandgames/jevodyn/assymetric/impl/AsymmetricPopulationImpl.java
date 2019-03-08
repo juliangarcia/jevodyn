@@ -3,7 +3,6 @@ package com.evolutionandgames.jevodyn.assymetric.impl;
 import java.util.ArrayList;
 
 import com.evolutionandgames.jevodyn.assymetric.AsymmetricPopulation;
-import com.evolutionandgames.jevodyn.impl.SimplePopulationImpl;
 
 public class AsymmetricPopulationImpl implements AsymmetricPopulation {
 	
@@ -132,25 +131,11 @@ public class AsymmetricPopulationImpl implements AsymmetricPopulation {
 	
 	public ArrayList<Integer> getSupport2() {
 		ArrayList<Integer> support = new ArrayList<Integer>();
-		for (int i = 0; i < this.populationArray1.length; i++) {
-			if(this.populationArray1[i]> 0) support.add(i);
+		for (int i = 0; i < this.populationArray2.length; i++) {
+			if(this.populationArray2[i]> 0) support.add(i);
 		}
 		return support;
 	}
 	
-	public SimplePopulationImpl castToSimplePopulation() {
-		ArrayList<Integer> arrayList = new ArrayList<Integer>();
-		for (int i = 0; i < populationArray1.length; i++) {
-			arrayList.add(populationArray1[i]);
-		}
-		for (int i = 0; i < populationArray2.length; i++) {
-			arrayList.add(populationArray2[i]);
-		}
-		int[] populationArray = new int[arrayList.size()];
-		for (int i = 0; i < populationArray.length; i++) {
-			populationArray[i] = arrayList.get(i);
-		}
-		return new SimplePopulationImpl(populationArray);
-	}
-
+	
 }

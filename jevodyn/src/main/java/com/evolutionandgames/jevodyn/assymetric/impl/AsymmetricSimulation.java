@@ -163,7 +163,7 @@ public class AsymmetricSimulation {
 		for (int i = 0; i < startingPopulation.getNumberOfTypes(); i++) {
 			header[i + 1] = "P1_" + String.valueOf(i);
 		}
-		for (int i = 0; i < startingPopulation.getNumberOfTypes(); i++) {
+		for (int i = startingPopulation.getNumberOfTypes(); i < 2*startingPopulation.getNumberOfTypes(); i++) {
 			header[i + 1] = "P2_" + String.valueOf(i);
 		}
 		if (includeTotalPayoff) {
