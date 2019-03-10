@@ -28,7 +28,7 @@ public class MoranProcessAsymmetric implements AsymetricEvolutionaryProcess {
 
 	protected void step(boolean mutationStep) {
 		double[] currentFrequencies1 = this.population.getAsTypeFrequencies1();
-		double[] currentFrequencies2 = this.population.getAsTypeFrequencies1();
+		double[] currentFrequencies2 = this.population.getAsTypeFrequencies2();
 		
 		double[] payoffVector1 = this.payoffCalculator
 				.getPayoff1(this.population);
