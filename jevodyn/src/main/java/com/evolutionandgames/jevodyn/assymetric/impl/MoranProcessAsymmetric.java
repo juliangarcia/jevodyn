@@ -10,6 +10,9 @@ import com.evolutionandgames.jevodyn.utils.PayoffToFitnessMapping;
 import com.evolutionandgames.jevodyn.utils.Random;
 
 public class MoranProcessAsymmetric implements AsymetricEvolutionaryProcess {
+	/**
+	 * Select from both populations, mutants arise from the selected individual only
+	 */
 
 	protected boolean keepTrackOfTotalPayoff = true;
 
