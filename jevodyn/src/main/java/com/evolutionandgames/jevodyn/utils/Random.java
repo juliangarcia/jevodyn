@@ -1,6 +1,7 @@
 package com.evolutionandgames.jevodyn.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.math3.distribution.BinomialDistribution;
 import org.apache.commons.math3.distribution.HypergeometricDistribution;
@@ -213,7 +214,7 @@ public class Random {
 		return indexes;
 	}
 
-	public static int generateRandomExcluding(int maximumExclusive, ArrayList<Integer> exclude) {
+	public static int generateRandomExcluding(int maximumExclusive, List<Integer> exclude) {
 		int random = Random.nextInt(maximumExclusive);
 		while (exclude.contains(random)) {
 			random = Random.nextInt(maximumExclusive);
