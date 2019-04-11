@@ -145,7 +145,7 @@ public class Random {
 	 */
 	public static int simulateHypergeometricDistribution(int populationSize,
 			int numberOfSuccesses, int sampleSize) {
-		return new HypergeometricDistribution(populationSize,
+		return new HypergeometricDistribution(Random.generator, populationSize,
 				numberOfSuccesses, sampleSize).sample();
 	}
 
