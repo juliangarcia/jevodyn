@@ -51,11 +51,9 @@ public class Random {
 		generator = new Well19937c();
 	}
 
-	public static int nextInt(int maximumExclusive)
-			throws IllegalArgumentException {
+	public static int nextInt(int maximumExclusive) throws IllegalArgumentException {
 		if (maximumExclusive <= 0) {
-			throw new IllegalArgumentException(
-					"limit for random integer must be positive");
+			throw new IllegalArgumentException("limit for random integer must be positive");
 		}
 		return generator.nextInt(maximumExclusive);
 	}
@@ -97,8 +95,7 @@ public class Random {
 	 * @return
 	 */
 	public static int simulatePoissonDistribution(double mean) {
-		return new PoissonDistribution(Random.generator, mean,
-				PoissonDistribution.DEFAULT_EPSILON,
+		return new PoissonDistribution(Random.generator, mean, PoissonDistribution.DEFAULT_EPSILON,
 				PoissonDistribution.DEFAULT_MAX_ITERATIONS).sample();
 	}
 
@@ -109,16 +106,14 @@ public class Random {
 	 * @param standardDeviation
 	 * @return
 	 */
-	public static double simulateNormalDistribution(double mean,
-			double standardDeviation) {
-		return new NormalDistribution(Random.generator, mean,
-				standardDeviation,
+	public static double simulateNormalDistribution(double mean, double standardDeviation) {
+		return new NormalDistribution(Random.generator, mean, standardDeviation,
 				NormalDistribution.DEFAULT_INVERSE_ABSOLUTE_ACCURACY).sample();
 	}
 
 	/***
-	 * Simulates a Geometric distributed random variable. Number of trials until
-	 * the first success.
+	 * Simulates a Geometric distributed random variable. Number of trials until the
+	 * first success.
 	 * 
 	 * @param successProbability
 	 * @return
@@ -131,8 +126,7 @@ public class Random {
 			return 0;
 		if (u >= 1.0 || succesProbability <= 0.0)
 			return Integer.MAX_VALUE;
-		return (int) Math
-				.floor(Math.log1p(-u) / Math.log1p(-succesProbability));
+		return (int) Math.floor(Math.log1p(-u) / Math.log1p(-succesProbability));
 
 	}
 
@@ -144,13 +138,10 @@ public class Random {
 	 * @param sampleSize
 	 * @return
 	 */
-	public static int simulateHypergeometricDistribution(int populationSize,
-			int numberOfSuccesses, int sampleSize) {
-		return new HypergeometricDistribution(Random.generator, populationSize,
-				numberOfSuccesses, sampleSize).sample();
+	public static int simulateHypergeometricDistribution(int populationSize, int numberOfSuccesses, int sampleSize) {
+		return new HypergeometricDistribution(Random.generator, populationSize, numberOfSuccesses, sampleSize).sample();
 	}
-	
-	
+
 	/**
 	 * Simulates a Binomial given number of trials and probability of success
 	 * 
@@ -162,8 +153,8 @@ public class Random {
 		return new BinomialDistribution(Random.generator, trials, p).sample();
 	}
 
-	public static int[] simulateMultivariateHypergeometricDistribution(
-			int[] source, int sampleSize, int populationSize) {
+	public static int[] simulateMultivariateHypergeometricDistribution(int[] source, int sampleSize,
+			int populationSize) {
 		int colors = source.length;
 		int[] destination = new int[colors];
 		int n = sampleSize;
@@ -174,32 +165,30 @@ public class Random {
 
 		int i;
 		if (n < 0 || colors < 0)
-			throw new IllegalArgumentException(
-					"Parameter negative in multihypergeo function");
+			throw new IllegalArgumentException("Parameter negative in multihypergeo function");
 		if (colors == 0)
 			return destination;
 		if (n > sum)
-			throw new IllegalArgumentException(
-					"n > sum in multihypergeo function");
-		
+			throw new IllegalArgumentException("n > sum in multihypergeo function");
+
 		for (i = 0; i < colors - 1; i++) {
 			// generate output by calling hypergeometric colors-1 times
-				if (n==0){
-					//sampling complete
-					return destination;
-				}
-				y = source[i];
-				x = simulateHypergeometricDistribution(sum, y, n);
-				n -= x;
-				sum -= y;
-				destination[i] = x;
+			if (n == 0) {
+				// sampling complete
+				return destination;
+			}
+			y = source[i];
+			x = simulateHypergeometricDistribution(sum, y, n);
+			n -= x;
+			sum -= y;
+			destination[i] = x;
 		}
 		// get the last one
 		destination[i] = n;
 		return destination;
 	}
-	
-	public static <E> ArrayList<E> shuffle(ArrayList<E> original){
+
+	public static <E> ArrayList<E> shuffle(ArrayList<E> original) {
 		int size = original.size();
 		int[] indexes = randomizeIndices(size);
 		ArrayList<E> ans = new ArrayList<E>();
@@ -208,20 +197,28 @@ public class Random {
 		}
 		return ans;
 	}
-	
-	
+
 	/**
-	 * Returns a randomize array of integers from 0 to size -1. 
+	 * Returns a randomize array of integers from 0 to size -1.
+	 * 
 	 * @param size
 	 * @return
 	 */
-	public static int[] randomizeIndices(int size){
+	public static int[] randomizeIndices(int size) {
 		int[] indexes = new int[size];
 		for (int i = 0; i < indexes.length; i++) {
 			indexes[i] = i;
 		}
 		MathArrays.shuffle(indexes, generator);
 		return indexes;
+	}
+
+	public static int generateRandomExcluding(int maximumExclusive, ArrayList<Integer> exclude) {
+		int random = Random.nextInt(maximumExclusive);
+		while (exclude.contains(random)) {
+			random = Random.nextInt(maximumExclusive);
+		}
+		return random;
 	}
 
 }
