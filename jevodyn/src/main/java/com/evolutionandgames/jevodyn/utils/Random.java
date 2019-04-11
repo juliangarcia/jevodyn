@@ -2,6 +2,7 @@ package com.evolutionandgames.jevodyn.utils;
 
 import java.util.ArrayList;
 
+import org.apache.commons.math3.distribution.BinomialDistribution;
 import org.apache.commons.math3.distribution.HypergeometricDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
@@ -147,6 +148,18 @@ public class Random {
 			int numberOfSuccesses, int sampleSize) {
 		return new HypergeometricDistribution(Random.generator, populationSize,
 				numberOfSuccesses, sampleSize).sample();
+	}
+	
+	
+	/**
+	 * Simulates a Binomial given number of trials and probability of success
+	 * 
+	 * @param trials
+	 * @param p
+	 * @return
+	 */
+	public static int simulateBinomialDistribution(int trials, double p) {
+		return new BinomialDistribution(Random.generator, trials, p).sample();
 	}
 
 	public static int[] simulateMultivariateHypergeometricDistribution(
