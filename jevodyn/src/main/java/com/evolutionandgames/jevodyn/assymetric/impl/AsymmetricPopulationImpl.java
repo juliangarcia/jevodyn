@@ -1,11 +1,43 @@
 package com.evolutionandgames.jevodyn.assymetric.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.evolutionandgames.jevodyn.assymetric.AsymmetricPopulation;
 
 public class AsymmetricPopulationImpl implements AsymmetricPopulation {
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(populationArray1);
+		result = prime * result + Arrays.hashCode(populationArray2);
+		result = prime * result + size1;
+		result = prime * result + size2;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AsymmetricPopulationImpl other = (AsymmetricPopulationImpl) obj;
+		if (!Arrays.equals(populationArray1, other.populationArray1))
+			return false;
+		if (!Arrays.equals(populationArray2, other.populationArray2))
+			return false;
+		if (size1 != other.size1)
+			return false;
+		if (size2 != other.size2)
+			return false;
+		return true;
+	}
+
 	protected int[]	populationArray1;
 	protected int[]	populationArray2;
 	protected int size1;
